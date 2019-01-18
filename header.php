@@ -1,0 +1,50 @@
+<?php
+include_once("data/config.php");
+include_once("inc/function.php");
+// 登录状态判断
+loginchk(isset($_SESSION['uid']));
+?>
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title><?php echo siteName;?></title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/itlu.style.css?011701" />
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/all.js?011004"></script>
+</head>
+<body>
+    <?php
+    $arr = user_shell($_SESSION['uid']);
+    ?>
+    <div id="itlu-wrap">
+        <div class="table-responsive">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#example-navbar-collapse">
+                            <span class="sr-only">导航</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="add.php">记一笔</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="stat.php">近期统计</a></li>
+                            <li><a href="annual_stat.php">全年统计</a></li>
+                            <li><a href="classify.php">分类编辑</a></li>
+                            <li><a href="int_out.php">导入导出</a></li>
+                            <li><a href="show.php">查询修改</a></li>
+                            <li><a href="users.php"><?php echo"账号：";
+                                echo $arr['username'];
+                                ?></a></li>
+                            <li><a href="login.php?action=loginout">退出</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
