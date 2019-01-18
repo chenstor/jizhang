@@ -1,0 +1,26 @@
+body, html{padding: 0; margin: 0;}
+.clearfix:before,.clearfix:after{content: " ";display: table;}
+.clearfix:after{clear: both;}
+p{line-height:1.5}
+a{color:#0073aa;transition-property:border,background,color;transition-duration:.05s;transition-timing-function:ease-in-out;outline:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;color:#444;background:#f1f1f1;font-size:13px;}
+.login h1{text-align:center}
+.login h1 a{background-image:url(../img/login.png?ver=20131202);background-image:none,url(../img/login.svg?ver=20131107);background-size:84px;background-position:center top;background-repeat:no-repeat;color:#444;height:84px;font-size:20px;font-weight:400;line-height:1.3em;margin:0 auto 25px;padding:0;text-decoration:none;width:84px;text-indent:-9999px;outline:0;overflow:hidden;display:block}
+#login{width:320px;padding:8% 0 0;margin:0 auto;}
+.login *{margin:0;padding:0}
+.login form{background:#fff;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.13);padding:26px 24px 46px;font-weight:400;overflow:hidden}
+.login label{color:#72777c;font-size:14px;}
+.login form .input, .login form input[type=checkbox], .login input[type=text]{background:#fbfbfb;padding:3px;font-size:24px;margin:2px 6px 16px 0;width:100%;border:1px solid #ddd;box-shadow:inset 0 1px 2px rgba(0,0,0,.07);color:#32373c;outline:0;transition:50ms border-color ease-in-out;-webkit-appearance:none;}
+.login .button-primary{float:right}
+
+.login-itlu-ui .button,.login-itlu-ui .button-primary,.login-itlu-ui .button-secondary{display:inline-block;text-decoration:none;font-size:13px;line-height:26px;height:28px;margin:0;padding:0 10px 1px;cursor:pointer;border-width:1px;border-style:solid;-webkit-appearance:none;border-radius:3px;white-space:nowrap;box-sizing:border-box}
+.login-itlu-ui .button-primary{background:#0085ba;border-color:#0073aa #006799 #006799;box-shadow:0 1px 0 #006799;color:#fff;text-decoration:none;text-shadow:0 -1px 1px #006799,1px 0 1px #006799,0 1px 1px #006799,-1px 0 1px #006799}.login-itlu-ui .button-primary.focus,.login-itlu-ui .button-primary.hover,.login-itlu-ui .button-primary:focus,.login-itlu-ui .button-primary:hover{background:#008ec2;border-color:#006799;color:#fff}.login-itlu-ui .button-primary.focus,.login-itlu-ui .button-primary:focus{box-shadow:0 1px 0 #0073aa,0 0 2px 1px #33b3db}.login-itlu-ui .button-primary.active,.login-itlu-ui .button-primary.active:focus,.login-itlu-ui .button-primary.active:hover,.login-itlu-ui .button-primary:active{background:#0073aa;border-color:#006799;box-shadow:inset 0 2px 0 #006799;vertical-align:top}
+.login-itlu-ui .button.button-large{padding:6px 14px;line-height:normal;font-size:14px;vertical-align:middle;height:auto;margin-bottom:4px}
+
+.login #login_error, .login .message, .login .success{border-left:4px solid #00a0d2;padding:12px;margin-left:0;margin-bottom:20px;background-color:#fff;box-shadow:0 1px 1px 0 rgba(0,0,0,.1)}
+.login #login_error{border-left-color:#dc3232}
+
+.login #nav{margin:24px 0 0 0;padding:0 24px 0}
+.login #nav a{color:#555d66;text-decoration:none}
+
+.form-control[disabled],.form-control[readonly],fieldset[disabled] .form-control{cursor:not-allowed;background-color:#eee !important;opacity:1;color:#999 !important}
