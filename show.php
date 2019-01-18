@@ -94,7 +94,7 @@ if($s_remark != ""){
 					echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
 				}				
 				echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
-				echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='del(".$row['acid'].");'><img src='img/del.png' /></a></td>";
+				echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(".$row['acid'].");'><img src='img/del.png' /></a></td>";
 				echo "<td class='noshow' align='left' bgcolor='#FFFFFF'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></td>";
 			echo "</tr>";
 		}	
@@ -158,44 +158,5 @@ $('input[name="check_all"]').on("click",function(){
 		});
 	}
 });
-
-function thisurl(){
-	var thisurl = "show.php?1=1";
-	if(getUrlParam('classid') != null){
-		thisurl = thisurl + "&classid=" + getUrlParam('classid');
-	}
-	if(getUrlParam('starttime') != null){
-		thisurl = thisurl + "&starttime=" + getUrlParam('starttime');
-	}
-	if(getUrlParam('endtime') != null){
-		thisurl = thisurl + "&endtime=" + getUrlParam('endtime');
-	}
-	if(getUrlParam('startmoney') != null){
-		thisurl = thisurl + "&startmoney=" + getUrlParam('startmoney');
-	}
-	if(getUrlParam('endmoney') != null){
-		thisurl = thisurl + "&endmoney=" + getUrlParam('endmoney');
-	}
-	if(getUrlParam('remark') != null){
-		thisurl = thisurl + "&remark=" + getUrlParam('remark');
-	}
-	thisurl = thisurl + "&page=<?php echo $s_page;?>";
-	return thisurl;
-}
-
-function del(t){
-	var r=confirm("确定删除该记录？");
-	if (r==true){
-		$.ajax({
-			type:"get",
-			url:"date.php?action=deleterecord&id="+t+"", //需要获取的页面内容
-			async:true,
-			success:function(data){
-				alert(data);
-				window.location.href = thisurl();
-			}
-		});
-	}
-}
 </script>
 <?php include_once("footer.php");?>

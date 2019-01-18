@@ -76,7 +76,7 @@ foreach($Prolist as $row){
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";		
 		echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF' class='noshow'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='del(".$row['acid'].");'><img src='img/del.png' /></a></td>";
+		echo "<td align='left' bgcolor='#FFFFFF' class='noshow'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(".$row['acid'].");'><img src='img/del.png' /></a></td>";
 	echo "</tr>";
 }
 show_tab(3);
@@ -164,21 +164,6 @@ function saverecord(type){
 			$("#"+type+"_form > p > input[name='submit']").removeClass("disabled");
 		}
 	});
-}
-
-function del(t){
-	var r=confirm("确定删除该记录？");
-	if (r==true){
-		$.ajax({
-			type:"get",
-			url:"date.php?action=deleterecord&id="+t+"", //需要获取的页面内容
-			async:true,
-			success:function(data){
-				alert(data);
-				window.location.href="add.php";
-			}
-		});
-	}
 }
 
 $("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span>去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$_SESSION['uid'],1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$_SESSION['uid'],2);?></strong>");

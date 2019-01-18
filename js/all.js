@@ -127,6 +127,21 @@ function saveEditRecord(){
 		}
 	});
 }
+// 删除记录
+function delRecord(t){
+	var r=confirm("确定删除该记录？");
+	if (r==true){
+		$.ajax({
+			type:"get",
+			url:"date.php?action=deleterecord&id="+t+"",
+			async:true,
+			success:function(data){
+				alert(data);
+				window.location.reload();
+			}
+		});
+	}
+}
 
 function canBackGo(url){
 	if(url.indexOf("?")>0){
