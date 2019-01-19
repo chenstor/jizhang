@@ -6,7 +6,7 @@ $getaction = get("action");
 $gotourl = "";
 $success = "0";
 if($getaction=="login"){
-	if(!empty($_SESSION["uid"])){clearsession($_SESSION["uid"]);}
+	if(!empty($_SESSION['uid'])){$_SESSION['uid']="";}
 	$user_name = post("user_name");
 	$user_pass = post_pass("user_pass");
 	if((empty($user_name)) || (empty($user_pass))){		
