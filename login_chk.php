@@ -9,18 +9,21 @@ if($getaction=="login"){
 	if(!empty($_SESSION['uid'])){$_SESSION['uid']="";}
 	$user_name = post("user_name");
 	$user_pass = post_pass("user_pass");
-	if((empty($user_name)) || (empty($user_pass))){		
+	if(empty($user_name) || empty($user_pass)){
         $error_code = "用户名密码不能为空！";
 	}
 	else{
-		$sql = "SELECT uid,salt,password FROM ".TABLE."user WHERE username = '".$user_name."'";
+		$sql = "SELECT * FROM ".TABLE."user WHERE username = '".$user_name."'";
 		$query = mysqli_query($conn,$sql);
 		if ($row = mysqli_fetch_array($query)){
 			$salt = $row['salt'];
-			$password = hash_md5($user_pass,$salt);		
+			$password = hash_md5($user_pass,$salt);
 			if($row['password']==$password){
 				$_SESSION['uid'] = $row['uid'];
 				$_SESSION['error_times'] = 0;
+				$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]");
+				$userinfo = encrypt($userinfo, $sys_key);
+				setcookie("userinfo", $userinfo, time()+86400);
 				$success = "1";
 				$error_code = "登录成功！";
 				$gotourl = "add.php";
@@ -37,7 +40,7 @@ if($getaction=="login"){
 	$user_name = post("user_name");
 	$user_email = post("user_email");
 	$user_pass = post_pass("user_pass");
-	if((empty($user_name)) || (empty($user_email)) || (empty($user_pass))){
+	if(empty($user_name) || empty($user_email) || empty($user_pass)){
         $error_code = "用户名、邮箱、密码不能为空！";
 	}elseif(checkemail($user_email) == false){
 		$error_code = "邮箱格式不正确";
@@ -79,7 +82,7 @@ if($getaction=="login"){
     echo json_encode($data);
 }elseif($getaction=="getpassword"){
 	$user_email = post("user_email");
-	if((!empty($_SESSION['error_times'])) && $_SESSION['error_times']>=3){
+	if(!empty($_SESSION['error_times']) && $_SESSION['error_times']>=3){
 		$error_code = "错误提示太多！";
 		$gotourl = "login.php";
 	}else{	

@@ -33,7 +33,7 @@
     </ul>
   </div>
   <div class="final-intro">
-    <p><strong>系统登录地址:&nbsp;</strong><a href="<?php echo $auto_site_url;?>admin" target="_blank"><?php echo $auto_site_url;?>login.php</a></p>
+    <p><strong>系统登录地址:&nbsp;</strong><a href="<?php echo $auto_site_url;?>login.php" target="_blank"><?php echo $auto_site_url;?>login.php</a></p>
     <!--<p><strong>网站首页默认地址:&nbsp;</strong><a href="<?php echo $auto_site_url;?>" target="_blank"><?php echo $auto_site_url;?></a></p>-->
   </div>
 </div>

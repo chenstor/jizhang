@@ -53,27 +53,15 @@ function hash_md5($password,$salt){
 	$password=md5($password);
 	return $password;
 }
+if(isset($_SESSION['uid'])){
+	$userid = $_SESSION['uid'];
+}else{
+	$userid = "";
+}
 function loginchk($uid){
 	if($uid=="" || empty($uid) || $uid==null){
 		msgbox("您无权限访问该页,正在跳转登入页面...","","login.php");
 	}
-}
-function user_shell($uid) {
-	if($uid == ""){
-		echo "您无权限访问该页,正在跳转登入页面。。。";
-        echo "<meta http-equiv='refresh' content='0; url=login.php' />";
-        exit();
-	}
-    global $conn;
-	$sql = "SELECT * FROM ".TABLE."user WHERE uid = ".$uid;
-    $query = mysqli_query($conn,$sql);
-    if ($row = mysqli_fetch_array($query)){
-        return $row;
-    } else {
-        echo "您无权限访问该页,正在跳转登入页面。。。";
-        echo "<meta http-equiv=refresh content='0; url=login.php' />";
-        exit();
-    }
 }
 function user_mktime($onlinetime) {
     $new_time = mktime();
@@ -272,6 +260,27 @@ function isMobile(){
     } 
     return false;
 }
+$sys_key = "itlu.org";
+function encrypt($data, $key) { 
+	$prep_code = serialize($data); 
+	$block = mcrypt_get_block_size('des', 'ecb'); 
+	if (($pad = $block - (strlen($prep_code) % $block)) < $block) { 
+		$prep_code .= str_repeat(chr($pad), $pad); 
+	} 
+	$encrypt = mcrypt_encrypt(MCRYPT_DES, $key, $prep_code, MCRYPT_MODE_ECB); 
+	return base64_encode($encrypt); 
+}
+function decrypt($str, $key) { 
+	$str = base64_decode($str); 
+	$str = mcrypt_decrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB); 
+	$block = mcrypt_get_block_size('des', 'ecb'); 
+	$pad = ord($str[($len = strlen($str)) - 1]); 
+	if ($pad && $pad < $block && preg_match('/' . chr($pad) . '{' . $pad . '}$/', $str)) { 
+		$str = substr($str, 0, strlen($str) - $pad); 
+	} 
+	return unserialize($str); 
+}
+if(!empty($_COOKIE["userinfo"])){$userinfo = decrypt($_COOKIE["userinfo"], $sys_key);}
 include_once("content.php");
 include_once("safe.php");
 include_once("smtp_config.php");

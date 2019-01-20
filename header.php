@@ -2,7 +2,7 @@
 include_once("data/config.php");
 include_once("inc/function.php");
 // 登录状态判断
-loginchk(isset($_SESSION['uid']));
+loginchk($userid);
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -15,11 +15,8 @@ loginchk(isset($_SESSION['uid']));
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/all.js?011004"></script>
 </head>
-<body>
-    <?php
-    $arr = user_shell($_SESSION['uid']);
-    ?>
-    <div id="itlu-wrap">
+
+<body><div id="itlu-wrap">
         <div class="table-responsive">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="container-fluid">
@@ -40,9 +37,7 @@ loginchk(isset($_SESSION['uid']));
                             <li><a href="classify.php">分类编辑</a></li>
                             <li><a href="int_out.php">导入导出</a></li>
                             <li><a href="show.php">查询修改</a></li>
-                            <li><a href="users.php"><?php echo"账号：";
-                                echo $arr['username'];
-                                ?></a></li>
+                            <li><a href="users.php"><?php echo "账号：".$userinfo['username'];?></a></li>
                             <li><a href="login.php?action=loginout">退出</a></li>
                         </ul>
                     </div>

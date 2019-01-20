@@ -60,7 +60,7 @@ switch ($_GET['step']) {
 	case 3:
 		$install_error = '';
         $install_recover = '';
-        $demo_data =  file_exists('./data/utf8_add.sql') ? true : false;
+        //$demo_data =  file_exists('./data/utf8_add.sql') ? true : false;
         step3($install_error,$install_recover);
         break;
 	case 4:
@@ -136,12 +136,12 @@ function step3(&$install_error,&$install_recover){
     $mysqli->set_charset($_charset);
     $sql = file_get_contents("data/{$_charset}.sql");
     //判断是否安装测试数据
-    if ($_POST['demo_data'] == '1'){
+    /*if ($_POST['demo_data'] == '1'){
         $sql .= file_get_contents("data/{$_charset}_add.sql");
-    }
+    }*/
     $sql = str_replace("\r\n", "\n", $sql);
     runquery($sql,$db_prefix,$mysqli);
-    showjsmessage('初始化数据 ... 成功 ');
+    showjsmessage('初始化数据 ... 成功');
 
     /**
      * 转码
@@ -166,11 +166,14 @@ function step3(&$install_error,&$install_recover){
 	
     //管理员账号密码
     $mysqli->query("INSERT INTO {$db_prefix}user (`uid`,`username`,`password`,`email`,`cpassword`,`addtime`,`utime`,`salt`) VALUES ('1','$username','$user_pass','$email','','$addtime','$addtime','$salt');");
+	
+	//创建默认分类
+	$mysqli->query("INSERT INTO {$db_prefix}account_class (`classid`, `classname`, `classtype`, `ufid`) VALUES (1, '默认收入', 1, 1),(2, '默认支出', 2, 1);");
 
     //测试数据
-    if ($_POST['demo_data'] == '1'){
-        //$sql .= file_get_contents("data/{$_charset}_add.sql");
-    }
+    /*if ($_POST['demo_data'] == '1'){
+        $sql .= file_get_contents("data/{$_charset}_add.sql");
+    }*/
     //新增一个标识文件，用来屏蔽重新安装
     $fp = @fopen('lock','wb+');
     @fclose($fp);

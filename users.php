@@ -6,10 +6,10 @@ include_once("header.php");
     <tr><td bgcolor="#FFFFFF">
 		<div class="record_form" id="user">
 			<form id="user_form" name="user_form" method="post" onsubmit="return checkpost(this);">
-			<p><i>用 户 名：</i><?php echo $arr['username'];?></p>
-			<p><i>注册时间：</i><?php echo date("Y-m-d H:i:s",$arr['addtime']);?></label></p>
-			<p><i>更新时间：</i><?php echo date("Y-m-d H:i:s",$arr['utime']);?></label></p>
-			<p><i>电子邮箱：</i><input type="text" class="w180" name="email" id="email" value="<?php echo $arr['email'];?>"></p>
+			<p><i>用 户 名：</i><?php echo $userinfo['username'];?></p>
+			<p><i>注册时间：</i><?php echo date("Y-m-d H:i:s",$userinfo['regtime']);?></label></p>
+			<p><i>更新时间：</i><?php echo date("Y-m-d H:i:s",$userinfo['updatetime']);?></label></p>
+			<p><i>电子邮箱：</i><input type="text" class="w180" name="email" id="email" value="<?php echo $userinfo['useremail'];?>"></p>
 			<p><i>旧 密 码：</i><input type="password" class="w180" name="password" id="password" /><span class="red fs12">修改必须填写</span></p>
 			<p><i>新 密 码：</i><input type="password" class="w180" name="newpassword" id="newpassword" /><span class="red fs12">密码请填写6-20位</span></p>
 			<!--<p><i>授权密码：</i><input type="password" class="w180" name="cpassword" id="cpassword" /></p>-->

@@ -104,12 +104,12 @@ $(function(){
           <span>
           <input type="text" name="db_port" maxlength="20" value="<?php echo $_POST['db_port'] ? $_POST['db_port'] : '3306';?>">
           </span> <em>数据库默认端口一般为3306</em></div>
-        <?php if ($demo_data) {?>
-        <div>
+        <?php //if ($demo_data) {?>
+        <!--<div>
           <label>&nbsp;</label>
           <input type="checkbox" name="demo_data" <?php echo ($_POST['demo_data']==1 ? 'checked':'');?> id="demo_data" value="1">
-          <h4>安装演示数据</h4></div>
-        <?php }?>
+          <h4>安装演示数据</h4></div>-->
+        <?php //}?>
         <?php if ($install_error != ''){?>
         <div>
           <label></label>
