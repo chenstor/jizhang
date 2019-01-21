@@ -77,22 +77,22 @@ $(function(){
         <div>
           <label>数据库服务器</label>
           <span>
-          <input type="text" name="db_host" maxlength="20" value="<?php echo $_POST['db_host'] ? $_POST['db_host'] : 'localhost';?>">
+          <input type="text" name="db_host" maxlength="100" value="<?php echo $_POST['db_host'] ? $_POST['db_host'] : 'localhost';?>">
           </span> <em>数据库服务器地址，一般为localhost</em></div>
         <div>
           <label>数据库名</label>
           <span>
-          <input type="text" name="db_name" maxlength="40" value="<?php echo $_POST['db_name'] ? $_POST['db_name'] : 'jizhang';?>">
+          <input type="text" name="db_name" maxlength="60" value="<?php echo $_POST['db_name'] ? $_POST['db_name'] : 'jizhang';?>">
           </span> <em></em></div>
         <div>
           <label>数据库用户名</label>
           <span>
-          <input type="text" name="db_user" maxlength="20" value="<?php echo $_POST['db_user'] ? $_POST['db_user'] : '';?>">
+          <input type="text" name="db_user" maxlength="60" value="<?php echo $_POST['db_user'] ? $_POST['db_user'] : '';?>">
           </span> <em></em></div>
         <div>
           <label>数据库密码</label>
           <span>
-          <input type="password" name="db_pwd" maxlength="20" value="<?php echo $_POST['db_pwd'] ? $_POST['db_pwd'] : '';?>">
+          <input type="password" name="db_pwd" maxlength="60" value="<?php echo $_POST['db_pwd'] ? $_POST['db_pwd'] : '';?>">
           </span> <em></em></div>
         <div>
           <label>数据库表前缀</label>
@@ -126,12 +126,12 @@ $(function(){
         <div>
           <label>管理员账号</label>
           <span>
-          <input name="admin" value="<?php echo $_POST['admin'];?>" maxlength="20" type="text">
+          <input name="admin" value="<?php echo $_POST['admin'];?>" maxlength="60" type="text">
           </span> <em></em></div>
 		<div>
           <label>管理员邮箱</label>
           <span>
-          <input name="email" value="<?php echo $_POST['email'];?>" maxlength="20" type="text">
+          <input name="email" value="<?php echo $_POST['email'];?>" maxlength="60" type="text">
           </span> <em></em></div>
         <div>
           <label>管理员密码</label>
