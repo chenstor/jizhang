@@ -15,18 +15,7 @@ if($getaction=="loginout"){
 	setcookie("userinfo", "", time()-3600);
 	alertgourl("注销成功！","login.php");
 }
-?>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo siteName;?></title>
-<link rel="stylesheet" href="css/login.css" />
-</head>
-
-<?php
-if($getaction=="register"){ // 注册
+if($getaction=="register" and Multiuser==true){ // 注册
 	$form_name = "reg_form";
 	$login_btn = "注册";
 	$showlogin_form = showlogin("username").showlogin("email").showlogin("password");
@@ -48,6 +37,15 @@ if($getaction=="register"){ // 注册
 	$showlogin_form = showlogin("username").showlogin("password");
 }
 ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><?php echo siteName;?></title>
+<link rel="stylesheet" href="css/login.css" />
+</head>
+
 <body>
 <div class='login login-itlu-ui'>
 	<div id="login">
@@ -63,7 +61,7 @@ if($getaction=="register"){ // 注册
 		<?php if($getaction=="getpassword" or $getaction=="register"){?>
 		<p id="nav"><a href="login.php">登录</a></p>
 		<?php }else{?>
-		<p id="nav"><a href="?action=getpassword">忘记密码？</a> | <a href="?action=register">注册账号</a></p>
+		<p id="nav"><a href="?action=getpassword">忘记密码？</a><?php if(Multiuser){?> | <a href="?action=register">注册账号</a><?php }?></p>
 		<?php }?>
 	</div>
 	
