@@ -132,19 +132,20 @@ if($getaction=="deleteclassify"){
 }
 if($getaction=="addclassify"){
 	$classname = post("classname");
+	$classtype = post("classtype");
 	if(empty($classname)){
 		$error_code = "分类名称不能为空！";
 	}elseif(strlen($classname)>18){
 		$error_code = "分类名称不能大于6个字！";
 	}else{
-		$sql = "select * from ".TABLE."account_class where classname='$classname' and ufid='$userid'";
+		$sql = "select * from ".TABLE."account_class where classname='$classname' and classtype='$classtype' and ufid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		$attitle = is_array($row = mysqli_fetch_array($query));
 		if ($attitle) {
 			$error_code = "该名称的分类已经存在！";
 		}
 		else {
-			$sql = "insert into ".TABLE."account_class (classname, classtype,ufid) values ('$classname', '$_POST[classtype]',$userid)";
+			$sql = "insert into ".TABLE."account_class (classname, classtype, ufid) values ('$classname', '$classtype',$userid)";
 			$query = mysqli_query($conn,$sql);
 			if ($query) {
 				$error_code = "保存成功！";

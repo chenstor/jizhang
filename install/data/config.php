@@ -8,8 +8,8 @@ date_default_timezone_set("Asia/Shanghai");
 define("ROOT_PATH", str_replace("\\","/",dirname(__FILE__)));
 
 // 检查PHP版本
-if(PHP_VERSION<5){
-	die('PHP版本小于5.0，请升级！');
+if(PHP_VERSION<5.3){
+	die('PHP版本小于5.3，请升级！');
 }
 
 // database
