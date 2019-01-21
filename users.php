@@ -38,7 +38,7 @@ if(isset($_POST['shangchushuju'])){
 	alertword("这么危险的动作，怎么可能提供？？？");
 	$mmyanzheng = md5($_POST['mimayanzheng']);
 	if ($mmyanzheng == $row['password']) {
-		echo "<meta http-equiv=refresh content='2; url=delete.php?uid=".$_SESSION['uid'].")'>";
+		echo "<meta http-equiv=refresh content='2; url=delete.php?uid=".$userid.")'>";
 		echo "<font color='green'>已全部删除成功！</font>";
 	} else {
 		echo "<font color='red'>密码错误！</font>";

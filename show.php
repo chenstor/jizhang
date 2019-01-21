@@ -38,7 +38,7 @@ if($s_remark != ""){
 					<option value="all" <?php if($s_classid=="all"){echo "selected";}?>>全部分类</option>
 					<option value="pay" <?php if($s_classid=="pay"){echo "selected";}?>>====支出====</option>
 					<?php
-					$pay_type_list = show_type(2,$_SESSION['uid']);
+					$pay_type_list = show_type(2,$userid);
 					foreach($pay_type_list as $myrow){
 						if($myrow['classid']==$s_classid){
 							echo "<option value='$myrow[classid]' selected>支出 -- ".$myrow['classname']."</option>";
@@ -49,7 +49,7 @@ if($s_remark != ""){
 					?>
 					<option value="income" <?php if($s_classid=="income"){echo "selected";}?>>====收入====</option>
 					<?php
-					$pay_type_list = show_type(1,$_SESSION['uid']);
+					$pay_type_list = show_type(1,$userid);
 					foreach($pay_type_list as $myrow){
 						if($myrow['classid']==$s_classid){
 							echo "<option value='$myrow[classid]' selected>收入 -- ".$myrow['classname']."</option>";
@@ -75,7 +75,7 @@ if($s_remark != ""){
 	show_tab(1);
 	echo "<form name='del_all' id='del_all' method='post' onsubmit='return deleterecordAll(this);'>";
 	show_tab(4);
-		$Prolist = itlu_page_search($_SESSION['uid'],20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark);
+		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark);
 		foreach($Prolist as $row){
 			if($row['zhifu']==1){
 				$fontcolor = "green";
@@ -103,7 +103,7 @@ if($s_remark != ""){
 ?>
 	<?php 
 	//显示页码
-	$pages = record_num_query($_SESSION['uid'],$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark);
+	$pages = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark);
 	$pages = ceil($pages/20);	
 	if($pages > 1){?>
 	<div class="page"><?php getPageHtml($s_page,$pages,$pageurl."&");?></div>

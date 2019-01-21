@@ -53,6 +53,7 @@ function hash_md5($password,$salt){
 	$password=md5($password);
 	return $password;
 }
+//使用系统统一的$userid
 if(isset($_SESSION['uid'])){
 	$userid = $_SESSION['uid'];
 }else{

@@ -1,13 +1,13 @@
 <?php include_once("header.php");
 
 // 支付分类列表
-$pay_type_list = show_type(2,$_SESSION['uid']);
+$pay_type_list = show_type(2,$userid);
 $pay_type_option = "";
 foreach($pay_type_list as $myrow){
 	$pay_type_option = $pay_type_option."<option value='$myrow[classid]'>".$myrow['classname']."</option>";
 }
 // 收入分类列表
-$pay_type_list = show_type(1,$_SESSION['uid']);
+$pay_type_list = show_type(1,$userid);
 $income_type_option = "";
 foreach($pay_type_list as $myrow2){
 	$income_type_option = $income_type_option."<option value='$myrow2[classid]'>".$myrow2['classname']."</option>";
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])){
 			$no_ok_count++;
 			continue;
         }
-        $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney, acclassid, actime, acremark,zhifu,jiid) values('$value','".$path1[$key]."','$addtime','".$path3[$key]."','".$path4[$key]."','$_SESSION[uid]')");
+        $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney, acclassid, actime, acremark,zhifu,jiid) values('$value','".$path1[$key]."','$addtime','".$path3[$key]."','".$path4[$key]."','$userid')");
 		if($query){
 			$ok_count++;
 		}else{

@@ -14,7 +14,7 @@
 			<p class="red"><label for="money">金额：<input class="w180" type="text" name="money" id="money" size="20" maxlength="8"></label></p>
 			<p><label for="classid">分类：<select class="w180" name="classid" id="classid">
                 <?php
-				$pay_type_list = show_type(2,$_SESSION['uid']);
+				$pay_type_list = show_type(2,$userid);
 				foreach($pay_type_list as $myrow){
 					echo "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
 				}
@@ -34,7 +34,7 @@
 			<p class="green"><label for="money">金额：<input class="w180" type="text" name="money" id="money" size="20" maxlength="8"></label></p>
 			<p><label for="classid">分类：<select class="w180" name="classid" id="classid">
                 <?php
-				$pay_type_list = show_type(1,$_SESSION['uid']);
+				$pay_type_list = show_type(1,$userid);
 				foreach($pay_type_list as $myrow){
 					echo "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
 				}
@@ -61,7 +61,7 @@
 $get_page = get("page","1"); //获取参数
 show_tab(1);
 show_tab(2);
-$Prolist = itlu_page_query($_SESSION['uid'],20,$get_page);
+$Prolist = itlu_page_query($userid,20,$get_page);
 foreach($Prolist as $row){
 	if($row['zhifu']==1){
 		$fontcolor = "green";
@@ -82,7 +82,7 @@ foreach($Prolist as $row){
 show_tab(3);
 ?>
 	<?php 
-	$pages = record_num_query($_SESSION['uid'],"all");
+	$pages = record_num_query($userid,"all");
 	$pages = ceil($pages/20);	
 	if($pages > 1){?>
 	<div class="page"><?php getPageHtml($get_page,$pages,"show.php?");?></div>
@@ -166,6 +166,6 @@ function saverecord(type){
 	});
 }
 
-$("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span>去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$_SESSION['uid'],1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$_SESSION['uid'],2);?></strong>");
+$("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span>去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");
 </script>
 <?php include_once("footer.php");?>

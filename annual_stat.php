@@ -4,7 +4,7 @@
 		<th width="80">
 			<select name="year" id="year">
 				<?php
-				$first_year = user_first_year($_SESSION['uid']);
+				$first_year = user_first_year($userid);
 				$get_year = get("year",$this_year);
 				for ($y = $first_year; $y <= $this_year; $y++){
 					if($get_year == $y){
@@ -23,7 +23,7 @@
 	</tr>
 	<?php
 	$type_count_num = 0; //分类总数
-	$typelist = show_type("",$_SESSION['uid']);
+	$typelist = show_type("",$userid);
 	foreach($typelist as $myrow){
 		if($myrow['classtype']==1){
 			$fontcolor = "green";
@@ -33,7 +33,7 @@
 		$type_count_num++;
 		// 取分类统计数据
 		$type_count_data = "";
-		$type_count_list = total_count($myrow['classid'],$get_year,$_SESSION['uid']);
+		$type_count_list = total_count($myrow['classid'],$get_year,$userid);
 		for($b=1;$b<=12;$b++){
 			$month_num = "0.00";
 			foreach($type_count_list as $countrow){

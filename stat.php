@@ -64,31 +64,31 @@ include_once("header.php");
 </table>
 
 <script language="javascript">
-	$("#stat").html("去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$_SESSION['uid'],1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$_SESSION['uid'],2);?></strong>");
-	$("#pay_day").text("<?php echo state_day($today,$today,$_SESSION['uid'],2);?>");
-	$("#pay_week").text("<?php echo state_day(get_week_day(1),$today,$_SESSION['uid'],2);?>");
-	$("#pay_month").text("<?php echo state_day($this_month_firstday,$today,$_SESSION['uid'],2);?>");
-	$("#pay_year").text("<?php echo state_day($this_year_firstday,$today,$_SESSION['uid'],2);?>");
+	$("#stat").html("去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");
+	$("#pay_day").text("<?php echo state_day($today,$today,$userid,2);?>");
+	$("#pay_week").text("<?php echo state_day(get_week_day(1),$today,$userid,2);?>");
+	$("#pay_month").text("<?php echo state_day($this_month_firstday,$today,$userid,2);?>");
+	$("#pay_year").text("<?php echo state_day($this_year_firstday,$today,$userid,2);?>");
 	
-	$("#income_day").text("<?php echo state_day($today,$today,$_SESSION['uid'],1);?>");
-	$("#income_week").text("<?php echo state_day(get_week_day(1),$today,$_SESSION['uid'],1);?>");
-	$("#income_month").text("<?php echo state_day($this_month_firstday,$today,$_SESSION['uid'],1);?>");
-	$("#income_year").text("<?php echo state_day($this_year_firstday,$today,$_SESSION['uid'],1);?>");
+	$("#income_day").text("<?php echo state_day($today,$today,$userid,1);?>");
+	$("#income_week").text("<?php echo state_day(get_week_day(1),$today,$userid,1);?>");
+	$("#income_month").text("<?php echo state_day($this_month_firstday,$today,$userid,1);?>");
+	$("#income_year").text("<?php echo state_day($this_year_firstday,$today,$userid,1);?>");
 
 	$("#income_pay_day").text(subtraction($("#income_day").text(),$("#pay_day").text()));
 	$("#income_pay_week").text(subtraction($("#income_week").text(),$("#pay_week").text()));
 	$("#income_pay_month").text(subtraction($("#income_month").text(),$("#pay_month").text()));
 	$("#income_pay_year").text(subtraction($("#income_year").text(),$("#pay_year").text()));	
 	//昨天统计数据
-	$("#pay_yesterday").text("<?php echo state_day($yesterday,$yesterday,$_SESSION['uid'],2);?>");
-	$("#pay_lastweek").text("<?php echo state_day($last_week_start,$last_week_end,$_SESSION['uid'],2);?>");
-	$("#pay_lastmonth").text("<?php echo state_day($last_month_start,$last_month_end,$_SESSION['uid'],2);?>");
-	$("#pay_lastyear").text("<?php echo state_day($last_year_start,$last_year_end,$_SESSION['uid'],2);?>");
+	$("#pay_yesterday").text("<?php echo state_day($yesterday,$yesterday,$userid,2);?>");
+	$("#pay_lastweek").text("<?php echo state_day($last_week_start,$last_week_end,$userid,2);?>");
+	$("#pay_lastmonth").text("<?php echo state_day($last_month_start,$last_month_end,$userid,2);?>");
+	$("#pay_lastyear").text("<?php echo state_day($last_year_start,$last_year_end,$userid,2);?>");
 	
-	$("#income_yesterday").text("<?php echo state_day($yesterday,$yesterday,$_SESSION['uid'],1);?>");
-	$("#income_lastweek").text("<?php echo state_day($last_week_start,$last_week_end,$_SESSION['uid'],1);?>");
-	$("#income_lastmonth").text("<?php echo state_day($last_month_start,$last_month_end,$_SESSION['uid'],1);?>");
-	$("#income_lastyear").text("<?php echo state_day($last_year_start,$last_year_end,$_SESSION['uid'],1);?>");
+	$("#income_yesterday").text("<?php echo state_day($yesterday,$yesterday,$userid,1);?>");
+	$("#income_lastweek").text("<?php echo state_day($last_week_start,$last_week_end,$userid,1);?>");
+	$("#income_lastmonth").text("<?php echo state_day($last_month_start,$last_month_end,$userid,1);?>");
+	$("#income_lastyear").text("<?php echo state_day($last_year_start,$last_year_end,$userid,1);?>");
 
 	$("#income_pay_yesterday").text(subtraction($("#income_yesterday").text(),$("#pay_yesterday").text()));
 	$("#income_pay_lastweek").text(subtraction($("#income_lastweek").text(),$("#pay_lastweek").text()));
