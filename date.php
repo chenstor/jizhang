@@ -187,6 +187,30 @@ if($getaction=="modifyclassify"){
 	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
     echo json_encode($data);
 }
+if($getaction=="changeuser"){
+	header('Content-type:text/html;charset=utf-8');
+	$type = get("m");
+	$uid = get("uid");
+	if(empty($type) or empty($uid)){
+		$error_code = "参数不完整！";
+	}else{
+		if($type=="noallow"){
+			$u_sql = "Isallow=1";
+			$itlu_word = "禁用";
+		}else{
+			$u_sql = "Isallow=0";
+			$itlu_word = "启用";
+		}
+		$update_sql = "update ".TABLE."user set ".$u_sql." where uid='$uid'";
+        $update_query = mysqli_query($conn,$update_sql);
+		if($update_query){
+			$error_code = $itlu_word."成功！";
+		}else{
+			$error_code = "操作失败！";
+		}
+	}
+	echo $error_code;
+}
 if($getaction=="updateuser"){
 	$password = post_pass("password");
 	$newpassword = post_pass("newpassword");
@@ -219,7 +243,7 @@ if($getaction=="updateuser"){
             $update_query = mysqli_query($conn,$update_sql);
 			if($update_query){
 				$success = "1";
-				$userinfo_update = array("userid"=>"$userid","username"=>"$row[username]","useremail"=>"$email","regtime"=>"$row[addtime]","updatetime"=>"$update_time");
+				$userinfo_update = array("userid"=>"$userid","username"=>"$row[username]","useremail"=>"$email","regtime"=>"$row[addtime]","updatetime"=>"$update_time","isadmin"=>"$row[Isadmin]");
 				$userinfo = encrypt($userinfo_update, $sys_key);
 				setcookie("userinfo", $userinfo, time()+86400);
 				$error_code = "信息修改成功！";

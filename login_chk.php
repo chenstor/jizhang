@@ -19,14 +19,18 @@ if($getaction=="login"){
 			$salt = $row['salt'];
 			$password = hash_md5($user_pass,$salt);
 			if($row['password']==$password){
-				$_SESSION['uid'] = $row['uid'];
-				$_SESSION['error_times'] = 0;
-				$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]");
-				$userinfo = encrypt($userinfo, $sys_key);
-				setcookie("userinfo", $userinfo, time()+86400);
-				$success = "1";
-				$error_code = "登录成功！";
-				$gotourl = "add.php";
+				if($row['Isallow']=="1"){
+					$error_code = "您的帐号被禁止登录，请联系管理员！";
+				}else{
+					$_SESSION['uid'] = $row['uid'];
+					$_SESSION['error_times'] = 0;
+					$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]","isadmin"=>"$row[Isadmin]");
+					$userinfo = encrypt($userinfo, $sys_key);
+					setcookie("userinfo", $userinfo, time()+86400);
+					$success = "1";
+					$error_code = "登录成功！";
+					$gotourl = "add.php";
+				}
 			}else{
 				$error_code = "用户名或密码错误！<a href='?action=getpassword'>忘记密码？</a>";
 			}

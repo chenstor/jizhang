@@ -165,7 +165,7 @@ function step3(&$install_error,&$install_recover){
 	$user_pass = hash_md5($password,$salt);
 	
     //管理员账号密码
-    $mysqli->query("INSERT INTO {$db_prefix}user (`uid`,`username`,`password`,`email`,`cpassword`,`addtime`,`utime`,`salt`) VALUES ('1','$username','$user_pass','$email','','$addtime','$addtime','$salt');");
+    $mysqli->query("INSERT INTO {$db_prefix}user (`uid`,`username`,`password`,`email`,`Isadmin`,`addtime`,`utime`,`salt`) VALUES ('1','$username','$user_pass','$email','1','$addtime','$addtime','$salt');");
 	
 	//创建默认分类
 	$mysqli->query("INSERT INTO {$db_prefix}account_class (`classid`, `classname`, `classtype`, `ufid`) VALUES (1, '默认收入', 1, 1),(2, '默认支出', 2, 1);");
