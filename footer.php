@@ -9,4 +9,5 @@
 <?php
 $conn->close();
 clearstatcache();
+ob_end_flush();
 ?>

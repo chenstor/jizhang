@@ -1,5 +1,5 @@
 <?php
-//判断是否已安装
+header("Content-Type: text/html;charset=utf-8");
 if(!is_file("./install/lock") && is_file("./install/index.php")){
 	@header("location:install/index.php");
 }

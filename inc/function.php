@@ -2,6 +2,12 @@
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){die('数据库打开失败！');}
 
+if(PHP_VERSION>=7){
+	define('PHP7', true);
+}else{
+	define('PHP7', false);
+}
+
 $today = date("Y-m-d");
 $yesterday = date("Y-m-d",strtotime("-1 day"));
 $this_year = date("Y");
@@ -261,28 +267,16 @@ function isMobile(){
     } 
     return false;
 }
-$sys_key = "itlu.org";
-function encrypt($data, $key) { 
-	$prep_code = serialize($data); 
-	$block = mcrypt_get_block_size('des', 'ecb'); 
-	if (($pad = $block - (strlen($prep_code) % $block)) < $block) { 
-		$prep_code .= str_repeat(chr($pad), $pad); 
-	} 
-	$encrypt = mcrypt_encrypt(MCRYPT_DES, $key, $prep_code, MCRYPT_MODE_ECB); 
-	return base64_encode($encrypt); 
-}
-function decrypt($str, $key) { 
-	$str = base64_decode($str); 
-	$str = mcrypt_decrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB); 
-	$block = mcrypt_get_block_size('des', 'ecb'); 
-	$pad = ord($str[($len = strlen($str)) - 1]); 
-	if ($pad && $pad < $block && preg_match('/' . chr($pad) . '{' . $pad . '}$/', $str)) { 
-		$str = substr($str, 0, strlen($str) - $pad); 
-	} 
-	return unserialize($str); 
-}
-if(!empty($_COOKIE["userinfo"])){$userinfo = decrypt($_COOKIE["userinfo"], $sys_key);}
+
 include_once("content.php");
 include_once("safe.php");
+if(PHP7){
+	include_once("aes7.php");
+}else{
+	include_once("aes5.php");
+}
 include_once("smtp_config.php");
+if(!empty($_COOKIE["userinfo"])){
+	$userinfo = AES::decrypt($_COOKIE["userinfo"], $sys_key);
+}
 ?>

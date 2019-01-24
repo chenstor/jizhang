@@ -1,10 +1,10 @@
 <?php
+ob_start();
 session_start();
-header("Content-Type: text/html;charset=utf-8");
 //基本设置
 date_default_timezone_set("Asia/Shanghai");
-define("ROOT_PATH", str_replace("\\","/",dirname(__FILE__)));
-define("Multiuser", true);//是否开启多用户，true为开启，false为禁用
+//是否开启多用户，true为开启，false为禁用
+define("Multiuser", false);
 // 检查PHP版本
 if(PHP_VERSION<5.3){
 	die('PHP版本小于5.3，请升级！');

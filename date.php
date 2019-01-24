@@ -1,8 +1,8 @@
 <?php
+header('Content-type:text/json;charset=utf-8');
 include_once("data/config.php");
 include_once("inc/function.php");
 loginchk($userid);
-header('Content-type:text/json;charset=utf-8');
 $gotourl = "";
 $success = "0";
 $getaction = get("action");
@@ -244,7 +244,7 @@ if($getaction=="updateuser"){
 			if($update_query){
 				$success = "1";
 				$userinfo_update = array("userid"=>"$userid","username"=>"$row[username]","useremail"=>"$email","regtime"=>"$row[addtime]","updatetime"=>"$update_time","isadmin"=>"$row[Isadmin]");
-				$userinfo = encrypt($userinfo_update, $sys_key);
+				$userinfo = AES::encrypt($userinfo_update, $sys_key);
 				setcookie("userinfo", $userinfo, time()+86400);
 				$error_code = "信息修改成功！";
 				$gotourl = "users.php";

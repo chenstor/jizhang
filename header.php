@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: text/html;charset=utf-8");
 include_once("data/config.php");
 include_once("inc/function.php");
 // 登录状态判断

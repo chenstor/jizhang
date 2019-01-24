@@ -1,7 +1,7 @@
 <?php
+header('Content-type:text/json;charset=utf-8');
 include_once("data/config.php");
 include_once("inc/function.php");
-header('Content-type:text/json;charset=utf-8');
 $getaction = get("action");
 $gotourl = "";
 $success = "0";
@@ -25,7 +25,7 @@ if($getaction=="login"){
 					$_SESSION['uid'] = $row['uid'];
 					$_SESSION['error_times'] = 0;
 					$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]","isadmin"=>"$row[Isadmin]");
-					$userinfo = encrypt($userinfo, $sys_key);
+					$userinfo = AES::encrypt($userinfo, $sys_key);					
 					setcookie("userinfo", $userinfo, time()+86400);
 					$success = "1";
 					$error_code = "登录成功！";
