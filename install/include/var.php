@@ -6,7 +6,7 @@ $dirfile_items = array(
 );
 
 $func_items = array(
-		array('name' => 'mysql_connect'),
+		array('name' => 'mysqli_connect'),
 		array('name' => 'fsockopen'),
 		array('name' => 'gethostbyname'),
 		array('name' => 'file_get_contents'),
