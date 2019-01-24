@@ -9,14 +9,14 @@ CREATE TABLE IF NOT EXISTS `#__user` (
   `utime` int(11) NOT NULL COMMENT '更新时间',
   `salt` varchar(35) NOT NULL COMMENT '盐密码',
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户表';
 CREATE TABLE IF NOT EXISTS `#__account_class` (
   `classid` int(5) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `classname` varchar(20) NOT NULL COMMENT '分类名称',
   `classtype` int(1) NOT NULL COMMENT '类型 1为收入 2为支出',
   `ufid` int(8) NOT NULL COMMENT '记账用户ID',
   PRIMARY KEY (`classid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='类型表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='类型表';
 CREATE TABLE IF NOT EXISTS `#__account` (
   `acid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `acmoney` decimal(10,2) NOT NULL COMMENT '金额',
@@ -26,4 +26,4 @@ CREATE TABLE IF NOT EXISTS `#__account` (
   `jiid` int(8) NOT NULL COMMENT '记账用户ID',
   `zhifu` int(8) NOT NULL COMMENT '类型 1为收入 2为支出',
   PRIMARY KEY (`acid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='账目表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='账目表';
