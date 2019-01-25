@@ -6,6 +6,7 @@ $s_endtime = get('endtime',$today);//默认今天
 $s_startmoney = get('startmoney');
 $s_endmoney = get('endmoney');
 $s_remark = get('remark');
+$s_bankid = get('bankid');
 $s_page = get('page','1');
 
 $pageurl = "show.php?1=1";
@@ -27,6 +28,9 @@ if($s_endmoney != ""){
 if($s_remark != ""){
 	$pageurl = $pageurl."&remark=".$s_remark;
 }
+if($s_bankid != ""){
+	$pageurl = $pageurl."&bankid=".$s_bankid;
+}
 ?>
 
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
@@ -41,9 +45,9 @@ if($s_remark != ""){
 					$pay_type_list = show_type(2,$userid);
 					foreach($pay_type_list as $myrow){
 						if($myrow['classid']==$s_classid){
-							echo "<option value='$myrow[classid]' selected>支出 -- ".$myrow['classname']."</option>";
+							echo "<option value='$myrow[classid]' selected>支出>>".$myrow['classname']."</option>";
 						}else{
-							echo "<option value='$myrow[classid]'>支出 -- ".$myrow['classname']."</option>";
+							echo "<option value='$myrow[classid]'>支出>>".$myrow['classname']."</option>";
 						}						
 					}
 					?>
@@ -64,6 +68,20 @@ if($s_remark != ""){
 				
 				<p><label for="money">金额：<input class="w100" value="<?php echo $s_startmoney;?>" type="text" name="startmoney" id="startmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />-<input class="w100" value="<?php echo $s_endmoney;?>" type="text" name="endmoney" id="endmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" /></label></p>				
 				<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" value="<?php echo $s_remark;?>"></label></p>
+				<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
+					<option value="" <?php if($s_bankid==""){echo "selected";}?>>全部账户</option>
+					<option value="0" <?php if($s_bankid=="0"){echo "selected";}?>>默认账户</option>
+					<?php
+					$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+					foreach($banklist as $myrow){
+						if($myrow['bankid']==$s_bankid){
+							echo "<option value='$myrow[bankid]' selected>".$myrow['bankname']."</option>";
+						}else{
+							echo "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+						}						
+					}
+					?>
+				</select></label></p>
 				<p class="btn_div"><input type="submit" name="submit" value="查询" class="btn btn-primary" /></p>
 				</form>
 			</div>
@@ -75,7 +93,7 @@ if($s_remark != ""){
 	show_tab(1);
 	echo "<form name='del_all' id='del_all' method='post' onsubmit='return deleterecordAll(this);'>";
 	show_tab(4);
-		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark);
+		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
 		foreach($Prolist as $row){
 			if($row['zhifu']==1){
 				$fontcolor = "green";
@@ -85,8 +103,8 @@ if($s_remark != ""){
 				$word = "支出";
 			}
 			echo "<tr class='".$fontcolor."'>";
-				echo "<td align='left' bgcolor='#FFFFFF'>".$row['classname']."</td>";
-				echo "<td align='left' bgcolor='#FFFFFF'>".$word."</td>";
+				echo "<td align='left' bgcolor='#FFFFFF'>".$word.">>".$row['classname']."</td>";
+				echo "<td align='left' bgcolor='#FFFFFF'>".bankname($row['bankid'],$userid,"默认账户")."</td>";
 				echo "<td align='left' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";
 				if(isMobile()){
 					echo "<td align='left' bgcolor='#FFFFFF'>".date("m-d",$row['actime'])."</td>";
@@ -103,7 +121,7 @@ if($s_remark != ""){
 ?>
 	<?php 
 	//显示页码
-	$pages = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark);
+	$pages = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
 	$pages = ceil($pages/20);	
 	if($pages > 1){?>
 	<div class="page"><?php getPageHtml($s_page,$pages,$pageurl."&");?></div>
@@ -137,7 +155,7 @@ if($s_remark != ""){
 				<div class="form-group">
 					<label for="edit-bankid">帐户</label>
 					<select name="edit-bankid" id="edit-bankid" class="form-control">
-						<option value='0'>默认</option>
+						<option value='0'>默认账户</option>
 						<?php
 						$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
 						foreach($banklist as $myrow){

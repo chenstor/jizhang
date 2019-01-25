@@ -22,7 +22,7 @@
             </select></label><a href="classify.php" class="addclass">添加分类</a></p>
 			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="8"></label></p>
 			<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
-				<option value="0">默认</option>
+				<option value="0">默认账户</option>
                 <?php
 				$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
 				foreach($banklist as $myrow){
@@ -51,7 +51,7 @@
             </select></label><a href="classify.php" class="addclass">添加分类</a></p>
 			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="20"></label></p>
 			<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
-				<option value="0">默认</option>
+				<option value="0">默认账户</option>
                 <?php
 				$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
 				foreach($banklist as $myrow){
@@ -89,8 +89,8 @@ foreach($Prolist as $row){
 		$word = "支出";
 	}
 	echo "<tr class='".$fontcolor."'>";
-		echo "<td align='left' bgcolor='#FFFFFF'>".$row['classname']."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF'>".$word."</td>";
+		echo "<td align='left' bgcolor='#FFFFFF'>".$word.">>".$row['classname']."</td>";
+		echo "<td align='left' bgcolor='#FFFFFF'>".bankname($row['bankid'],$userid,"默认账户")."</td>";
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";		
 		echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
@@ -132,9 +132,9 @@ show_tab(3);
 					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="20" />
 				</div>
 				<div class="form-group">
-					<label for="edit-bankid">帐户</label>
+					<label for="edit-bankid">账户</label>
 					<select name="edit-bankid" id="edit-bankid" class="form-control">
-						<option value='0'>默认</option>
+						<option value='0'>默认账户</option>
 						<?php
 						$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
 						foreach($banklist as $myrow){

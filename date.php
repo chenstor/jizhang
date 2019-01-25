@@ -67,11 +67,17 @@ if($getaction=="deletebank"){
 	if(empty($bankid) || !is_numeric($bankid)){
 		$error_code = "缺少参数或参数非法！";
 	}else{
-		$sql = "delete from ".TABLE."bank where bankid='$bankid'";
-		if(mysqli_query($conn,$sql)){
-			$error_code = "删除成功！";
-		}else{
-			$error_code = "删除失败！";
+		$sql = "select acid from ".TABLE."account where bankid='$bankid' and jiid='$userid'";
+		$query = mysqli_query($conn,$sql);
+		if ($row = mysqli_fetch_array($query)) {
+			$error_code = "该银行卡有关联数据，不能删除！";
+		} else {
+			$sql = "delete from ".TABLE."bank where bankid=".$bankid;
+			if (mysqli_query($conn,$sql)){
+				$error_code = "删除成功！";
+			}else{
+				$error_code = "删除失败！";
+			}			
 		}
 	}				
 	echo $error_code;
@@ -144,8 +150,17 @@ if($getaction=="deleterecord"){
 	if(empty($get_id) || !is_numeric($get_id)){
 		$error_code = "缺少参数或参数非法！";
 	}else{
-		$sql = "delete from ".TABLE."account where acid='$get_id' and jiid='$userid'";
-		if(mysqli_query($conn,$sql)){
+		$sql = "select bankid,zhifu,acmoney from ".TABLE."account where acid='$get_id' and jiid='$userid'";
+		$query = mysqli_query($conn,$sql);
+		if($row = mysqli_fetch_array($query)){
+			if($row["bankid"]>0){
+				$zhifu = "2";
+				if($row["zhifu"]=="2"){$zhifu = "1";}
+				money_int_out($row["bankid"],$row["acmoney"],$zhifu);
+			}
+		}
+		$del_sql = "delete from ".TABLE."account where acid='$get_id' and jiid='$userid'";
+		if(mysqli_query($conn,$del_sql)){
 			$error_code = "删除成功！";
 		}else{
 			$error_code = "删除失败！";
@@ -190,17 +205,22 @@ if($getaction=="changeclassify"){
 }
 if($getaction=="deleteclassify"){
 	header('Content-type:text/html;charset=utf-8');
-	$sql = "select acid from ".TABLE."account where acclassid='$_GET[classid]' and jiid='$userid'";
-	$query = mysqli_query($conn,$sql);
-	if ($row = mysqli_fetch_array($query)) {
-		$error_code = "在此分类下有账目，请将账目转移到其他分类";
-	} else {
-		$sql = "delete from ".TABLE."account_class where classid=".$_GET['classid'];
-		if (mysqli_query($conn,$sql)){
-			$error_code = "分类删除成功！";
-		}else{
-			$error_code = "删除失败！";
-		}			
+	$classid = get("classid");
+	if(empty($classid)){
+		$error_code = "缺少参数！";
+	}else{
+		$sql = "select acid from ".TABLE."account where acclassid='$classid' and jiid='$userid'";
+		$query = mysqli_query($conn,$sql);
+		if ($row = mysqli_fetch_array($query)) {
+			$error_code = "在此分类下有账目，请将账目转移到其他分类";
+		} else {
+			$sql = "delete from ".TABLE."account_class where classid=".$classid;
+			if (mysqli_query($conn,$sql)){
+				$error_code = "分类删除成功！";
+			}else{
+				$error_code = "删除失败！";
+			}			
+		}
 	}
 	echo $error_code;
 }
@@ -334,9 +354,9 @@ if($getaction=="updateuser"){
 }
 if($getaction=="export"){
 	header('Content-type:text/html;charset=utf-8');
-	$sql = "select a.zhifu,a.acmoney,a.actime,a.acremark,b.classname from ".TABLE."account as a INNER JOIN ".TABLE."account_class as b ON b.classid=a.acclassid and a.jiid='$userid'";
+	$sql = "select a.zhifu,a.acmoney,a.actime,a.acremark,a.bankid,b.classname from ".TABLE."account as a INNER JOIN ".TABLE."account_class as b ON b.classid=a.acclassid and a.jiid='$userid'";
 	$result = mysqli_query($conn,$sql);
-    $str = "分类,收支,金额,时间,备注\n";
+    $str = "收支,分类,账户,金额,时间,备注\n";
     $str = iconv('utf-8','gb2312',$str);
     while ($row = mysqli_fetch_array($result)) {
         $classname = iconv('utf-8','gb2312',$row['classname']);
@@ -351,10 +371,12 @@ if($getaction=="export"){
 			$remark = iconv('utf-8','gb2312',$row['acremark']);
 		}else{
 			$remark = "";
-		}        
-        $str .= $classname.",".$shouzhi.",".$money.",".$time.",".$remark."\n";
+		}
+		$bankname = bankname($row['bankid'],$userid,"默认账户");
+		$bankname = iconv('utf-8','gb2312',$bankname);
+        $str .= $shouzhi.",".$classname.",".$bankname.",".$money.",".$time.",".$remark."\n";
     }
-    $filename = date('Ymd').'.csv';
+    $filename = date('YmdHis').'.csv';
     export_csv($filename,$str);
 }
 if($getaction=='import') {

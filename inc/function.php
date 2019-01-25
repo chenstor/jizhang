@@ -84,11 +84,11 @@ function show_tab($type){
 	if($type==1){
 		echo "<table width='100%' border='0' align='left' cellpadding='5' cellspacing='1' bgcolor='#B3B3B3' class='table table-striped table-bordered'>";
 	}elseif($type==2){
-		echo "<tr><th bgcolor='#EBEBEB'>分类</th><th bgcolor='#EBEBEB'>收支</th><th bgcolor='#EBEBEB'>金额</th><th bgcolor='#EBEBEB'>时间</th><th bgcolor='#EBEBEB'>备注</th><th bgcolor='#EBEBEB' class='noshow'>操作</th></tr>";
+		echo "<tr><th bgcolor='#EBEBEB'>分类</th><th bgcolor='#EBEBEB'>账户</th><th bgcolor='#EBEBEB'>金额</th><th bgcolor='#EBEBEB'>时间</th><th bgcolor='#EBEBEB'>备注</th><th bgcolor='#EBEBEB' class='noshow'>操作</th></tr>";
 	}elseif($type==3){
 		echo "</table>";
 	}elseif($type==4){
-		echo "<tr><th bgcolor='#EBEBEB'>分类</th><th bgcolor='#EBEBEB'>收支</th><th bgcolor='#EBEBEB'>金额</th><th bgcolor='#EBEBEB'>时间</th><th bgcolor='#EBEBEB'>备注</th><th bgcolor='#EBEBEB'>操作</th><th class='noshow' bgcolor='#EBEBEB'><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></th></tr>";
+		echo "<tr><th bgcolor='#EBEBEB'>分类</th><th bgcolor='#EBEBEB'>账户</th><th bgcolor='#EBEBEB'>金额</th><th bgcolor='#EBEBEB'>时间</th><th bgcolor='#EBEBEB'>备注</th><th bgcolor='#EBEBEB'>操作</th><th class='noshow' bgcolor='#EBEBEB'><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></th></tr>";
 	}	
 }
 function showlogin($tid){
