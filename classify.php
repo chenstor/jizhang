@@ -24,15 +24,13 @@ for($i=1;$i<=2;$i++){
         <th align="left" bgcolor="#EBEBEB">操作</th>
     </tr>
     <?php
-    $sql = "select * from ".TABLE."account_class where ufid='$_SESSION[uid]' and classtype='$i'";
-    $query = mysqli_query($conn,$sql);
-    while ($row = mysqli_fetch_array($query)) {
+	$pay_type_list = show_type($i,$userid);
+	foreach($pay_type_list as $row){
         echo "<tr><td align='left' bgcolor='#FFFFFF'><font color='".$fontcolor."'>".$row["classname"]."</font></td>";
         echo "<td align='left' bgcolor='#FFFFFF'><font color='".$fontcolor."'>".$word."</font></td>";        
         echo "<td align='left' bgcolor='#FFFFFF'><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a> <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='del(".$row["classid"].")'>删除</a></td>";
     }
-    echo "</tr>";
-		
+    echo "</tr>";		
     ?>
 </table>
 <?php }?>
