@@ -15,9 +15,8 @@ include_once("header.php");
         <th align="left" bgcolor="#EBEBEB">操作</th>
     </tr>
     <?php
-    $sql = "select * from ".TABLE."bank where userid='$userid' order by bankid asc";
-    $query = mysqli_query($conn,$sql);
-    while ($row = mysqli_fetch_array($query)) {
+	$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+	foreach($banklist as $row){
         echo "<tr><td align='left' bgcolor='#FFFFFF'>".$row["bankname"]."</td>";
         echo "<td align='left' bgcolor='#FFFFFF'>".$row["bankaccount"]."</td>";
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row["balancemoney"]."</td>";
@@ -62,15 +61,14 @@ include_once("header.php");
 
 <?php include_once("footer.php");?>
 <script type="text/javascript">
-//初始化
 chushihua_bank();
 $("#btn_add").click(function(){
-	//初始化
 	chushihua_bank();
-	//$("#myModalLabel").text("添加分类");
 	$('#myModal').modal({backdrop:'static', keyboard:false});
 });
+
 $("#btn_submit").click(function(){
+	$(this).addClass("disabled");
 	var action = $(this).attr("date-info");
 	saveclassify(action);
 });
@@ -93,7 +91,11 @@ function saveclassify(type){
 				data = eval("("+result+")");
 			}
 			$('#error_show').html(data.error_msg);
-			if(data.url != ""){location.href=data.url;}				
+			if(data.url != ""){
+				location.href=data.url;
+			}else{
+				$("#btn_submit").removeClass("disabled");
+			}			
 		},
 		error : function() {
 			$("#error_show").hide();

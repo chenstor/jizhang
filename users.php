@@ -37,7 +37,7 @@ include_once("header.php");
 		<th align="left" bgcolor="#EBEBEB">操作</th>
     </tr>
 	<?php 
-	$userlist = user_list("uid asc");
+	$userlist = db_list("user","where uid>0","order by uid asc");
 	foreach($userlist as $myrow){
 		if($myrow['Isallow']=="0"){
 			$res = "<span class='green'>正常</span>";

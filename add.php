@@ -21,6 +21,15 @@
                 ?>
             </select></label><a href="classify.php" class="addclass">添加分类</a></p>
 			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="8"></label></p>
+			<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
+				<option value="0">默认</option>
+                <?php
+				$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+				foreach($banklist as $myrow){
+					echo "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+				}
+                ?>
+            </select></label></p>
 			<p><label for="time">时间：<input class="w180" type="text" name="time" id="time" size="30" value="<?php echo date("Y-m-d H:i");?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></label></p>
 			<p class="btn_div">
 				<button name="submit" type="submit" id="submit" class="btn btn-danger">支出记一笔</button>
@@ -41,7 +50,16 @@
                 ?>
             </select></label><a href="classify.php" class="addclass">添加分类</a></p>
 			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="20"></label></p>
-			<p><label for="time">时间：<input class="sang_Calender" type="text" name="time" id="time" size="30" value="<?php echo date("Y-m-d H:i");?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></label></p>
+			<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
+				<option value="0">默认</option>
+                <?php
+				$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+				foreach($banklist as $myrow){
+					echo "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+				}
+                ?>
+            </select></label></p>
+			<p><label for="time">时间：<input class="w180" type="text" name="time" id="time" size="30" value="<?php echo date("Y-m-d H:i");?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></label></p>
 			<p class="btn_div">
 				<button name="submit" type="submit" id="submit" class="btn btn-success">收入记一笔</button>
 				<span id="income_error" class="red"></span></p>
@@ -76,7 +94,7 @@ foreach($Prolist as $row){
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";		
 		echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF' class='noshow'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
+		echo "<td align='left' bgcolor='#FFFFFF' class='noshow'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
 	echo "</tr>";
 }
 show_tab(3);
@@ -93,6 +111,8 @@ show_tab(3);
 	<div class="modal-dialog" role="document">
 		<form id="edit-form" name="edit-form" method="post">
 		<input name="edit-id" type="hidden" id="edit-id" />
+		<input name="old-bank-id" type="hidden" id="old-bank-id" />
+		<input name="edit-zhifu" type="hidden" id="edit-zhifu" />
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -110,6 +130,18 @@ show_tab(3);
 				<div class="form-group">
 					<label for="edit-remark">备注</label>
 					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="20" />
+				</div>
+				<div class="form-group">
+					<label for="edit-bankid">帐户</label>
+					<select name="edit-bankid" id="edit-bankid" class="form-control">
+						<option value='0'>默认</option>
+						<?php
+						$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+						foreach($banklist as $myrow){
+							echo "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+						}
+						?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label for="edit-time">时间</label>
@@ -147,7 +179,6 @@ function saverecord(type){
 		data: $(form_name).serialize(),
 		success: function (result) {
 			$(error_name).show();
-			//console.log(result);
 			var data = '';
 			if(result != ''){
 				data = eval("("+result+")");

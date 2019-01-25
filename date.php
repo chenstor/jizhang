@@ -81,15 +81,17 @@ if($getaction=="addrecord"){
 	$money = post("money");
 	$zhifu = post("zhifu");
 	$remark = post("remark");
+	$bankid = post("bankid");
 	$addtime = strtotime(post("time"));
 	if(empty($classid) or empty($money) or empty($zhifu)){
 		$error_code = "缺少参数！";
 	}elseif(!is_numeric($money)){
 		$error_code = "金额非法！";
 	}else{
-		$sql = "insert into ".TABLE."account (acmoney, acclassid, actime, acremark, jiid, zhifu) values ('$money', '$classid', '$addtime', '$remark', '$userid', '$zhifu')";
+		$sql = "insert into ".TABLE."account (acmoney, acclassid, actime, acremark, jiid, zhifu, bankid) values ('$money', '$classid', '$addtime', '$remark', '$userid', '$zhifu', '$bankid')";
 		$query = mysqli_query($conn,$sql);
 		if($query){
+			if($bankid>0){money_int_out($bankid,$money,$zhifu);}
 			$success = "1";
 			$error_code = "保存成功！";
 			if($zhifu=="1"){
@@ -107,16 +109,26 @@ if($getaction=="addrecord"){
 if($getaction=="saverecord"){
 	$id = post("edit-id");
 	$money = post("edit-money");
-	$remark = post("edit-remark");	
+	$remark = post("edit-remark");
+	$old_bankid = post("old-bank-id");
+	$new_bankid = post("edit-bankid");
+	$zhifu = post("edit-zhifu");
 	$addtime = strtotime(post("edit-time"));
 	if(empty($id) or empty($money)){
 		$error_code = "缺少参数！";
 	}elseif(!is_numeric($money)){
 		$error_code = "金额非法！";
 	}else{
-		$sql = "update ".TABLE."account set acmoney='".$money."',acremark='".$remark."',actime='".$addtime."' where acid='".$id."' and jiid='".$userid."'";
+		$sql = "update ".TABLE."account set acmoney='".$money."',acremark='".$remark."',actime='".$addtime."',bankid='".$new_bankid."' where acid='".$id."' and jiid='".$userid."'";
 		$result = mysqli_query($conn,$sql);
-		if ($result) {
+		if($result){
+			if($zhifu==2){
+				if($old_bankid<>$new_bankid && $old_bankid>0){money_int_out($old_bankid,$money,"1");}
+				if($old_bankid<>$new_bankid && $new_bankid>0){money_int_out($new_bankid,$money,"2");}
+			}else{
+				if($old_bankid<>$new_bankid && $old_bankid>0){money_int_out($old_bankid,$money,"2");}
+				if($old_bankid<>$new_bankid && $new_bankid>0){money_int_out($new_bankid,$money,"1");}
+			}
 			$success = "1";
 			$error_code = "保存成功！";
 		} else {

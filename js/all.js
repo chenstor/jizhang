@@ -96,12 +96,17 @@ function editRecord(t,openid){
 	var info = $(t).data('info');	
 	var money = info.money;
 	var remark = info.remark;
+	var bankid = info.bankid;
+	var zhifu = info.zhifu;
 	var classname = info.classname;
 	var addtime = info.addtime;
 	var id = info.id;
 	$("#"+openid).modal({backdrop:'static', keyboard:true});
 	$("#edit-money").val(money);
 	$("#edit-remark").val(remark);
+	$("#old-bank-id").val(bankid);
+	$("#edit-zhifu").val(zhifu);
+	$("#edit-bankid").find("option[value='"+bankid+"']").attr("selected",true);
 	$("#edit-time").val(addtime);
 	$("#edit-classtype").val(classname);
 	$("#edit-id").val(id);
