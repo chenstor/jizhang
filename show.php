@@ -130,7 +130,7 @@ if($s_remark != ""){
 				</div>
 				<div class="form-group">
 					<label for="edit-remark">备注</label>
-					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="10" />
+					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="20" />
 				</div>
 				<div class="form-group">
 					<label for="edit-time">时间</label>

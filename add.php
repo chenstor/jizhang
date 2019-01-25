@@ -40,7 +40,7 @@
 				}
                 ?>
             </select></label><a href="classify.php" class="addclass">添加分类</a></p>
-			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="8"></label></p>
+			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="20"></label></p>
 			<p><label for="time">时间：<input class="sang_Calender" type="text" name="time" id="time" size="30" value="<?php echo date("Y-m-d H:i");?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></label></p>
 			<p class="btn_div">
 				<button name="submit" type="submit" id="submit" class="btn btn-success">收入记一笔</button>
@@ -109,7 +109,7 @@ show_tab(3);
 				</div>
 				<div class="form-group">
 					<label for="edit-remark">备注</label>
-					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="10" />
+					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="20" />
 				</div>
 				<div class="form-group">
 					<label for="edit-time">时间</label>
