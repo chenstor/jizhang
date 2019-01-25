@@ -33,18 +33,24 @@ function chushihua(){
 	$("#classtype").find("option").attr("selected",false);
 	$("#error_show").html("");
 }
-
+function chushihua_bank(){
+	// 初始化银行卡
+	$("#bankid").val("");
+	$("#bankname").val("");
+	$("#bankaccount").val("");
+	$("#balancemoney").val("");
+	$('#btn_submit').attr('date-info','save');
+	$("#error_show").html("");
+}
 function subtraction(first,second){
 	var results = first - second;
 	results = results.toFixed(2);
 	return results;
 }
-
 function GetUrlHash(){
   var query = window.location.hash;  
   return query;
 }
-
 //
 // 获取url里面的参数(name)
 // 使用方法 curPage = getUrlParam('page');
@@ -128,12 +134,19 @@ function saveEditRecord(){
 	});
 }
 // 删除记录
-function delRecord(t){
+function delRecord(type,t){
+	if(type=="record"){
+		geturl = "date.php?action=deleterecord&id="+t+"";
+	}else if(type=="classify"){
+		geturl = "date.php?action=deleteclassify&classid="+t+"";
+	}else if(type=="bank"){
+		geturl = "date.php?action=deletebank&bankid="+t+"";
+	}
 	var r=confirm("确定删除该记录？");
 	if (r==true){
 		$.ajax({
 			type:"get",
-			url:"date.php?action=deleterecord&id="+t+"",
+			url:geturl,
 			async:true,
 			success:function(data){
 				alert(data);

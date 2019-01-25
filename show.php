@@ -94,7 +94,7 @@ if($s_remark != ""){
 					echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
 				}				
 				echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
-				echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(".$row['acid'].");'><img src='img/del.png' /></a></td>";
+				echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
 				echo "<td class='noshow' align='left' bgcolor='#FFFFFF'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></td>";
 			echo "</tr>";
 		}	

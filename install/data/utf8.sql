@@ -25,5 +25,16 @@ CREATE TABLE IF NOT EXISTS `#__account` (
   `acremark` varchar(50) NOT NULL,
   `jiid` int(8) NOT NULL COMMENT '记账用户ID',
   `zhifu` int(8) NOT NULL COMMENT '类型 1为收入 2为支出',
+  `bankid` int(8) NOT NULL COMMENT '账户ID',
   PRIMARY KEY (`acid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='账目表';
+CREATE TABLE IF NOT EXISTS `#__bank` (
+  `bankid` int(11) NOT NULL AUTO_INCREMENT COMMENT '账户ID',
+  `bankname` varchar(50) NOT NULL COMMENT '账户名称',
+  `bankaccount` varchar(50) NOT NULL COMMENT '卡号、帐号',
+  `balancemoney` decimal(10,2) NOT NULL COMMENT '余额',  
+  `addtime` int(11) NOT NULL COMMENT '添加时间',
+  `updatetime` int(11) NOT NULL COMMENT '更新时间',
+  `userid` int(8) NOT NULL COMMENT '记账用户ID',
+  PRIMARY KEY (`bankid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='账户表';

@@ -28,7 +28,7 @@ for($i=1;$i<=2;$i++){
 	foreach($pay_type_list as $row){
         echo "<tr><td align='left' bgcolor='#FFFFFF'><font color='".$fontcolor."'>".$row["classname"]."</font></td>";
         echo "<td align='left' bgcolor='#FFFFFF'><font color='".$fontcolor."'>".$word."</font></td>";        
-        echo "<td align='left' bgcolor='#FFFFFF'><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a> <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='del(".$row["classid"].")'>删除</a></td>";
+        echo "<td align='left' bgcolor='#FFFFFF'><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a> <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"classify\",".$row["classid"].")'>删除</a></td>";
     }
     echo "</tr>";		
     ?>
@@ -164,19 +164,5 @@ function change(t){
 	$("#classtype_div").hide();
 	$("#newclassname_div").show();
 	$('#btn_submit').attr('date-info','change');
-}
-function del(t){
-	var r=confirm("确定删除该记录？");
-	if (r==true){
-		$.ajax({
-			type:"get",
-			url:"date.php?action=deleteclassify&classid="+t+"", //需要获取的页面内容
-			async:true,
-			success:function(data){
-				alert(data);
-				window.location.href="classify.php";
-			}
-		});
-	}
 }
 </script>

@@ -14,6 +14,68 @@ if($getaction=="getclassify"){
 		echo "<option value='".$row["classid"]."'>".$row["classname"]."</option>";
 	}
 }
+if($getaction=="addbank"){
+	$bankname = post("bankname");
+	$bankaccount = post("bankaccount");
+	$balancemoney = post("balancemoney","0");
+	if(empty($bankname) or empty($bankaccount)){
+		$error_code = "缺少参数！";
+	}elseif(!is_numeric($balancemoney)){
+		$error_code = "金额非法！";
+	}else{
+		$addtime = strtotime("now");
+		$sql = "insert into ".TABLE."bank (bankname, bankaccount, balancemoney, addtime, updatetime, userid) values ('$bankname', '$bankaccount', '$balancemoney', '$addtime', '$addtime', '$userid')";
+		$query = mysqli_query($conn,$sql);
+		if($query){
+			$success = "1";
+			$error_code = "保存成功！";
+			$gotourl = "bank.php";						
+		}else{
+			$error_code = "保存失败！";
+		}		
+	}
+	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+    echo json_encode($data);
+}
+if($getaction=="modifybank"){
+	$bankname = post("bankname");
+	$bankaccount = post("bankaccount");
+	$bankid = post("bankid");
+	$balancemoney = post("balancemoney","0");
+	if(empty($bankname) or empty($bankaccount)){
+		$error_code = "缺少参数！";
+	}elseif(!is_numeric($balancemoney)){
+		$error_code = "金额非法！";
+	}else{
+		$now = strtotime("now");
+		$sql = "update ".TABLE."bank set bankname='".$bankname."',bankaccount='".$bankaccount."',balancemoney='".$balancemoney."' ,updatetime='".$now."' where bankid=".$bankid;
+		$result = mysqli_query($conn,$sql);
+		if ($result) {
+			$success = "1";
+			$error_code = "保存成功！";
+			$gotourl = "bank.php";
+		} else {
+			$error_code = "保存失败！";
+		}	
+	}
+	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+    echo json_encode($data);
+}
+if($getaction=="deletebank"){
+	header('Content-type:text/html;charset=utf-8');
+	$bankid = get("bankid");
+	if(empty($bankid) || !is_numeric($bankid)){
+		$error_code = "缺少参数或参数非法！";
+	}else{
+		$sql = "delete from ".TABLE."bank where bankid='$bankid'";
+		if(mysqli_query($conn,$sql)){
+			$error_code = "删除成功！";
+		}else{
+			$error_code = "删除失败！";
+		}
+	}				
+	echo $error_code;
+}
 if($getaction=="addrecord"){
 	$classid = post("classid");
 	$money = post("money");

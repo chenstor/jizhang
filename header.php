@@ -38,7 +38,8 @@ loginchk($userid);
                             <li><a href="classify.php">分类编辑</a></li>
                             <li><a href="int_out.php">导入导出</a></li>
                             <li><a href="show.php">查询修改</a></li>
-                            <li><a href="users.php"><?php echo "账号：".$userinfo['username'];?></a></li>
+							<li><a href="bank.php">账户管理</a></li>
+                            <li><a href="users.php"><?php echo "账号：".$userinfo['username'];?></a></li>							
                             <li><a href="login.php?action=loginout">退出</a></li>
                         </ul>
                     </div>
