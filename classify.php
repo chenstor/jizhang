@@ -34,6 +34,9 @@ for($i=1;$i<=2;$i++){
     ?>
 </table>
 <?php }?>
+
+
+<?php include_once("footer.php");?>
 <!--// 添加编辑分类-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -72,8 +75,6 @@ for($i=1;$i<=2;$i++){
 		</form>
 	</div>
 </div>
-
-<?php include_once("footer.php");?>
 <script type="text/javascript">
 //初始化
 chushihua();
