@@ -1,9 +1,8 @@
 <?php
-require_once "Smtp.class.php";
 // 邮箱配置
-define('c_smtp', '');
-define('c_email', '');
-define('c_emailpass', '');
+define("c_smtp","smtp.163.com");
+define("c_email","chenstor@163.com");
+define("c_emailpass","fuck2017@163");
 
 function send_getpass_email($user_email,$user_name,$time,$url){
 	$smtpserver = c_smtp;

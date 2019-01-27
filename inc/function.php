@@ -275,7 +275,8 @@ if(PHP7){
 }else{
 	include_once("aes5.php");
 }
-include_once("smtp_config.php");
+require_once("Smtp.class.php");
+require_once("smtp_config.php");
 if(!empty($_COOKIE["userinfo"])){
 	$userinfo = AES::decrypt($_COOKIE["userinfo"], $sys_key);
 }

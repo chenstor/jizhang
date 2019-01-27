@@ -61,6 +61,33 @@ include_once("header.php");
     </tr>
 </table>
 
+<table align="center" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
+    <tr><td bgcolor="#EBEBEB">SMTP设置</td></tr>
+    <tr><td bgcolor="#FFFFFF">
+		<div class="record_form" id="smtp">
+			<form id="smtp_form" name="smtp_form" method="post" onsubmit="return checkpost('smtp',this);">
+			<?php
+			$keyinfo_smtp = [
+				"c_smtp"=>"SMTP",
+				"c_email"=>"邮箱",
+				"c_emailpass"=>"密码"
+			];
+			$info=file_get_contents("inc/smtp_config.php");
+			preg_match_all("/define\(\"(.*?)\",\"(.*?)\"\)/",$info,$arr);
+			foreach($arr[1] as $k=>$v){
+			?>
+			<p><i><?php echo $keyinfo_smtp[$v];?>：</i><input type="text" class="w180" name="<?php echo $v;?>" id="<?php echo $v;?>" value="<?php echo $arr[2][$k];?>"></p>
+			<?php }?>
+			<p class="btn_div">
+				<button name="submit" type="submit" id="submit_smtp" class="btn btn-primary">更新信息</button>
+				<span id="smtp_error_show" class="red"></span>
+			</p>
+			</form>
+		</div>
+        </td>
+    </tr>
+</table>
+
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
     <tr>
         <td bgcolor="#EBEBEB">帐号管理</td>
@@ -126,6 +153,23 @@ function checkpost(type,form){
 		if((form.SiteURL.value != "") && (!chkUrlHttp(form.SiteURL.value))){
 			alert("网址必须以http://或者https://开头！");
 			form.SiteURL.focus();
+			return false;
+		}
+	}
+	if(type=="smtp"){
+		if(form.c_smtp.value == ""){
+			alert("SMTP地址不能为空！");
+			form.c_smtp.focus();
+			return false;
+		}
+		if(form.c_email.value == ""){
+			alert("邮箱不能为空！");
+			form.c_email.focus();
+			return false;
+		}
+		if(form.c_emailpass.value == ""){
+			alert("密码不能为空！");
+			form.c_emailpass.focus();
 			return false;
 		}
 	}
