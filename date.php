@@ -421,4 +421,17 @@ if($getaction=='import') {
 		alertgourl("导入失败，请检查文件格式！","int_out.php");
     }
 }
+if($getaction=='updatesystem'){
+	$filepath = "data/config.php";
+	$info=file_get_contents($filepath);
+	foreach($_POST as $k=>$v){
+        $info=preg_replace("/define\(\"{$k}\",\".*?\"\)/","define(\"{$k}\",\"{$v}\")",$info);
+    }
+    file_put_contents($filepath,$info);
+	$success = "1";
+	$error_code = "信息修改成功！";
+	$gotourl = "users.php";
+	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+    echo json_encode($data);
+}
 ?>

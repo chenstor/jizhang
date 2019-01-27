@@ -44,7 +44,7 @@ if($getaction=="login"){
 	$user_name = post("user_name");
 	$user_email = post("user_email");
 	$user_pass = post_pass("user_pass");
-	if(Multiuser){//允许注册
+	if(Multiuser=="1"){//允许注册
 		if(empty($user_name) || empty($user_email) || empty($user_pass)){
 			$error_code = "用户名、邮箱、密码不能为空！";
 		}elseif(checkemail($user_email) == false){

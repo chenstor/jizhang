@@ -5,7 +5,7 @@ include_once("header.php");
     <tr><td bgcolor="#EBEBEB">个人信息</td></tr>
     <tr><td bgcolor="#FFFFFF">
 		<div class="record_form" id="user">
-			<form id="user_form" name="user_form" method="post" onsubmit="return checkpost(this);">
+			<form id="user_form" name="user_form" method="post" onsubmit="return checkpost('user',this);">
 			<p><i>用 户 名：</i><?php echo $userinfo['username'];?></p>
 			<p><i>注册时间：</i><?php echo date("Y-m-d H:i:s",$userinfo['regtime']);?></label></p>
 			<p><i>更新时间：</i><?php echo date("Y-m-d H:i:s",$userinfo['updatetime']);?></label></p>
@@ -13,8 +13,8 @@ include_once("header.php");
 			<p><i>旧 密 码：</i><input type="password" class="w180" name="password" id="password" /><span class="red fs12">修改必须填写</span></p>
 			<p><i>新 密 码：</i><input type="password" class="w180" name="newpassword" id="newpassword" /><span class="red fs12">密码请填写6-20位</span></p>
 			<p class="btn_div">
-				<button name="submit" type="submit" id="submit" class="btn btn-primary">更新信息</button>
-				<span id="error_show" class="red"></span>
+				<button name="submit" type="submit" id="submit_user" class="btn btn-primary">更新信息</button>
+				<span id="user_error_show" class="red"></span>
 			</p>
 			</form>
 		</div>
@@ -23,6 +23,44 @@ include_once("header.php");
 </table>
 
 <?php if($userinfo['isadmin']=="1"){?>
+<table align="center" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
+    <tr><td bgcolor="#EBEBEB">系统管理</td></tr>
+    <tr><td bgcolor="#FFFFFF">
+		<div class="record_form" id="system">
+			<form id="system_form" name="system_form" method="post" onsubmit="return checkpost('system',this);">
+			<?php
+			$keyinfo = [
+				"siteName"=>"站点名称",
+				"SiteURL"=>"站点网址",
+				"Multiuser"=>"多用户",
+				"DB_HOST"=>"数据库地址",
+				"DB_USER"=>"数据库用户",
+				"DB_PASS"=>"数据库密码",
+				"DB_NAME"=>"数据库名称",
+				"DB_PORT"=>"数据库端口",
+				"TABLE"=>"数据库前缀"
+			];
+			$info=file_get_contents("data/config.php");
+			preg_match_all("/define\(\"(.*?)\",\"(.*?)\"\)/",$info,$arr);
+			foreach($arr[1] as $k=>$v){
+			if($v=='DB_HOST' or $v=='DB_USER' or $v=='DB_PASS' or $v=='DB_NAME' or $v=='DB_PORT' or $v=='TABLE'){continue;}
+			if($v=='Multiuser'){
+			?>
+			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Multiuser" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Multiuser" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label></p>
+			<?php }else{?>
+			<p><i><?php echo $keyinfo[$v];?>：</i><input type="text" class="w180" name="<?php echo $v;?>" id="<?php echo $v;?>" value="<?php echo $arr[2][$k];?>"></p>
+			<?php }
+			}?>
+			<p class="btn_div">
+				<button name="submit" type="submit" id="submit_system" class="btn btn-primary">更新信息</button>
+				<span id="system_error_show" class="red"></span>
+			</p>
+			</form>
+		</div>
+        </td>
+    </tr>
+</table>
+
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
     <tr>
         <td bgcolor="#EBEBEB">帐号管理</td>
@@ -61,39 +99,61 @@ include_once("header.php");
 <?php }?>
 
 <script language="javascript">
-function checkpost(form){
-	if(form.password.value == ""){
-		alert("密码不能为空！");
-		form.password.focus();
-		return false;
+function checkpost(type,form){
+	if(type=="user"){
+		if(form.password.value == ""){
+			alert("密码不能为空！");
+			form.password.focus();
+			return false;
+		}
+		if((form.newpassword.value != "") && (form.newpassword.value.length <6)){
+			alert("新密码必须6位以上！");
+			form.newpassword.focus();
+			return false;
+		}		
 	}
-	if((form.newpassword.value != "") && (form.newpassword.value.length <6)){
-		alert("新密码必须6位以上！");
-		form.newpassword.focus();
-		return false;
+	if(type=="system"){
+		if(form.siteName.value == ""){
+			alert("站点名称不能为空！");
+			form.siteName.focus();
+			return false;
+		}
+		if(form.SiteURL.value == ""){
+			alert("站点网址不能为空！");
+			form.SiteURL.focus();
+			return false;
+		}
+		if((form.SiteURL.value != "") && (!chkUrlHttp(form.SiteURL.value))){
+			alert("网址必须以http://或者https://开头！");
+			form.SiteURL.focus();
+			return false;
+		}
 	}
-	$(".btn_div > #submit").addClass("disabled");
-	updateUserInfo();
+	$(".btn_div > #submit_"+type).addClass("disabled");
+	updateUserInfo(type);
 	return false;
 }
-function updateUserInfo(){
+function updateUserInfo(type){
+	var geturl = "date.php?action=update"+type;
+	var formname = "#"+type+"_form";
+	var error_id = "#"+type+"_error_show";
 	$.ajax({
 		type: "POST",
 		dataType: "json",
-		url: "date.php?action=updateuser",//url
-		data: $('#user_form').serialize(),
+		url: geturl,
+		data: $(formname).serialize(),
 		success: function (result) {
-			$("#error_show").show();
+			$(error_id).show();
 			var data = '';
 			if(result != ''){
-				data = eval("("+result+")");    //将返回的json数据进行解析，并赋给data
+				data = eval("("+result+")");
 			}
-			if(data.code == "0"){$(".btn_div > #submit").removeClass("disabled");}
-			$('#error_show').html(data.error_msg);
+			if(data.code == "0"){$(".btn_div > #submit_"+type).removeClass("disabled");}
+			$(error_id).html(data.error_msg);
 			if(data.url != ""){location.href=data.url;}				
 		},
 		error : function() {
-			$("#error_show").hide();
+			$(error_id).hide();
 			console.log(result);
 		}
 	});

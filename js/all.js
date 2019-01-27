@@ -25,6 +25,16 @@ function isNull(str){
 	return re.test(str);
 }
 
+function chkUrlHttp(url){
+	if(url.substr(0,7).toLowerCase() == "http://"){
+		return true;
+	}else if(url.substr(0,8).toLowerCase() == "https://"){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 function chushihua(){
 	// 初始化
 	$("#classname").val("");

@@ -61,7 +61,7 @@ if($getaction=="register" and Multiuser==true){ // 注册
 		<?php if($getaction=="getpassword" or $getaction=="register"){?>
 		<p id="nav"><a href="login.php">登录</a></p>
 		<?php }else{?>
-		<p id="nav"><a href="?action=getpassword">忘记密码？</a><?php if(Multiuser){?> | <a href="?action=register">注册账号</a><?php }?></p>
+		<p id="nav"><a href="?action=getpassword">忘记密码？</a><?php if(Multiuser=="1"){?> | <a href="?action=register">注册账号</a><?php }?></p>
 		<?php }?>
 	</div>
 	
