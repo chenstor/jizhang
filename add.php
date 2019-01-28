@@ -11,7 +11,7 @@
 		<div class="record_form" id="pay">
 			<form id="pay_form" name="pay_form" method="post" onsubmit="return checkpost(this,'pay');">
 			<input name="zhifu" type="hidden" id="zhifu" value="2" />
-			<p class="red"><label for="money">金额：<input class="w180" type="text" name="money" id="money" size="20" maxlength="8"></label></p>
+			<p class="red"><label for="money">金额：<input class="w180" type="number" name="money" id="money" size="20" maxlength="8"></label></p>
 			<p><label for="classid">分类：<select class="w180" name="classid" id="classid">
                 <?php
 				$pay_type_list = show_type(2,$userid);
@@ -32,7 +32,7 @@
             </select></label></p>
 			<p><label for="time">时间：<input class="w180" type="text" name="time" id="time" size="30" value="<?php echo date("Y-m-d H:i");?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></label></p>
 			<p class="btn_div">
-				<button name="submit" type="submit" id="submit" class="btn btn-danger">支出记一笔</button>
+				<button name="submit" type="submit" id="submit_pay" class="btn btn-danger">支出记一笔</button>
 				<span id="pay_error" class="red"></span></p>
 			</form>
 		</div>
@@ -40,7 +40,7 @@
 		<div class="record_form" id="income" style="display:none;">
 			<form id="income_form" name="income_form" method="post" onsubmit="return checkpost(this,'income');">
 			<input name="zhifu" type="hidden" id="zhifu" value="1" />
-			<p class="green"><label for="money">金额：<input class="w180" type="text" name="money" id="money" size="20" maxlength="8"></label></p>
+			<p class="green"><label for="money">金额：<input class="w180" type="number" name="money" id="money" size="20" maxlength="8"></label></p>
 			<p><label for="classid">分类：<select class="w180" name="classid" id="classid">
                 <?php
 				$pay_type_list = show_type(1,$userid);
@@ -61,7 +61,7 @@
             </select></label></p>
 			<p><label for="time">时间：<input class="w180" type="text" name="time" id="time" size="30" value="<?php echo date("Y-m-d H:i");?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></label></p>
 			<p class="btn_div">
-				<button name="submit" type="submit" id="submit" class="btn btn-success">收入记一笔</button>
+				<button name="submit" type="submit" id="submit_income" class="btn btn-success">收入记一笔</button>
 				<span id="income_error" class="red"></span></p>
 			</form>
 		</div>            
@@ -89,12 +89,16 @@ foreach($Prolist as $row){
 		$word = "支出";
 	}
 	echo "<tr class='".$fontcolor."'>";
-		echo "<td align='left' bgcolor='#FFFFFF'>".$word.">>".$row['classname']."</td>";
+		echo "<td align='left' bgcolor='#FFFFFF'><i class='noshow'>".$word.">></i>".$row['classname']."</td>";
 		echo "<td align='left' bgcolor='#FFFFFF'>".bankname($row['bankid'],$userid,"默认账户")."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";		
-		echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
+		echo "<td align='right' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";
+		if(isMobile()){
+			echo "<td align='left' bgcolor='#FFFFFF'>".date("m-d",$row['actime'])."</td>";
+		}else{
+			echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
+		}
 		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF' class='noshow'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
+		echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
 	echo "</tr>";
 }
 show_tab(3);
@@ -105,7 +109,10 @@ show_tab(3);
 	if($pages > 1){?>
 	<div class="page"><?php getPageHtml($get_page,$pages,"show.php?");?></div>
 	<?php }?>
-
+<script>
+$("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span>去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");
+</script>
+<?php include_once("footer.php");?>
 <!--// 编辑-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -121,7 +128,7 @@ show_tab(3);
 			<div class="modal-body">				
 				<div class="form-group">
 					<label for="edit-money">金额</label>
-					<input type="text" name="edit-money" class="form-control" id="edit-money" placeholder="收支金额" required="请输入收支金额" />					
+					<input type="number" name="edit-money" class="form-control" id="edit-money" placeholder="收支金额" required="请输入收支金额" />					
 				</div>
 				<div class="form-group">
 					<label for="edit-classtype">分类</label>
@@ -164,39 +171,8 @@ function checkpost(form,type){
 		form.money.focus();
 		return false;
 	}
-	$("#"+type+"_form > p > input[name='submit']").addClass("disabled");
+	$("#submit_"+type).addClass("disabled");
 	saverecord(type);
 	return false;
 }
-
-function saverecord(type){
-	form_name = "#"+type+"_form";
-	error_name = "#"+type+"_error";
-	$.ajax({
-		type: "POST",
-		dataType: "json",
-		url: "date.php?action=addrecord",
-		data: $(form_name).serialize(),
-		success: function (result) {
-			$(error_name).show();
-			var data = '';
-			if(result != ''){
-				data = eval("("+result+")");
-			}
-			$(error_name).html(data.error_msg);
-			if(data.url != ""){
-				location.href = data.url;
-			}else{
-				$("#"+type+"_form > p > input[name='submit']").removeClass("disabled");
-			}		
-		},
-		error : function() {
-			$(error_name).hide();
-			$("#"+type+"_form > p > input[name='submit']").removeClass("disabled");
-		}
-	});
-}
-
-$("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span>去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");
 </script>
-<?php include_once("footer.php");?>

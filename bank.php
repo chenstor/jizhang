@@ -25,6 +25,7 @@ include_once("header.php");
     echo "</tr>";
     ?>
 </table>
+<?php include_once("footer.php");?>
 <!--// 添加编辑分类-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -46,7 +47,7 @@ include_once("header.php");
 				</div>
 				<div class="form-group">
 					<label for="balancemoney">账户余额</label>
-					<input type="text" name="balancemoney" class="form-control" id="balancemoney" placeholder="账户余额" required="请输入账户余额">
+					<input type="number" name="balancemoney" class="form-control" id="balancemoney" placeholder="账户余额" required="请输入账户余额">
 				</div>				
 			</div>
 			<div class="modal-footer">
@@ -58,8 +59,6 @@ include_once("header.php");
 		</form>
 	</div>
 </div>
-
-<?php include_once("footer.php");?>
 <script type="text/javascript">
 chushihua_bank();
 $("#btn_add").click(function(){

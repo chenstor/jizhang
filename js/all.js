@@ -72,7 +72,34 @@ function getUrlParam(name) {
 	   return unescape(r[2]);
    return null; //返回参数值
 }
-
+// 添加记录
+function saverecord(type){
+	form_name = "#"+type+"_form";
+	error_name = "#"+type+"_error";
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "date.php?action=addrecord",
+		data: $(form_name).serialize(),
+		success: function (result) {
+			$(error_name).show();
+			var data = '';
+			if(result != ''){
+				data = eval("("+result+")");
+			}
+			$(error_name).html(data.error_msg);
+			if(data.url != ""){
+				location.href = data.url;
+			}else{
+				$("#submit_"+type).removeClass("disabled");
+			}		
+		},
+		error : function() {
+			$(error_name).hide();
+			$("#submit_"+type).removeClass("disabled");
+		}
+	});
+}
 // 删除记录
 function deleterecordAll(form){
 	if($("input[type='checkbox']").is(':checked')==false){
@@ -99,7 +126,6 @@ function deleterecordAll(form){
 		});
 	}
 }
-
 // 编辑记录
 function editRecord(t,openid){
 	$("#error_show").html("");//初始化
@@ -157,7 +183,21 @@ function delRecord(type,t){
 	}else if(type=="bank"){
 		geturl = "date.php?action=deletebank&bankid="+t+"";
 	}
-	var r=confirm("确定删除该记录？");
+	Ewin.confirm({ message: "确认要删除该记录吗？" }).on(function (e) {
+		if (!e) {
+			return;
+		}
+		$.ajax({
+			type:"get",
+			url:geturl,
+			async:true,
+			success:function(data){
+				alert(data);
+				window.location.reload();
+			}
+		});
+	});
+	/*var r=confirm("确定删除该记录？");
 	if (r==true){
 		$.ajax({
 			type:"get",
@@ -168,7 +208,7 @@ function delRecord(type,t){
 				window.location.reload();
 			}
 		});
-	}
+	}*/
 }
 
 function canBackGo(url){

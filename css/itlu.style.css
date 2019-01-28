@@ -5,7 +5,7 @@ body{font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHe
 a{color: #2fa0ec;text-decoration: none;outline: none;}
 a:hover,a:focus{color:#74777b;}
 .error,.red,.red_all{color:#f00;}
-.ok,.green,.green_all{color:#03AD03;}
+.isok,.green,.green_all{color:#03AD03;}
 #error_show{font-size:12px;color:#f00}
 .fs12{font-size:12px;}
 .block{display:block;overflow:hidden}
@@ -13,6 +13,7 @@ a:hover,a:focus{color:#74777b;}
 .ml5{margin-left:5px;}
 .ml8{margin-left:8px;}
 .ml10{margin-left:10px;}
+i.noshow{font-style:normal}
 
 td.add_th{height:36px!important;}
 td.add_th i{font-style:normal}

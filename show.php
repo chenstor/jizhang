@@ -103,14 +103,14 @@ if($s_bankid != ""){
 				$word = "支出";
 			}
 			echo "<tr class='".$fontcolor."'>";
-				echo "<td align='left' bgcolor='#FFFFFF'>".$word.">>".$row['classname']."</td>";
+				echo "<td align='left' bgcolor='#FFFFFF'><i class='noshow'>".$word.">></i>".$row['classname']."</td>";
 				echo "<td align='left' bgcolor='#FFFFFF'>".bankname($row['bankid'],$userid,"默认账户")."</td>";
-				echo "<td align='left' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";
+				echo "<td align='right' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";
 				if(isMobile()){
 					echo "<td align='left' bgcolor='#FFFFFF'>".date("m-d",$row['actime'])."</td>";
 				}else{
 					echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
-				}				
+				}
 				echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
 				echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
 				echo "<td class='noshow' align='left' bgcolor='#FFFFFF'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></td>";
