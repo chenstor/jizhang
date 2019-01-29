@@ -38,6 +38,9 @@ function chkUrlHttp(url){
 function chushihua(){
 	// 初始化
 	$("#classname").val("");
+	$("#classname").removeAttr('readonly');
+	$("#classtype_div").show();
+	$("#newclassname_div").hide();
 	$("#classid").val("");
 	$('#btn_submit').attr('date-info','save');
 	$("#classtype").find("option").attr("selected",false);

@@ -8,10 +8,14 @@ $success = "0";
 $getaction = get("action");
 if($getaction=="getclassify"){	
 	header('Content-type:text/html;charset=utf-8');
-	$sql = "select * from ".TABLE."account_class where ufid='$userid' and classtype='$_GET[classtype]' and classid<>'$_GET[classid]'";
+	$classtype = get("classtype");
+	$classid = get("classid");
+	$sql = "select * from ".TABLE."account_class where ufid='$userid' and classtype='$classtype'";
     $query = mysqli_query($conn,$sql);
-    while ($row = mysqli_fetch_array($query)){
-		echo "<option value='".$row["classid"]."'>".$row["classname"]."</option>";
+    while($row = mysqli_fetch_array($query)){
+		if($row["classid"] <> $classid){
+			echo "<option value='".$row["classid"]."'>".$row["classname"]."</option>";
+		}
 	}
 }
 if($getaction=="addbank"){

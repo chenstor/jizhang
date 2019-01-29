@@ -132,8 +132,9 @@ function edit(t){
 	$("#myModal").modal({backdrop:'static', keyboard:true});
 	$("#classname").val(classname);
 	$("#classid").val(classid);
-	$("#classtype").find("option").attr("selected",false);
-	$("#classtype").find("option[value="+classtype+"]").attr("selected",true);
+	$("#classtype_div").hide();
+	//$("#classtype").find("option").attr("selected",false);
+	//$("#classtype").find("option[value="+classtype+"]").attr("selected",true);
 	$('#btn_submit').attr('date-info','modify');
 }
 // 转移分类
@@ -146,7 +147,6 @@ function change(t){
 	var classname = info.classname;
 	var classid = info.classid;
 	var classtype = info.classtype;	
-	//------------
 	$.ajax({
 		type:"get",
 		url:"date.php?action=getclassify&classtype="+classtype+"&classid="+classid+"", //需要获取的页面内容
@@ -156,7 +156,6 @@ function change(t){
 			$("#newclassid").append(data);
 		}
 	});
-	//------------
 	$("#myModalLabel").text("转移分类");
 	$("#myModal").modal({backdrop:'static', keyboard:true});
 	$("#classname").val(classname);
