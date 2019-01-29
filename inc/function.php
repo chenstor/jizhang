@@ -282,4 +282,8 @@ require_once("smtp_config.php");
 if(!empty($_COOKIE["userinfo"])){
 	$userinfo = AES::decrypt($_COOKIE["userinfo"], $sys_key);
 }
+if(empty($_COOKIE["userinfo"]) && $userid>0){
+	$_SESSION['uid'] = "";
+	gotourl(SiteURL."login.php");
+}
 ?>
