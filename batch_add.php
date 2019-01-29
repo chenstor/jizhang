@@ -39,7 +39,6 @@ if (isset($_POST['submit'])){
 	echo "<script type='text/javascript'>alert('成功写入：".$ok_count."条，不符合条件：".$no_ok_count."条，失败：".$error_count."条');window.location='batch_add.php';</script>";
 }
 ?>
-
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
 <tr><td bgcolor="#EBEBEB"><span class="red">支出</span> - <a href="#" class="AddBox" date-info="2">加一行</a></td></tr>
 <tr><td bgcolor="#FFFFFF">
@@ -48,7 +47,7 @@ if (isset($_POST['submit'])){
 			<?php for($i=0; $i<5; $i++){?>
 			<div class="list">
 				<input name="zhifu[]" type="hidden" value="2" />
-				<div class="list_1"><i>金额：</i><input type="text" name="money[]" /></div>
+				<div class="list_1"><i>金额：</i><input type="number" step="0.01" name="money[]" /></div>
 				<div class="list_2"><i>分类：</i><select name="classid[]"><?php echo $pay_type_option;?></select></div>
 				<div class="list_3"><i>备注：</i><input name="remark[]" type="text" /></div>
 				<div class="list_4">时间：<input type="text" name="time[]" value="<?php echo date("Y-m-d H:i");
@@ -66,7 +65,7 @@ if (isset($_POST['submit'])){
 			<?php for($i=0; $i<5; $i++){?>
 			<div class="list">
 				<input name="zhifu[]" type="hidden" value="1" />
-				<div class="list_1"><i>金额：</i><input type="text" name="money[]" /></div>
+				<div class="list_1"><i>金额：</i><input type="number" step="0.01" name="money[]" /></div>
 				<div class="list_2"><i>分类：</i><select name="classid[]"><?php echo $pay_type_option;?></select></div>
 				<div class="list_3"><i>备注：</i><input name="remark[]" type="text" /></div>
 				<div class="list_4">时间：<input type="text" name="time[]" value="<?php echo date("Y-m-d H:i");
@@ -78,7 +77,6 @@ if (isset($_POST['submit'])){
 	</form>
 </td></tr>
 </table>
-
 <script>
 $("#form_2").keypress(function(e){
   if (e.which == 13){return false;}
@@ -100,9 +98,7 @@ $(document).ready(function(){
 			x++;
 		}
 		console.log(x);
-		//return false;
 	});
-
 	$("body").on("click",".removeclass",function(e){
 		if (x > 1) {
 			$(this).parents('div > .list').remove();
@@ -112,5 +108,4 @@ $(document).ready(function(){
 
 });	
 </script>
-
 <?php include_once("footer.php");?>

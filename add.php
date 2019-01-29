@@ -11,7 +11,7 @@
 		<div class="record_form" id="pay">
 			<form id="pay_form" name="pay_form" method="post" onsubmit="return checkpost(this,'pay');">
 			<input name="zhifu" type="hidden" id="zhifu" value="2" />
-			<p class="red"><label for="money">金额：<input class="w180" type="number" name="money" id="money" size="20" maxlength="8"></label></p>
+			<p class="red"><label for="money">金额：<input class="w180" type="number" step="0.01" name="money" id="money" size="20" maxlength="8" /></label></p>
 			<p><label for="classid">分类：<select class="w180" name="classid" id="classid">
                 <?php
 				$pay_type_list = show_type(2,$userid);
@@ -40,7 +40,7 @@
 		<div class="record_form" id="income" style="display:none;">
 			<form id="income_form" name="income_form" method="post" onsubmit="return checkpost(this,'income');">
 			<input name="zhifu" type="hidden" id="zhifu" value="1" />
-			<p class="green"><label for="money">金额：<input class="w180" type="number" name="money" id="money" size="20" maxlength="8"></label></p>
+			<p class="green"><label for="money">金额：<input class="w180" type="number" step="0.01" name="money" id="money" size="20" maxlength="8" /></label></p>
 			<p><label for="classid">分类：<select class="w180" name="classid" id="classid">
                 <?php
 				$pay_type_list = show_type(1,$userid);
@@ -128,7 +128,7 @@ $("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条�
 			<div class="modal-body">				
 				<div class="form-group">
 					<label for="edit-money">金额</label>
-					<input type="number" name="edit-money" class="form-control" id="edit-money" placeholder="收支金额" required="请输入收支金额" />					
+					<input type="number" step="0.01" name="edit-money" class="form-control" id="edit-money" placeholder="收支金额" required="请输入收支金额" />					
 				</div>
 				<div class="form-group">
 					<label for="edit-classtype">分类</label>

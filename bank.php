@@ -47,7 +47,7 @@ include_once("header.php");
 				</div>
 				<div class="form-group">
 					<label for="balancemoney">账户余额</label>
-					<input type="number" name="balancemoney" class="form-control" id="balancemoney" placeholder="账户余额" required="请输入账户余额">
+					<input type="number" step="0.01" name="balancemoney" class="form-control" id="balancemoney" placeholder="账户余额" required="请输入账户余额" />
 				</div>				
 			</div>
 			<div class="modal-footer">

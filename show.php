@@ -66,7 +66,7 @@ if($s_bankid != ""){
 				
 				<p><label for="time">时间：<input class="w100" value="<?php echo $s_starttime;?>" type="text" name="starttime" id="starttime" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'endtime\')||\'<?php echo $today;?>\'}'})" />-<input class="w100" type="text" name="endtime" value="<?php if($s_endtime==""){echo $today;}else{echo $s_endtime;}?>" id="endtime" onClick="WdatePicker({minDate:'#F{$dp.$D(\'starttime\')}',maxDate:'%y-%M-%d'})" /></label></p>
 				
-				<p><label for="money">金额：<input class="w100" value="<?php echo $s_startmoney;?>" type="text" name="startmoney" id="startmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />-<input class="w100" value="<?php echo $s_endmoney;?>" type="text" name="endmoney" id="endmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" /></label></p>				
+				<p><label for="money">金额：<input class="w100" value="<?php echo $s_startmoney;?>" type="number" step="0.01" name="startmoney" id="startmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />-<input class="w100" value="<?php echo $s_endmoney;?>" type="number" step="0.01" name="endmoney" id="endmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" /></label></p>				
 				<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" value="<?php echo $s_remark;?>"></label></p>
 				<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
 					<option value="" <?php if($s_bankid==""){echo "selected";}?>>全部账户</option>
@@ -142,7 +142,7 @@ if($s_bankid != ""){
 			<div class="modal-body">				
 				<div class="form-group">
 					<label for="edit-money">金额</label>
-					<input type="text" name="edit-money" class="form-control" id="edit-money" placeholder="收支金额" required="请输入收支金额" />					
+					<input type="number" step="0.01" name="edit-money" class="form-control" id="edit-money" placeholder="收支金额" required="请输入收支金额" />					
 				</div>
 				<div class="form-group">
 					<label for="edit-classtype">分类</label>
