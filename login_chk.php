@@ -26,7 +26,7 @@ if($getaction=="login"){
 					$_SESSION['error_times'] = 0;
 					$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]","isadmin"=>"$row[Isadmin]");
 					$userinfo = AES::encrypt($userinfo, $sys_key);					
-					setcookie("userinfo", $userinfo, time()+86400);
+					setcookie("userinfo", $userinfo, time()+86400*3);
 					$success = "1";
 					$error_code = "登录成功！";
 					$gotourl = "add.php";
