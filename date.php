@@ -387,6 +387,8 @@ if($getaction=='import') {
 	header('Content-type:text/html;charset=utf-8');
     if(empty($_FILES['file']['tmp_name'])){alertgourl("请选择文件！","int_out.php");}	
     $filename = $_FILES['file']['tmp_name'];
+	$filetype = (pathinfo($_FILES['file']['name']));
+	if($filetype['extension'] != "csv"){alertgourl("文件格式不对，请重新选择！","int_out.php");}
     $handle = fopen($filename, 'r');
     $result = input_csv($handle);
     $len_result = count($result);
