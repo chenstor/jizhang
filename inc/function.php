@@ -4,7 +4,7 @@ if(!defined("DB_HOST")){die('非法访问！');}
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){die('数据库打开失败！');}
 
-if(PHP_VERSION>=7){
+if(substr(PHP_VERSION,0,1)>='7'){
 	define('PHP7', true);
 }else{
 	define('PHP7', false);
@@ -60,6 +60,10 @@ function hash_md5($password,$salt){
 	$password=md5($password).$salt;
 	$password=md5($password);
 	return $password;
+}
+function table($dbname){
+	$dbname = TABLE.$dbname;	
+	return $dbname;
 }
 //使用系统统一的$userid
 if(isset($_SESSION['uid'])){
