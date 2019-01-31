@@ -1,67 +1,63 @@
 <?php
 include_once("header.php");
 ?>
-<table width='100%' border='0' align='left' cellpadding='5' cellspacing='1' bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <th bgcolor='#EBEBEB' width="12%">统计</th>
-        <th bgcolor='#EBEBEB' width="22%">今天</th>
-        <th bgcolor='#EBEBEB' width="22%">本周</th>
-        <th bgcolor='#EBEBEB' width="22%">本月</th>
-        <th bgcolor='#EBEBEB' width="22%">本年</th>
-    </tr>
-    <tr class="red"><td align='left' bgcolor='#FFFFFF'>支出</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_day">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_week">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_month">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_year">0</td>
-    </tr>
-    <tr class="green"><td align='left' bgcolor='#FFFFFF'>收入</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_day">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_week">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_month">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_year">0</td>
-    </tr>
-    <tr><td align='left' bgcolor='#FFFFFF'>剩余</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_day">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_week">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_month">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_year">0</td>
-    </tr>
-</table>
 
-<table width='100%' border='0' align='left' cellpadding='5' cellspacing='1' bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <th width="12%" bgcolor='#EBEBEB'>统计</th>
-        <th width="22%" bgcolor='#EBEBEB'>昨天</th>
-        <th width="22%" bgcolor='#EBEBEB'>上周</th>
-        <th width="22%" bgcolor='#EBEBEB'>上月</th>
-        <th width="22%" bgcolor='#EBEBEB'>去年</th>
-    </tr>
-    <tr class="red"><td align='left' bgcolor='#FFFFFF'>支出</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_yesterday">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_lastweek">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_lastmonth">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="pay_lastyear">0</td>
-    </tr>
-    <tr class="green"><td align='left' bgcolor='#FFFFFF'>收入</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_yesterday">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_lastweek">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_lastmonth">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_lastyear">0</td>
-    </tr>
-    <tr><td align='left' bgcolor='#FFFFFF'>剩余</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_yesterday">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_lastweek">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_lastmonth">0</td>
-        <td align='left' bgcolor='#FFFFFF' id="income_pay_lastyear">0</td>
-    </tr>
-</table>
+<!--<div class="table">
+        <div class="table-header-group">  
+            <ul class="table-row">  
+                <li>序号</li>  
+                <li>姓名</li>  
+                <li>年龄</li>  
+            </ul>  
+        </div>
+        <div class="table-row-group">  
+            <ul class="table-row">  
+                <li>1</li>  
+                <li>JohnJohnJohnJohnJohnJohn</li>  
+                <li>19</li>  
+            </ul>
+            <ul class="table-row">  
+                <li>2</li>  
+                <li>Mark</li>  
+                <li>21</li>  
+            </ul> 
+        </div>  
+		<div class="table-footer-group">  
+            <ul class="table-row">  
+                <li>footer</li>  
+                <li>footer</li>  
+                <li>footer</li>  
+            </ul>  
+        </div>
+    </div>--> 
 
-<table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class='table table-striped table-bordered'>
-    <tr>
-        <td id="stat"></td>
-    </tr>
-</table>
+<div class="table">
+	<div class="table-header-group">  
+		<ul class="table-row">  
+			<li class="w12p">统计</li><li class="w22p">今天</li><li class="w22p">本周</li><li class="w22p">本月</li><li class="w22p">本年</li>
+		</ul>  
+	</div>
+	<div class="table-row-group">  
+		<ul class="table-row red"><li>支出</li><li id="pay_day">0</li><li id="pay_week">0</li><li id="pay_month">0</li><li id="pay_year">0</li></ul>
+		<ul class="table-row green"><li>收入</li><li id="income_day">0</li><li id="income_week">0</li><li id="income_month">0</li><li id="income_year">0</li></ul> 
+		<ul class="table-row"><li>剩余</li><li id="income_pay_day">0</li><li id="income_pay_week">0</li><li id="income_pay_month">0</li><li id="income_pay_year">0</li></ul> 
+    </div>
+</div>
+
+<div class="table">
+	<div class="table-header-group">  
+		<ul class="table-row">  
+			<li class="w12p">统计</li><li class="w22p">昨天</li><li class="w22p">上周</li><li class="w22p">上月</li><li class="w22p">去年</li>
+		</ul>  
+	</div>
+	<div class="table-row-group">  
+		<ul class="table-row red"><li>支出</li><li id="pay_yesterday">0</li><li id="pay_lastweek">0</li><li id="pay_lastmonth">0</li><li id="pay_lastyear">0</li></ul>
+		<ul class="table-row green"><li>收入</li><li id="income_yesterday">0</li><li id="income_lastweek">0</li><li id="income_lastmonth">0</li><li id="income_lastyear">0</li></ul> 
+		<ul class="table-row"><li>剩余</li><li id="income_pay_yesterday">0</li><li id="income_pay_lastweek">0</li><li id="income_pay_lastmonth">0</li><li id="income_pay_lastyear">0</li></ul> 
+    </div>
+</div>
+
+<div class="table stat" id="stat"></div>
 
 <script language="javascript">
 	$("#stat").html("去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");

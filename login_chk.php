@@ -11,9 +11,8 @@ if($getaction=="login"){
 	$user_pass = post_pass("user_pass");
 	if(empty($user_name) || empty($user_pass)){
         $error_code = "用户名密码不能为空！";
-	}
-	else{
-		$sql = "SELECT * FROM ".TABLE."user WHERE username = '".$user_name."'";
+	}else{
+		$sql = "SELECT * FROM ".table("user")." WHERE username = '".$user_name."'";
 		$query = mysqli_query($conn,$sql);
 		if ($row = mysqli_fetch_array($query)){
 			$salt = $row['salt'];
@@ -66,8 +65,7 @@ if($getaction=="login"){
 					$success = "1";
 					$error_code = "注册成功！";
 					$gotourl = "login.php";
-				}
-				else{
+				}else{
 					$error_code = "出错啦，写入数据库时出错！";
 				}
 				$sql = "select * from ".TABLE."user where username='$user_name'";
@@ -101,7 +99,7 @@ if($getaction=="login"){
 		}else{			
 			$sql = "select * from ".TABLE."user where email='$user_email'";
 			$query = mysqli_query($conn,$sql);
-			if ($row = mysqli_fetch_array($query)){
+			if($row = mysqli_fetch_array($query)){
 				$user_name = $row['username'];
 				$user_pass = $row['password'];
 				$uid = $row['uid'];
@@ -144,7 +142,7 @@ if($getaction=="login"){
 	}else{		
 		$sql = "select uid,username from ".TABLE."user where email='$user_email'";
 		$query = mysqli_query($conn,$sql);
-		if ($row = mysqli_fetch_array($query)){
+		if($row = mysqli_fetch_array($query)){
 			$utime = strtotime("now");
 			$salt = md5($row['username'].$utime.$user_pass_new);
 			$user_pass = hash_md5($user_pass_new,$salt);
@@ -160,8 +158,7 @@ if($getaction=="login"){
 				$_SESSION['email'] = "";
 				$error_code = "重置失败，请重新获取！<a href='?action=getpassword'>忘记密码？</a>";
 			}
-		}
-		else{
+		}else{
 			$error_code = "账号错误！";
 		}		
 	}
