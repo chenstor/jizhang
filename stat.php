@@ -1,36 +1,6 @@
 <?php
 include_once("header.php");
 ?>
-
-<!--<div class="table">
-        <div class="table-header-group">  
-            <ul class="table-row">  
-                <li>序号</li>  
-                <li>姓名</li>  
-                <li>年龄</li>  
-            </ul>  
-        </div>
-        <div class="table-row-group">  
-            <ul class="table-row">  
-                <li>1</li>  
-                <li>JohnJohnJohnJohnJohnJohn</li>  
-                <li>19</li>  
-            </ul>
-            <ul class="table-row">  
-                <li>2</li>  
-                <li>Mark</li>  
-                <li>21</li>  
-            </ul> 
-        </div>  
-		<div class="table-footer-group">  
-            <ul class="table-row">  
-                <li>footer</li>  
-                <li>footer</li>  
-                <li>footer</li>  
-            </ul>  
-        </div>
-    </div>--> 
-
 <div class="table">
 	<div class="table-header-group">  
 		<ul class="table-row">  
@@ -57,7 +27,7 @@ include_once("header.php");
     </div>
 </div>
 
-<div class="table stat" id="stat"></div>
+<div class="table stat"><div id="stat"></div></div>
 
 <script language="javascript">
 	$("#stat").html("去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");

@@ -1,30 +1,21 @@
 <?php
 include_once("header.php");
 ?>
-<table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <td bgcolor="#EBEBEB"><span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn_add">添加账户</button></span>账户管理</td>
-    </tr>
-</table>
+<div class="table stat"><div class="itlu-title"><span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn_add">添加账户</button></span>账户管理</div></div>
 
-<table width="100%" border="0" align="left" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <th align="left" bgcolor="#EBEBEB">名称</th>
-        <th align="left" bgcolor="#EBEBEB">账户/卡号</th>
-		<th align="left" bgcolor="#EBEBEB">余额</th>
-        <th align="left" bgcolor="#EBEBEB">操作</th>
-    </tr>
     <?php
+	show_tab(4);
 	$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
 	foreach($banklist as $row){
-        echo "<tr><td align='left' bgcolor='#FFFFFF'>".$row["bankname"]."</td>";
-        echo "<td align='left' bgcolor='#FFFFFF'>".$row["bankaccount"]."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF'>".$row["balancemoney"]."</td>";
-        echo "<td align='left' bgcolor='#FFFFFF'><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"bankid\":\"".$row["bankid"]."\",\"money\":\"".$row["balancemoney"]."\",\"bankaccount\":\"".$row["bankaccount"]."\",\"bankname\":".json_encode($row["bankname"])."}'>修改</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"bank\",".$row["bankid"].")'>删除</a></td>";
+		echo "<ul class=\"table-row\">";
+			echo "<li>".$row["bankname"]."</li>";
+			echo "<li>".$row["bankaccount"]."</li>";
+			echo "<li>".$row["balancemoney"]."</li>";
+			echo "<li><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"bankid\":\"".$row["bankid"]."\",\"money\":\"".$row["balancemoney"]."\",\"bankaccount\":\"".$row["bankaccount"]."\",\"bankname\":".json_encode($row["bankname"])."}'>修改</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"bank\",".$row["bankid"].")'>删除</a></li>";
+		echo "</ul>";
     }
-    echo "</tr>";
+	show_tab(3);
     ?>
-</table>
 <?php include_once("footer.php");?>
 <!--// 添加编辑分类-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

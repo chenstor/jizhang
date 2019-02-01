@@ -1,11 +1,7 @@
 <?php
 include_once("header.php");
 ?>
-<table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <td bgcolor="#EBEBEB"><span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn_add">添加分类</button></span>分类管理</td>
-    </tr>
-</table>
+<div class="table stat"><div class="itlu-title"><span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn_add">添加分类</button></span>分类管理</div></div>
 
 <?php
 for($i=1;$i<=2;$i++){
@@ -16,24 +12,17 @@ for($i=1;$i<=2;$i++){
 		$fontcolor = "red";
 		$word = "支出";
 	}
-?>
-<table width="100%" border="0" align="left" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <th align="left" bgcolor="#EBEBEB">类别名称</th>
-        <th align="left" bgcolor="#EBEBEB"><font color='<?php echo $fontcolor;?>'><?php echo $word;?></font></th>
-        <th align="left" bgcolor="#EBEBEB">操作</th>
-    </tr>
-    <?php
+	show_tab(5);
 	$pay_type_list = show_type($i,$userid);
 	foreach($pay_type_list as $row){
-        echo "<tr><td align='left' bgcolor='#FFFFFF'><font color='".$fontcolor."'>".$row["classname"]."</font></td>";
-        echo "<td align='left' bgcolor='#FFFFFF'><font color='".$fontcolor."'>".$word."</font></td>";        
-        echo "<td align='left' bgcolor='#FFFFFF'><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a> <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"classify\",".$row["classid"].")'>删除</a></td>";
+		echo "<ul class=\"table-row\">";
+			echo "<li class='".$fontcolor."'>".$row["classname"]."</li>";
+			echo "<li class='".$fontcolor."'>".$word."</li>";
+			echo "<li><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a> <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"classify\",".$row["classid"].")'>删除</a></li>";
+		echo "</ul>";
     }
-    echo "</tr>";		
-    ?>
-</table>
-<?php }?>
+	show_tab(3);
+}?>
 
 
 <?php include_once("footer.php");?>

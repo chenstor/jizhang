@@ -69,16 +69,11 @@
 	</tr>
 </table>
 
-<table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class='table table-striped table-bordered'>
-    <tr>
-        <td id="stat"></td>
-    </tr>
-</table>
+<div class="table stat"><div id="stat"></div></div>
 
 <?php
-$get_page = get("page","1"); //获取参数
 show_tab(1);
-show_tab(2);
+$get_page = get("page","1"); //获取参数
 $Prolist = itlu_page_query($userid,20,$get_page);
 foreach($Prolist as $row){
 	if($row['zhifu']==1){
@@ -88,18 +83,18 @@ foreach($Prolist as $row){
 		$fontcolor = "red";
 		$word = "支出";
 	}
-	echo "<tr class='".$fontcolor."'>";
-		echo "<td align='left' bgcolor='#FFFFFF'><i class='noshow'>".$word.">></i>".$row['classname']."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF'>".bankname($row['bankid'],$userid,"默认账户")."</td>";
-		echo "<td align='right' bgcolor='#FFFFFF'>".$row['acmoney']."</td>";
+	echo "<ul class=\"table-row ".$fontcolor."\">";
+		echo "<li><i class='noshow'>".$word.">></i>".$row['classname']."</li>";
+		echo "<li>".bankname($row['bankid'],$userid,"默认账户")."</li>";
+		echo "<li>".$row['acmoney']."</li>";
 		if(isMobile()){
-			echo "<td align='left' bgcolor='#FFFFFF'>".date("m-d",$row['actime'])."</td>";
+			echo "<li>".date("m-d",$row['actime'])."</li>";
 		}else{
-			echo "<td align='left' bgcolor='#FFFFFF'>".date("Y-m-d",$row['actime'])."</td>";
+			echo "<li>".date("Y-m-d",$row['actime'])."</li>";
 		}
-		echo "<td align='left' bgcolor='#FFFFFF'>".$row['acremark']."</td>";
-		echo "<td align='left' bgcolor='#FFFFFF'><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></td>";
-	echo "</tr>";
+		echo "<li>".$row['acremark']."</li>";
+		echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
+	echo "</ul>";
 }
 show_tab(3);
 ?>

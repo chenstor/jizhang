@@ -88,13 +88,19 @@ function user_mktime($onlinetime) {
 }
 function show_tab($type){
 	if($type==1){
-		echo "<table width='100%' border='0' align='left' cellpadding='5' cellspacing='1' bgcolor='#B3B3B3' class='table table-striped table-bordered'>";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li></ul></div>\n";
+		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==2){
-		echo "<tr><th bgcolor='#EBEBEB'>分类</th><th bgcolor='#EBEBEB'>账户</th><th bgcolor='#EBEBEB'>金额</th><th bgcolor='#EBEBEB'>时间</th><th bgcolor='#EBEBEB'>备注</th><th bgcolor='#EBEBEB'>操作</th></tr>";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li><li class=\"noshow\"><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></li></ul></div>\n";
+		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==3){
-		echo "</table>";
+		echo "</div></div>\n";
 	}elseif($type==4){
-		echo "<tr><th bgcolor='#EBEBEB'>分类</th><th bgcolor='#EBEBEB'>账户</th><th bgcolor='#EBEBEB'>金额</th><th bgcolor='#EBEBEB'>时间</th><th bgcolor='#EBEBEB'>备注</th><th bgcolor='#EBEBEB'>操作</th><th class='noshow' bgcolor='#EBEBEB'><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></th></tr>";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>名称</li><li>账户/卡号</li><li>余额</li><li>操作</li></ul></div>\n";
+		echo "<div class=\"table-row-group\">\n";
+	}elseif($type==5){
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>类别名称</li><li>收/支</li><li>操作</li></ul></div>\n";
+		echo "<div class=\"table-row-group\">\n";
 	}	
 }
 function showlogin($tid){
