@@ -392,16 +392,20 @@ if($getaction=='import') {
     $handle = fopen($filename, 'r');
     $result = input_csv($handle);
     $len_result = count($result);
-    if ($len_result == 0){alertgourl("你的文件没有任何数据！","int_out.php");}
+    if ($len_result <= 1){alertgourl("你的文件没有任何数据！","int_out.php");}
 	$data_values = "";
+	$insert_count = 0;
     for ($i = 1; $i < $len_result; $i++) {
-        $classify = iconv('gb2312', 'utf-8', $result[$i][0]);
-        $shouzhi = iconv('gb2312', 'utf-8', $result[$i][1]);
+		$money = $result[$i][3];
+		if($money<=0){continue;}
+		$bankid = 0; //涉及账户之间加减,默认仅支持0
+        $shouzhi = iconv('gb2312', 'utf-8', $result[$i][0]);
         if ($shouzhi == "收入") {
             $shouzhi = "1";
         }else{
             $shouzhi = "2";
         }
+		$classify = iconv('gb2312', 'utf-8', $result[$i][1]);
         $sql = "select classid from ".TABLE."account_class where classname='$classify' and ufid='$userid'";
         $query = mysqli_query($conn,$sql);
 		$row = mysqli_fetch_array($query);
@@ -411,17 +415,17 @@ if($getaction=='import') {
             $sqladd = "insert into ".TABLE."account_class (classname, classtype, ufid) values ('$classify', '$shouzhi', '$userid')";
             $queryadd = mysqli_query($conn,$sqladd);
             $acclassid = mysqli_insert_id($conn);
-        }
-        $money = $result[$i][2];
-        $addtime = strtotime($result[$i][3]);
-        $remark = iconv('gb2312', 'utf-8', $result[$i][4]);        
-        $data_values .= "('$money','$acclassid','$addtime','$remark','$userid','$shouzhi'),";
+        }        
+        $addtime = strtotime($result[$i][4]);
+        $remark = iconv('gb2312', 'utf-8', $result[$i][5]);
+		$insert_count++;
+        $data_values .= "('$money','$acclassid','$addtime','$remark','$userid','$shouzhi','$bankid'),";
     }
     $data_values = substr($data_values,0,-1);
     fclose($handle);
-    $query = mysqli_query($conn,"insert ".TABLE."account (acmoney,acclassid,actime,acremark,jiid,zhifu) values $data_values");
-    if($query){        
-		$word = "导入成功！导入".$len_result."条";
+    $query = mysqli_query($conn,"insert ".TABLE."account (acmoney,acclassid,actime,acremark,jiid,zhifu,bankid) values $data_values");
+    if($query){
+		$word = "导入成功！导入".$insert_count."条";
 		alertgourl($word,"int_out.php");
     }else{
 		alertgourl("导入失败，请检查文件格式！","int_out.php");
