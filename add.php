@@ -105,7 +105,7 @@ show_tab(3);
 	<div class="page"><?php getPageHtml($get_page,$pages,"show.php?");?></div>
 	<?php }?>
 <script>
-$("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span>去年1月至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");
+$("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span><?php echo date("Y年m月",$userinfo['regtime']);?>至今共收入<strong class='green'><?php echo state_day($last_year_start,$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day($last_year_start,$today,$userid,2);?></strong>");
 </script>
 <?php include_once("footer.php");?>
 <!--// 编辑-->
