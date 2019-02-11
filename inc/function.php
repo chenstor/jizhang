@@ -238,7 +238,7 @@ function export_csv($filename,$data) {
     header('Pragma:public');
     echo $data;
 }
-function getPageHtml($page, $pages, $url){
+function getPageHtml($page, $pages, $url, $thiscount=20, $allcount){
 	$_pageNum = 4;
 	$page = $page<1?1:$page;
 	$page = $page > $pages ? $pages : $page;
@@ -258,6 +258,7 @@ function getPageHtml($page, $pages, $url){
 		$_end = $_end>$pages? $pages : $_end;
 	}
 	$_pageHtml = '<ul class="pagination">';
+	$_pageHtml .= '<li><a href="#">'.$thiscount.'/'.$allcount.'条&nbsp;&nbsp;共'.$pages.'页</a></li>';
 	if($page>1){
 		$_pageHtml .= '<li><a title="上一页" href="'.$url.'page='.($page-1).'">上一页</a></li>';
 	}
@@ -270,7 +271,7 @@ function getPageHtml($page, $pages, $url){
 	}
 	if($page<$_end){
 		$_pageHtml .= '<li><a title="下一页" href="'.$url.'page='.($page+1).'">下一页</a></li>';
-	}
+	}	
 	$_pageHtml .= '</ul>';
 	echo $_pageHtml;
 }

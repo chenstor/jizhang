@@ -94,6 +94,7 @@ if($s_bankid != ""){
 	echo "<form name='del_all' id='del_all' method='post' onsubmit='return deleterecordAll(this);'>";
 	show_tab(2);
 		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
+		$thiscount = 0;
 		foreach($Prolist as $row){
 			if($row['zhifu']==1){
 				$fontcolor = "green";
@@ -115,16 +116,17 @@ if($s_bankid != ""){
 				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
 				echo "<li class='noshow'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></li>";
 			echo "</ul>";
+			$thiscount ++ ;
 		}	
 	echo "</form>";
 	show_tab(3);	
 ?>
 	<?php 
 	//显示页码
-	$pages = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
-	$pages = ceil($pages/20);	
+	$allcount = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
+	$pages = ceil($allcount/20);	
 	if($pages > 1){?>
-	<div class="page"><?php getPageHtml($s_page,$pages,$pageurl."&");?></div>
+	<div class="page"><?php getPageHtml($s_page,$pages,$pageurl."&",$thiscount,$allcount);?></div>
 	<?php }?>
 
 <!--// 编辑-->
