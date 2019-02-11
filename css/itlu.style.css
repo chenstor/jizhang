@@ -18,6 +18,7 @@ i.noshow{font-style:normal}
 .w12p{width:12%}
 .w22p{width:22%}
 .p8{padding:8px;}
+a.cur{color:#f00!important;font-weight:bold}
 
 td.add_th{height:36px!important;}
 td.add_th i{font-style:normal}

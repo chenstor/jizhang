@@ -141,6 +141,17 @@ function msgbox($content,$title="",$url){
 	}
 	exit();
 }
+function show_menu_cur($file){
+	$url = $_SERVER['PHP_SELF']; 
+	$filename = substr($url, strrpos($url , '/')+1);
+	if($file == $filename){
+		$show = " class='cur'";
+	}else{
+		$show = "";
+	}
+	echo $show;
+}
+
 function clearsession($uid){
 	session_unset($uid);
 	session_destroy();
