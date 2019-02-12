@@ -13,7 +13,7 @@ loginchk($userid);
 <title><?php echo siteName;?></title>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/itlu.style.css?011701" />
-<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="js/all.js?011004"></script>
 </head>
 
