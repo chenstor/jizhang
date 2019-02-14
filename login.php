@@ -19,10 +19,12 @@ if($getaction=="register" and Multiuser==true){ // 注册
 	$form_name = "reg_form";
 	$login_btn = "注册";
 	$showlogin_form = showlogin("username").showlogin("email").showlogin("password");
+	$first_input = "user_name";
 }elseif($getaction=="getpassword"){//找回密码，发邮件
 	$form_name = "getpassword_form";
 	$login_btn = "发送";
 	$showlogin_form = showlogin("email");
+	$first_input = "user_email";
 }elseif($getaction=="reset"){//重置密码
 	if(empty($_SESSION['email'])){
 		alertgourl("参数非法！","login.php");
@@ -30,11 +32,13 @@ if($getaction=="register" and Multiuser==true){ // 注册
 	$form_name = "reset_form";
 	$login_btn = "重置";
 	$showlogin_form = showlogin("email_session").showlogin("newpassword");
+	$first_input = "newpassword";
 }else{//默认
 	$form_name = "log_form";
 	$login_btn = "登录";
 	$getaction = "login";
 	$showlogin_form = showlogin("username").showlogin("password");
+	$first_input = "user_name";
 }
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
@@ -69,6 +73,7 @@ if($getaction=="register" and Multiuser==true){ // 注册
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script>
+try{document.getElementById('<?php echo $first_input;?>').focus();}catch(e){}
 document.onkeydown = function(e){
 	if(!e) e = window.event;
 	if((e.keyCode || e.which) == 13){
