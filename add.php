@@ -20,7 +20,7 @@
 				}
                 ?>
             </select></label><a href="classify.php" class="addclass">添加分类</a></p>
-			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="8"></label></p>
+			<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" maxlength="20"></label></p>
 			<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
 				<option value="0">默认账户</option>
                 <?php
