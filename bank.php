@@ -44,7 +44,7 @@ include_once("header.php");
 			<div class="modal-footer">
 				<div id="error_show" class="footer-tips"></div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				<button type="button" id="btn_submit" date-info="save" class="btn btn-primary">保存</button>
+				<button type="button" id="btn_submit" date-info="add" class="btn btn-primary">保存</button>
 			</div>
 		</div>
 		</form>
@@ -63,12 +63,13 @@ $("#btn_submit").click(function(){
 	saveclassify(action);
 });
 
-function saveclassify(type){
-	if(type=="save"){
+function saveclassify(action){
+	/*if(type=="save"){
 		posturl = "date.php?action=addbank";
 	}else if(type=="modify"){
 		posturl = "date.php?action=modifybank";
-	}
+	}*/
+	posturl = "date.php?action="+action+"bank";
 	$.ajax({
 		type: "POST",
 		dataType: "json",

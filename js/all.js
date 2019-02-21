@@ -52,7 +52,7 @@ function chushihua_bank(){
 	$("#bankname").val("");
 	$("#bankaccount").val("");
 	$("#balancemoney").val("");
-	$('#btn_submit').attr('date-info','save');
+	$('#btn_submit').attr('date-info','add');
 	$("#error_show").html("");
 }
 function subtraction(first,second){
