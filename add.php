@@ -109,7 +109,6 @@ show_tab(3);
 <script>
 $("#stat").html("<span class='pull-right noshow'>↓↓下表显示最近20条记录</span><?php echo date("Y年m月",$userinfo['regtime']);?>至今共收入<strong class='green'><?php echo state_day(date("Y-m-d",$userinfo['regtime']),$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day(date("Y-m-d",$userinfo['regtime']),$today,$userid,2);?></strong>");
 </script>
-<?php include_once("footer.php");?>
 <!--// 编辑-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -173,3 +172,4 @@ function checkpost(form,type){
 	return false;
 }
 </script>
+<?php include_once("footer.php");?>
