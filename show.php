@@ -128,7 +128,15 @@ if($s_bankid != ""){
 	if($pages > 1){?>
 	<div class="page"><?php getPageHtml($s_page,$pages,$pageurl."&",$thiscount,$allcount);?></div>
 	<?php }?>
-
+<?php
+//取账户列表
+$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+$banklist_show = '';
+foreach($banklist as $myrow){
+	$banklist_show = $banklist_show."<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+}
+?>
+<?php include_once("footer.php");?>
 <!--// 编辑-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -158,12 +166,7 @@ if($s_bankid != ""){
 					<label for="edit-bankid">帐户</label>
 					<select name="edit-bankid" id="edit-bankid" class="form-control">
 						<option value='0'>默认账户</option>
-						<?php
-						$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
-						foreach($banklist as $myrow){
-							echo "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
-						}
-						?>
+						<?php echo $banklist_show;?>
 					</select>
 				</div>
 				<div class="form-group">
@@ -193,4 +196,3 @@ $('input[name="check_all"]').on("click",function(){
 	}
 });
 </script>
-<?php include_once("footer.php");?>
