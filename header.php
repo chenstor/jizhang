@@ -11,10 +11,11 @@ loginchk($userid);
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title><?php echo siteName;?></title>
+<link rel="apple-touch-icon" sizes="180x180" href="<?php echo SiteURL;?>img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="<?php echo SiteURL;?>img/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="<?php echo SiteURL;?>img/favicon-16x16.png">
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/itlu.style.css?011701" />
+<link rel="stylesheet" href="css/itlu.style.css?<?php echo $version;?>" />
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="js/all.js?011004"></script>
+<script type="text/javascript" src="js/all.js?<?php echo $version;?>"></script>
 </head>
 
 <body><div id="itlu-wrap">
@@ -39,7 +40,7 @@ loginchk($userid);
                             <li><a href="int_out.php" <?php show_menu_cur("int_out.php");?>>导入导出</a></li>
                             <li><a href="show.php" <?php show_menu_cur("show.php");?>>查询修改</a></li>
 							<li><a href="bank.php" <?php show_menu_cur("bank.php");?>>账户管理</a></li>
-                            <li><a href="users.php" <?php show_menu_cur("users.php");?>><?php echo "账号：".$userinfo['username'];?></a></li>							
+                            <li><a href="users.php" <?php show_menu_cur("users.php");?>><?php echo "帐号：".$userinfo['username'];?></a></li>							
                             <li><a href="login.php?action=loginout">退出</a></li>
                         </ul>
                     </div>

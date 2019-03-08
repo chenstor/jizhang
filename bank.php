@@ -56,44 +56,11 @@ $("#btn_add").click(function(){
 	chushihua_bank();
 	$('#myModal').modal({backdrop:'static', keyboard:false});
 });
-
 $("#btn_submit").click(function(){
 	$(this).addClass("disabled");
 	var action = $(this).attr("date-info");
-	saveclassify(action);
+	bank_post_form(action);
 });
-
-function saveclassify(action){
-	/*if(type=="save"){
-		posturl = "date.php?action=addbank";
-	}else if(type=="modify"){
-		posturl = "date.php?action=modifybank";
-	}*/
-	posturl = "date.php?action="+action+"bank";
-	$.ajax({
-		type: "POST",
-		dataType: "json",
-		url: posturl,
-		data: $('#addform').serialize(),
-		success: function (result) {
-			$("#error_show").show();
-			var data = '';
-			if(result != ''){
-				data = eval("("+result+")");
-			}
-			$('#error_show').html(data.error_msg);
-			if(data.url != ""){
-				location.href=data.url;
-			}else{
-				$("#btn_submit").removeClass("disabled");
-			}			
-		},
-		error : function() {
-			$("#error_show").hide();
-			console.log(result);
-		}
-	});
-}
 // 编辑分类
 function edit(t){
 	//初始化

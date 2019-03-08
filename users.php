@@ -40,7 +40,7 @@ include_once("header.php");
 				"DB_PORT"=>"数据库端口",
 				"TABLE"=>"数据库前缀"
 			];
-			$info=file_get_contents("data/config.php");
+			$info = vita_get_url_content("data/config.php");
 			preg_match_all("/define\(\"(.*?)\",\"(.*?)\"\)/",$info,$arr);
 			foreach($arr[1] as $k=>$v){
 			if($v=='DB_HOST' or $v=='DB_USER' or $v=='DB_PASS' or $v=='DB_NAME' or $v=='DB_PORT' or $v=='TABLE'){continue;}
@@ -68,16 +68,23 @@ include_once("header.php");
 			<form id="smtp_form" name="smtp_form" method="post" onsubmit="return checkpost('smtp',this);">
 			<?php
 			$keyinfo_smtp = [
+				"c_protocol"=>"是否SSL",
+				"c_serverport"=>"端口",
 				"c_smtp"=>"SMTP",
 				"c_email"=>"邮箱",
 				"c_emailpass"=>"密码"
 			];
-			$info=file_get_contents("inc/smtp_config.php");
+			$info = vita_get_url_content("inc/smtp_config.php");
 			preg_match_all("/define\(\"(.*?)\",\"(.*?)\"\)/",$info,$arr);
 			foreach($arr[1] as $k=>$v){
+				if($v=='c_protocol'){?>
+				<p><i><?php echo $keyinfo_smtp[$v];?>：</i><label class="red"><input name="c_protocol" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />使用SSL</label><label class="ml10"><input name="c_protocol" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />默认</label></p>	
+				<?php
+				}else{
 			?>
-			<p><i><?php echo $keyinfo_smtp[$v];?>：</i><input type="text" class="w180" name="<?php echo $v;?>" id="<?php echo $v;?>" value="<?php echo $arr[2][$k];?>"></p>
-			<?php }?>
+				<p><i><?php echo $keyinfo_smtp[$v];?>：</i><input type="text" class="w180" name="<?php echo $v;?>" id="<?php echo $v;?>" value="<?php echo $arr[2][$k];?>"></p>
+			<?php }
+			}?>
 			<p class="btn_div">
 				<button name="submit" type="submit" id="submit_smtp" class="btn btn-primary">更新信息</button>
 				<span id="smtp_error_show" class="red"></span>

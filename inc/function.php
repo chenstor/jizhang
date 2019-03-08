@@ -1,6 +1,8 @@
 <?php
 if(!defined("DB_HOST")){die('非法访问！');}
 
+$version = 'V2.0.2(19.03.01)';
+
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){die('数据库打开失败！');}
 
@@ -237,6 +239,20 @@ function export_csv($filename,$data) {
     header('Expires:0');
     header('Pragma:public');
     echo $data;
+}
+function vita_get_url_content($url){
+	if(function_exists('file_get_contents')) {
+		$file_contents = file_get_contents($url);
+	}else{
+		$ch = curl_init();
+		$timeout = 5;
+		curl_setopt ($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		$file_contents = curl_exec($ch);
+		curl_close($ch);
+	}
+	return $file_contents;
 }
 function getPageHtml($page, $pages, $url, $thiscount=20, $allcount){
 	$_pageNum = 4;

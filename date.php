@@ -423,7 +423,7 @@ if($getaction=='import') {
     }
     $data_values = substr($data_values,0,-1);
     fclose($handle);
-    $query = mysqli_query($conn,"insert ".TABLE."account (acmoney,acclassid,actime,acremark,jiid,zhifu,bankid) values $data_values");
+    $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney,acclassid,actime,acremark,jiid,zhifu,bankid) values $data_values");
     if($query){
 		$word = "导入成功！导入".$insert_count."条";
 		alertgourl($word,"int_out.php");
@@ -433,7 +433,7 @@ if($getaction=='import') {
 }
 if($getaction=='updatesystem'){
 	$filepath = "data/config.php";
-	$info=file_get_contents($filepath);
+	$info = vita_get_url_content($filepath);
 	foreach($_POST as $k=>$v){
         $info=preg_replace("/define\(\"{$k}\",\".*?\"\)/","define(\"{$k}\",\"{$v}\")",$info);
     }
@@ -446,7 +446,7 @@ if($getaction=='updatesystem'){
 }
 if($getaction=='updatesmtp'){
 	$filepath = "inc/smtp_config.php";
-	$info=file_get_contents($filepath);
+	$info = vita_get_url_content($filepath);
 	foreach($_POST as $k=>$v){
         $info=preg_replace("/define\(\"{$k}\",\".*?\"\)/","define(\"{$k}\",\"{$v}\")",$info);
     }

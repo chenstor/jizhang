@@ -1,4 +1,4 @@
-<div class="footer">Copyright &copy; <?php echo date("Y");?> <?php echo siteName;?></div>
+<div class="footer">Copyright &copy; <?php echo siteName;?> <?php echo $version;?></div>
 
 </div>
 </div>

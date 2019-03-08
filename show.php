@@ -106,14 +106,14 @@ if($s_bankid != ""){
 			echo "<ul class=\"table-row ".$fontcolor."\">";
 				echo "<li><i class='noshow'>".$word.">></i>".$row['classname']."</li>";
 				echo "<li>".bankname($row['bankid'],$userid,"默认账户")."</li>";
-				echo "<li>".$row['acmoney']."</li>";
+				echo "<li class='t_a_r'>".$row['acmoney']."</li>";
 				if(isMobile()){
 					echo "<li>".date("m-d",$row['actime'])."</li>";
 				}else{
 					echo "<li>".date("Y-m-d",$row['actime'])."</li>";
 				}
 				echo "<li>".$row['acremark']."</li>";
-				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d h:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
+				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
 				echo "<li class='noshow'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></li>";
 			echo "</ul>";
 			$thiscount ++ ;

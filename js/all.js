@@ -42,7 +42,7 @@ function chushihua(){
 	$("#classtype_div").show();
 	$("#newclassname_div").hide();
 	$("#classid").val("");
-	$('#btn_submit').attr('date-info','save');
+	$('#btn_submit').attr('date-info','add');
 	$("#classtype").find("option").attr("selected",false);
 	$("#error_show").html("");
 }
@@ -110,7 +110,7 @@ function deleterecordAll(form){
 		return false;
 	}
 	var r=confirm("确定删除这些记录？");
-	if (r==true){
+	if(r==true){
 		$.ajax({
 			type:"POST",
 			dataType: "json",
@@ -155,7 +155,7 @@ function saveEditRecord(){
 	$.ajax({
 		type: "POST",
 		dataType: "json",
-		url: "date.php?action=saverecord",//url
+		url: "date.php?action=saverecord",
 		data: $('#edit-form').serialize(),
 		success: function (result) {
 			$("#error_show").show();
@@ -168,8 +168,7 @@ function saveEditRecord(){
 				window.location.reload();
 			}else{
 				$("#btn_submit").removeClass("disabled");
-			}			
-			//if(data.url != ""){location.href=data.url;}				
+			}		
 		},
 		error : function() {
 			$("#error_show").hide();
@@ -200,18 +199,33 @@ function delRecord(type,t){
 			}
 		});
 	});
-	/*var r=confirm("确定删除该记录？");
-	if (r==true){
-		$.ajax({
-			type:"get",
-			url:geturl,
-			async:true,
-			success:function(data){
-				alert(data);
-				window.location.reload();
+}
+//添加编辑账户信息
+function bank_post_form(action){
+	posturl = "date.php?action="+action+"bank";
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: posturl,
+		data: $('#addform').serialize(),
+		success: function (result) {
+			$("#error_show").show();
+			var data = '';
+			if(result != ''){
+				data = eval("("+result+")");
 			}
-		});
-	}*/
+			$('#error_show').html(data.error_msg);
+			if(data.url != ""){
+				location.href = data.url;
+			}else{
+				$("#btn_submit").removeClass("disabled");
+			}			
+		},
+		error:function(){
+			$("#error_show").hide();
+			console.log(result);
+		}
+	});
 }
 
 function canBackGo(url){

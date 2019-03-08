@@ -20,7 +20,7 @@ class Smtp{
         $this->user = $user;
         $this->pass = $pass;
         $this->host_name = "localhost"; //is used in HELO command
-        $this->log_file = "";
+        $this->log_file = "inc/mail.log";
         $this->sock = FALSE;
     }
     /* Main Function */

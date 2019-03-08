@@ -1,4 +1,5 @@
 body, html{padding: 0; margin: 0;}
+*{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;}
 .clearfix:before,.clearfix:after{content: " ";display: table;}
 .clearfix:after{clear: both;}
 body{font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", "FontAwesome", sans-serif;}
@@ -18,7 +19,16 @@ i.noshow{font-style:normal}
 .w12p{width:12%}
 .w22p{width:22%}
 .p8{padding:8px;}
+.t_a_r{text-align:right}
 a.cur{color:#f00!important;font-weight:bold}
+
+/**0222**/
+.input-group{width:100%;margin:0 auto 8px;clear:both;}
+#import_form .input-group{width:auto;margin:0 auto 8px;clear:none}
+.input-group select{height:37px;background:#fff}
+.input-group .btn{width:100%}
+.input-group-label{height:36px;padding:0 1em;background:#eee;border:1px solid #ccc;line-height:34px;display:table-cell;width:1%;white-space:nowrap;vertical-align:middle}
+.form-field{display:block;width:100%;border:1px solid #ccc;line-height:1.2;padding:.5em;height:36px;border-left:0}
 
 td.add_th{height:36px!important;}
 td.add_th i{font-style:normal}
@@ -44,7 +54,7 @@ td.add_th i{font-style:normal}
 .search_box{width:auto;padding:5px 10px;overflow:hidden;clear:both}
 .search_box p{width:33%;float:left}
 .search_box label{font-weight:normal}
-.search_box .w180{width:180px;height:26px;border:1px solid #ccc;padding:0 3px}
+.search_box .w180{width:180px;height:26px;border:1px solid #ccc;padding:0 3px;background:#fff}
 .search_box .w100{width:88px;height:26px;border:1px solid #ccc;padding:0 3px}
 .search_box .sang_Calender{width:120px;height:26px;border:1px solid #ccc;padding:0 3px}
 

@@ -1,12 +1,18 @@
 <?php
 // 邮箱配置
+define("c_protocol","1");//1为使用ssl
 define("c_smtp","");
+define("c_serverport","994");
 define("c_email","");
 define("c_emailpass","");
 
 function send_getpass_email($user_email,$user_name,$time,$url){
-	$smtpserver = c_smtp;
-	$smtpserverport = 25;
+	if(c_protocol=='1'){
+		$smtpserver = 'ssl://'.c_smtp;
+	}else{
+		$smtpserver = c_smtp;
+	}
+	$smtpserverport = c_serverport;
 	$smtpusermail = c_email;
 	$smtpemailto = $user_email;
 	$smtpuser = c_email;
