@@ -1,3 +1,7 @@
+### 版本区分
+1. 本版本为PHP+MYSQL版本
+2. PHP+SQLite版本见：https://github.com/chenstor/jizhangSqlite
+
 ### 特别说明
 1. 目前版本，其中一个函数文件content.php源码没有开放，后续处理好了再考虑开放，所以目前这个文件是加密状态。
 2. 将文件上传到服务器时，若使用的客户端是FlashFXP，请务必设置上传模式为：二进制，否则会导致安装之后界面出现白屏。
