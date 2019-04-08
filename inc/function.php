@@ -1,10 +1,14 @@
 <?php
 if(!defined("DB_HOST")){die('非法访问！');}
 
-$version = 'V2.0.2(19.03.01)';
+$version = 'V2.1.1(19.04.08)';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
-if(!$conn){die('数据库打开失败！');}
+if(!$conn){
+	die('数据库打开失败！');
+}else{
+	mysqli_query($conn,'SET NAMES utf8');
+}
 
 if(substr(PHP_VERSION,0,1)>='7'){
 	define('PHP7', true);
@@ -106,7 +110,10 @@ function show_tab($type){
 	}	
 }
 function showlogin($tid){
-	switch ($tid) {
+	switch ($tid) {		
+		case "invite":
+			$showlogin = "<label for=\"invite\">邀请码<br><input type=\"text\" name=\"invite\" id=\"invite\" class=\"input\" value='' size=\"20\"></label>";
+			break;
 		case "username":
 			$showlogin = "<label for=\"user_name\">用户名<br><input type=\"text\" name=\"user_name\" id=\"user_name\" class=\"input\" value='' size=\"20\"></label>";
 			break;
