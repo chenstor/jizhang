@@ -8,6 +8,7 @@ $dirfile_items = array(
 $func_items = array(
 		array('name' => 'mysqli_connect'),
 		array('name' => 'fsockopen'),
+		array('name' => 'openssl'),
 		array('name' => 'gethostbyname'),
 		array('name' => 'file_get_contents'),
 		array('name' => 'mb_convert_encoding'),
