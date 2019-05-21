@@ -66,7 +66,7 @@ if (isset($_POST['submit'])){
 			<div class="list">
 				<input name="zhifu[]" type="hidden" value="1" />
 				<div class="list_1"><i>金额：</i><input type="number" step="0.01" name="money[]" /></div>
-				<div class="list_2"><i>分类：</i><select name="classid[]"><?php echo $pay_type_option;?></select></div>
+				<div class="list_2"><i>分类：</i><select name="classid[]"><?php echo $income_type_option;?></select></div>
 				<div class="list_3"><i>备注：</i><input name="remark[]" type="text" /></div>
 				<div class="list_4">时间：<input type="text" name="time[]" value="<?php echo date("Y-m-d H:i");
 			?>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:'<?php echo $today;?>'})" /></div>
