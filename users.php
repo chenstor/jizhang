@@ -33,6 +33,7 @@ include_once("header.php");
 				"siteName"=>"站点名称",
 				"SiteURL"=>"站点网址",
 				"Multiuser"=>"多用户",
+				"Invite"=>"邀请注册",
 				"DB_HOST"=>"数据库地址",
 				"DB_USER"=>"数据库用户",
 				"DB_PASS"=>"数据库密码",
@@ -47,7 +48,12 @@ include_once("header.php");
 			if($v=='Multiuser'){
 			?>
 			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Multiuser" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Multiuser" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label></p>
-			<?php }else{?>
+			<?php
+			}elseif($v=='Invite'){
+			?>
+			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Invite" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Invite" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <i>(开启多用户，该配置才有效)</i></p>
+			<?php 
+			}else{?>
 			<p><i><?php echo $keyinfo[$v];?>：</i><input type="text" class="w180" name="<?php echo $v;?>" id="<?php echo $v;?>" value="<?php echo $arr[2][$k];?>"></p>
 			<?php }
 			}?>

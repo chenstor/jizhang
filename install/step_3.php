@@ -22,15 +22,15 @@ $(function(){
     $("#install_form").validate({
         errorElement: "font",
     rules : {
-        db_host : {required : true},
-        db_name : {required : true},
-        db_user : {required : true},
-        db_port : {required : true,digits : true},
-        site_name : {required : true},
-        admin : {required : true,lettersonly : true},
-		email : {required:true,email : true }, 
-        password : {required : true, minlength : 6},
-        rpassword : {required : true,equalTo : '#password'},
+        db_host : {required: true},
+        db_name : {required: true},
+        db_user : {required: true},
+        db_port : {required: true, digits: true},
+        site_name : {required: true},
+        admin : {required: true, lettersonly: true},
+		email : {required:true, email: true, maxlength: 30}, 
+        password : {required : true, minlength: 6},
+        rpassword : {required : true, equalTo: '#password'},
       }
     });
 
@@ -40,6 +40,7 @@ $(function(){
       lettersonly: "不得含有特殊字符",
 	  email: "邮箱格式错误",
       equalTo: "两次密码不一致",
+	  maxlength: "邮箱最多30位",
       minlength: "密码至少6位"
     });
 
@@ -126,12 +127,12 @@ $(function(){
         <div>
           <label>管理员账号</label>
           <span>
-          <input name="admin" value="<?php echo $_POST['admin'];?>" maxlength="60" type="text">
+          <input name="admin" value="<?php echo $_POST['admin'];?>" maxlength="15" type="text">
           </span> <em></em></div>
 		<div>
           <label>管理员邮箱</label>
           <span>
-          <input name="email" value="<?php echo $_POST['email'];?>" maxlength="60" type="text">
+          <input name="email" value="<?php echo $_POST['email'];?>" maxlength="30" type="text">
           </span> <em></em></div>
         <div>
           <label>管理员密码</label>

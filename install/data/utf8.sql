@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `#__user` (
   `uid` int(5) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `username` varchar(15) NOT NULL COMMENT '用户名',
   `password` varchar(35) NOT NULL COMMENT '密码',
-  `email` varchar(20) NOT NULL COMMENT '邮箱',
+  `email` varchar(30) NOT NULL COMMENT '邮箱',
   `Isallow` smallint(2) NOT NULL DEFAULT '0' COMMENT '是否禁止登录, 0正常 1禁止',
   `Isadmin` smallint(2) DEFAULT '0' COMMENT '是否管理员 0不是 1是',
   `addtime` int(11) NOT NULL COMMENT '注册时间',

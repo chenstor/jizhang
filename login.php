@@ -138,6 +138,11 @@ function login_check(formname,type){
 			$("#user_name").focus();
 			return false;
 		}
+		if($("#user_email").val().length > 30){
+			alert("邮箱最多只能30个字符！");
+			$("#user_email").focus();
+			return false;
+		}
 		if($("#user_pass").val().length < 6){
 			alert("密码至少要6位数！");
 			$("#user_pass").focus();

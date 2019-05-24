@@ -48,6 +48,10 @@ if($getaction=="login"){
 			$error_code = "用户名、邮箱、密码不能为空！";
 		}elseif(checkemail($user_email) == false){
 			$error_code = "邮箱格式不正确";
+		}elseif(strlen($user_name) > 15){
+			$error_code = "用户名长度不能大于15";
+		}elseif(strlen($user_email) > 30){
+			$error_code = "邮箱长度不能大于30";
 		}else{
 			$sql = "select * from ".TABLE."user where username='$user_name' or email='$user_email'";
 			$query = mysqli_query($conn,$sql);
