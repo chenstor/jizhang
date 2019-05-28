@@ -39,8 +39,7 @@
 			foreach($type_count_list as $countrow){
 				if($b == $countrow['month']){
 					$month_num = $countrow['total'];
-				}else{
-					$month_num = "0.00";
+					continue;
 				}
 			}
 			$type_count_data .= "{'month':'".$b."','count':'".$month_num."'},";

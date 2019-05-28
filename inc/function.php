@@ -71,6 +71,10 @@ function table($dbname){
 	$dbname = TABLE.$dbname;	
 	return $dbname;
 }
+function add_zero($tid){
+	$tid = str_pad($tid,2,"0",STR_PAD_LEFT);
+	return $tid;
+}
 //使用系统统一的$userid
 if(isset($_SESSION['uid'])){
 	$userid = $_SESSION['uid'];
