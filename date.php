@@ -38,7 +38,7 @@ if($getaction=="addbank"){
 			$error_code = "保存失败！";
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="modifybank"){
@@ -62,7 +62,7 @@ if($getaction=="modifybank"){
 			$error_code = "保存失败！";
 		}	
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="deletebank"){
@@ -113,7 +113,7 @@ if($getaction=="addrecord"){
 			$error_code = "保存失败！";
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="saverecord"){
@@ -145,7 +145,7 @@ if($getaction=="saverecord"){
 			$error_code = "保存失败！";
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="deleterecord"){
@@ -185,7 +185,7 @@ if($getaction=="deleterecordAll"){
 	}else{
 		$error_code = "参数不正确！";
 	}			
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="changeclassify"){
@@ -204,7 +204,7 @@ if($getaction=="changeclassify"){
 			$error_code = "保存失败！";
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="deleteclassify"){
@@ -255,7 +255,7 @@ if($getaction=="addclassify"){
 		}	
 		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="modifyclassify"){
@@ -282,7 +282,7 @@ if($getaction=="modifyclassify"){
 			}
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="changeuser"){
@@ -353,7 +353,7 @@ if($getaction=="updateuser"){
 			$error_code = "旧密码错误！";
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=="export"){
@@ -441,7 +441,7 @@ if($getaction=='updatesystem'){
 	$success = "1";
 	$error_code = "信息修改成功！";
 	$gotourl = "users.php";
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 if($getaction=='updatesmtp'){
@@ -454,7 +454,7 @@ if($getaction=='updatesmtp'){
 	$success = "1";
 	$error_code = "信息修改成功！";
 	$gotourl = "users.php";
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 ?>

@@ -37,7 +37,7 @@ if($getaction=="login"){
 			$error_code = "用户名或密码错误！<a href='?action=getpassword'>忘记密码？</a>";
 		}
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }elseif($getaction=="register"){	
 	$user_name = post("user_name");
@@ -88,7 +88,7 @@ if($getaction=="login"){
 	}else{
 		$error_code = "注册功能已经禁用！";
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }elseif($getaction=="getpassword"){
 	$user_email = post("user_email");
@@ -132,7 +132,7 @@ if($getaction=="login"){
 			}
 		}
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }elseif($getaction=="reset"){
 	$user_email = post("user_email");
@@ -166,11 +166,11 @@ if($getaction=="login"){
 			$error_code = "账号错误！";
 		}		
 	}
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }else{
 	$error_code = "非法访问！";
-	$data = '{code:"' .$success. '",error_msg:"' .$error_code.'",url:"' .$gotourl.'"}';
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
 ?>
