@@ -23,6 +23,7 @@ if($getaction=="login"){
 				}else{
 					$_SESSION['uid'] = $row['uid'];
 					$_SESSION['error_times'] = 0;
+					setcookie("userinfo", "", time()-86400);
 					$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]","isadmin"=>"$row[Isadmin]");
 					$userinfo = AES::encrypt($userinfo, $sys_key);					
 					setcookie("userinfo", $userinfo, time()+86400*3);

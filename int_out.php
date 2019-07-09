@@ -17,7 +17,7 @@
 				   <div class="col-sm-8">
 						<label class="pull-right"><input type="submit" class="btn btn-danger ml5" value="导入CSV"></label>
 						<div class="input-group">
-						<input id='location' class="form-control" onclick="$('#i-file').click();">
+						<input id='location' class="form-control" readonly="true" onclick="$('#i-file').click();">
 						<label class="input-group-btn">
 							<input type="button" id="i-check" value="浏览文件" class="btn btn-success" onclick="$('#i-file').click();">
 						</label>						
