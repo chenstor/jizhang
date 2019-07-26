@@ -29,14 +29,21 @@ if (isset($_POST['submit'])){
 			$no_ok_count++;
 			continue;
         }
-        $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney, acclassid, actime, acremark,zhifu,jiid) values('$value','".$path1[$key]."','$addtime','".$path3[$key]."','".$path4[$key]."','$userid')");
+        $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney, acclassid, actime, acremark, zhifu, jiid, bankid) values('".$path[$key]."','".$path1[$key]."','$addtime','".$path3[$key]."','".$path4[$key]."','$userid', 0)");
 		if($query){
 			$ok_count++;
 		}else{
 			$error_count++;
 		}
 	}
-	echo "<script type='text/javascript'>alert('成功写入：".$ok_count."条，不符合条件：".$no_ok_count."条，失败：".$error_count."条');window.location='batch_add.php';</script>";
+	$message = "成功写入：".$ok_count."条";
+	if($no_ok_count>0){
+		$message = $message."，不符合条件（或空白）：".$no_ok_count."条";
+	}
+	if($error_count>0){
+		$message = $message."，失败：".$error_count."条";
+	}
+	echo "<script type='text/javascript'>alert('$message');window.location='batch_add.php';</script>";
 }
 ?>
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
