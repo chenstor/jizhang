@@ -34,6 +34,7 @@ include_once("header.php");
 				"SiteURL"=>"站点网址",
 				"Multiuser"=>"多用户",
 				"Invite"=>"邀请注册",
+				"ViewAllData"=>"管理数据",
 				"DB_HOST"=>"数据库地址",
 				"DB_USER"=>"数据库用户",
 				"DB_PASS"=>"数据库密码",
@@ -41,21 +42,31 @@ include_once("header.php");
 				"DB_PORT"=>"数据库端口",
 				"TABLE"=>"数据库前缀"
 			];
-			$info = vita_get_url_content("data/config.php");
+			$info = vita_get_url_content("data/config.php");			
 			preg_match_all("/define\(\"(.*?)\",\"(.*?)\"\)/",$info,$arr);
+			//var_dump($arr);
 			foreach($arr[1] as $k=>$v){
+				//echo $v;
 			if($v=='DB_HOST' or $v=='DB_USER' or $v=='DB_PASS' or $v=='DB_NAME' or $v=='DB_PORT' or $v=='TABLE'){continue;}
 			if($v=='Multiuser'){
 			?>
 			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Multiuser" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Multiuser" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label></p>
 			<?php
-			}elseif($v=='Invite'){
+			}
+			elseif($v=='Invite'){
 			?>
-			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Invite" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Invite" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <i>(开启多用户，该配置才有效)</i></p>
+			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Invite" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Invite" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <u>(开启多用户，该配置才有效)</u></p>
 			<?php 
-			}else{?>
+			}
+			elseif($v=='ViewAllData'){
+			?>
+			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="ViewAllData" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="ViewAllData" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <u>(开启后管理员可查看所有记账记录)</u></p>
+			<?php 
+			}
+			else{?>
 			<p><i><?php echo $keyinfo[$v];?>：</i><input type="text" class="w180" name="<?php echo $v;?>" id="<?php echo $v;?>" value="<?php echo $arr[2][$k];?>"></p>
-			<?php }
+			<?php 
+			}
 			}?>
 			<p class="btn_div">
 				<button name="submit" type="submit" id="submit_system" class="btn btn-primary">更新信息</button>
@@ -119,10 +130,10 @@ include_once("header.php");
 	foreach($userlist as $myrow){
 		if($myrow['Isallow']=="0"){
 			$res = "<span class='green'>正常</span>";
-			$btn_show ="<a class=\"btn btn-danger btn-xs\" href=\"javascript:\" onclick=\"changeuser('noallow',$myrow[uid]);\">禁用</a>";
+			$btn_show ="<a class=\"btn btn-danger btn-xs\" href=\"javascript:\" onclick=\"changeuser('noallow',$myrow[uid],'0');\">禁用</a> <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
 		}else{
 			$res = "<span class='red'>禁用</span>";
-			$btn_show ="<a class=\"btn btn-success btn-xs\" href=\"javascript:\" onclick=\"changeuser('allow',$myrow[uid]);\">启用</a>";
+			$btn_show ="<a class=\"btn btn-success btn-xs\" href=\"javascript:\" onclick=\"changeuser('allow',$myrow[uid],'0');\">启用</a> <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
 		}
 		if($userid == $myrow['uid']){
 			$btn_show ="<a class=\"btn btn-default btn-xs\" href=\"#\">禁用</a>";
@@ -215,14 +226,29 @@ function updateUserInfo(type){
 		}
 	});
 }
-function changeuser(type,uid){
+function changeuser(type,uid,name){
+	if(type=="changelogin"){
+		geturl = "date.php?action=changelogin&admin=<?php echo $userinfo['userid'];?>&name="+name+"&uid="+uid+"";
+	}else{
+		geturl = "date.php?action=changeuser&m="+type+"&uid="+uid+"";
+	}
 	$.ajax({
 		type:"get",
-		url:"date.php?action=changeuser&m="+type+"&uid="+uid+"", //需要获取的页面内容
+		url: geturl, //需要获取的页面内容
 		async:true,
-		success:function(data){
-			alert(data);
-			window.location.reload();
+		success: function(result) {
+			var data = '';
+			if(result != ''){
+				data = eval("("+result+")");
+			}
+			alert(data.error_msg);
+			if(data.url != ""){
+				location.href = data.url;
+			}else{
+				window.location.reload();
+			}		
+		},
+		error : function() {
 		}
 	});
 }

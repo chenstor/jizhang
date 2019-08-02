@@ -10,8 +10,9 @@ if(PHP_VERSION<5.3){
 }
 define("siteName","===sitename===");
 define("SiteURL","===url===");
-define("Multiuser","0");/*是否开启多用户，1为开启，0为禁用*/
-define("Invite","0");/*是否开启邀请码注册，1为开启，0为禁用*/
+define("Multiuser","0");
+define("Invite","0");
+define("ViewAllData","0");
 // database
 define("DB_HOST","===db_host===");
 define("DB_USER","===db_user===");

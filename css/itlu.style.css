@@ -48,7 +48,7 @@ td.add_th i{font-style:normal}
 
 .stat{background:#f9f9f9}
 #stat{padding:8px}
-#itlu-wrap{max-width:840px;width:auto;margin:0 auto;padding:4px;}
+#itlu-wrap{max-width:880px;width:auto;margin:0 auto;padding:4px;}
 .itlu-title{padding:8px;overflow:hidden;}
 
 .search_box{width:auto;padding:5px 10px;overflow:hidden;clear:both}
@@ -81,6 +81,7 @@ td.add_th i{font-style:normal}
 #user_form .btn_div{padding-left:75px;}
 
 #system_form i{font-style:normal;width:75px;text-align:right;display:inline-block}
+#system_form u{font-style:normal;text-decoration:none;display:inline-block;padding-left:8px;color:#999;font-size:12px}
 #system_form .btn_div{padding-left:75px;}
 
 #smtp_form i{font-style:normal;width:75px;text-align:right;display:inline-block}

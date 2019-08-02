@@ -286,7 +286,6 @@ if($getaction=="modifyclassify"){
     echo json_encode($data);
 }
 if($getaction=="changeuser"){
-	header('Content-type:text/html;charset=utf-8');
 	$type = get("m");
 	$uid = get("uid");
 	if(empty($type) or empty($uid)){
@@ -306,8 +305,29 @@ if($getaction=="changeuser"){
 		}else{
 			$error_code = "操作失败！";
 		}
+		$success = "1";
+		$gotourl = "users.php";
 	}
-	echo $error_code;
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
+    echo json_encode($data);
+}
+if($getaction=="changelogin"){
+	$admin = get("admin");
+	$uid = get("uid");
+	$name = get("name");
+	if(empty($admin) or empty($uid) or empty($name)){
+		$error_code = "参数不完整！";
+	}elseif($admin == $uid){
+		$error_code = "不能扮演自己！";
+	}else{		
+		$_SESSION['uid'] = $uid;
+		$_SESSION['new_name'] = $name;
+		$success = "1";
+		$error_code = "操作成功！";
+		$gotourl = "add.php";
+	}
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
+    echo json_encode($data);
 }
 if($getaction=="updateuser"){
 	$password = post_pass("password");

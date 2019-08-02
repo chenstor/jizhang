@@ -12,6 +12,7 @@ if($getaction=="loginout"){
 	unset($_SESSION['uid']);
 	unset($_SESSION['email']);
 	unset($_SESSION['pageurl']);
+	unset($_SESSION['new_name']);
 	setcookie("userinfo", "", time()-3600);
 	alertgourl("注销成功！","login.php");
 }
