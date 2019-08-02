@@ -44,9 +44,7 @@ include_once("header.php");
 			];
 			$info = vita_get_url_content("data/config.php");			
 			preg_match_all("/define\(\"(.*?)\",\"(.*?)\"\)/",$info,$arr);
-			//var_dump($arr);
 			foreach($arr[1] as $k=>$v){
-				//echo $v;
 			if($v=='DB_HOST' or $v=='DB_USER' or $v=='DB_PASS' or $v=='DB_NAME' or $v=='DB_PORT' or $v=='TABLE'){continue;}
 			if($v=='Multiuser'){
 			?>
@@ -130,13 +128,16 @@ include_once("header.php");
 	foreach($userlist as $myrow){
 		if($myrow['Isallow']=="0"){
 			$res = "<span class='green'>正常</span>";
-			$btn_show ="<a class=\"btn btn-danger btn-xs\" href=\"javascript:\" onclick=\"changeuser('noallow',$myrow[uid],'0');\">禁用</a> <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
+			$btn_show ="<a class=\"btn btn-danger btn-xs\" href=\"javascript:\" onclick=\"changeuser('noallow',$myrow[uid],'0');\">禁用</a>";
 		}else{
 			$res = "<span class='red'>禁用</span>";
-			$btn_show ="<a class=\"btn btn-success btn-xs\" href=\"javascript:\" onclick=\"changeuser('allow',$myrow[uid],'0');\">启用</a> <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
+			$btn_show ="<a class=\"btn btn-success btn-xs\" href=\"javascript:\" onclick=\"changeuser('allow',$myrow[uid],'0');\">启用</a>";
 		}
 		if($userid == $myrow['uid']){
 			$btn_show ="<a class=\"btn btn-default btn-xs\" href=\"#\">禁用</a>";
+		}
+		if(ViewAllData=="1" and $userinfo['isadmin']=="1"){
+			$btn_show = $btn_show . " <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
 		}
 	?>
     <tr><td align='left' bgcolor='#FFFFFF'><?php echo $myrow['username'];?></td>
