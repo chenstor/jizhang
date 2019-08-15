@@ -392,7 +392,7 @@ if($getaction=="export"){
         $money = $row['acmoney'];
         $time = date("Y-m-d H:i",$row['actime']);		
 		if($row['acremark']<>""){
-			$remark = iconv('utf-8','gb2312',$row['acremark']);
+			$remark = iconv('utf-8','gbk',$row['acremark']);
 		}else{
 			$remark = "";
 		}
