@@ -10,26 +10,34 @@ $s_bankid = get('bankid');
 $s_page = get('page','1');
 
 $pageurl = "show.php?1=1";
+$exporturl = "date.php?action=export";
 if($s_classid != ""){
 	$pageurl = $pageurl."&classid=".$s_classid;
+	$exporturl = $exporturl."&classid=".$s_classid;
 }
 if($s_starttime != ""){
 	$pageurl = $pageurl."&starttime=".$s_starttime;
+	$exporturl = $exporturl."&starttime=".$s_starttime;
 }
 if($s_endtime != ""){
 	$pageurl = $pageurl."&endtime=".$s_endtime;
+	$exporturl = $exporturl."&endtime=".$s_endtime;
 }
 if($s_startmoney != ""){
 	$pageurl = $pageurl."&startmoney=".$s_startmoney;
+	$exporturl = $exporturl."&startmoney=".$s_startmoney;
 }
 if($s_endmoney != ""){
 	$pageurl = $pageurl."&endmoney=".$s_endmoney;
+	$exporturl = $exporturl."&endmoney=".$s_endmoney;
 }
 if($s_remark != ""){
 	$pageurl = $pageurl."&remark=".$s_remark;
+	$exporturl = $exporturl."&remark=".$s_remark;
 }
 if($s_bankid != ""){
 	$pageurl = $pageurl."&bankid=".$s_bankid;
+	$exporturl = $exporturl."&bankid=".$s_bankid;
 }
 ?>
 
@@ -82,7 +90,7 @@ if($s_bankid != ""){
 					}
 					?>
 				</select></label></p>
-				<p class="btn_div"><input type="submit" name="submit" value="查询" class="btn btn-primary" /></p>
+				<p class="btn_div"><input type="submit" name="submit" value="查询" class="btn btn-primary" /><input type="button" id="export" value="导出" class="btn btn-success ml8" onClick="window.location.href='<?php echo $exporturl;?>'" /></p>
 				</form>
 			</div>
         </td>
@@ -110,7 +118,7 @@ if($s_bankid != ""){
 				if(isMobile()){
 					echo "<li>".date("m-d",$row['actime'])."</li>";
 				}else{
-					echo "<li>".date("Y-m-d",$row['actime'])."</li>";
+					echo "<li>".date("Y-m-d H:i",$row['actime'])."</li>";
 				}
 				echo "<li>".$row['acremark']."</li>";
 				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
@@ -141,9 +149,10 @@ foreach($banklist as $myrow){
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<form id="edit-form" name="edit-form" method="post">
-		<input name="edit-id" type="hidden" id="edit-id" />
-		<input name="old-bank-id" type="hidden" id="old-bank-id" />
-		<input name="edit-zhifu" type="hidden" id="edit-zhifu" />
+			<input name="edit-id" type="hidden" id="edit-id" />
+			<input name="old-bank-id" type="hidden" id="old-bank-id" />
+			<input name="old-money" type="hidden" id="old-money" />
+			<input name="edit-zhifu" type="hidden" id="edit-zhifu" />
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

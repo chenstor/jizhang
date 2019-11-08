@@ -144,6 +144,7 @@ function editRecord(t,openid){
 	$("#edit-money").val(money);
 	$("#edit-remark").val(remark);
 	$("#old-bank-id").val(bankid);
+	$("#old-money").val(money);//修改前的金额
 	$("#edit-zhifu").val(zhifu);
 	$("#edit-bankid").find("option[value='"+bankid+"']").attr("selected",true);
 	$("#edit-time").val(addtime);

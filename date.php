@@ -119,6 +119,7 @@ if($getaction=="addrecord"){
 if($getaction=="saverecord"){
 	$id = post("edit-id");
 	$money = post("edit-money");
+	$old_money = post("old-money");
 	$remark = post("edit-remark");
 	$old_bankid = post("old-bank-id");
 	$new_bankid = post("edit-bankid");
@@ -132,10 +133,12 @@ if($getaction=="saverecord"){
 		$sql = "update ".TABLE."account set acmoney='".$money."',acremark='".$remark."',actime='".$addtime."',bankid='".$new_bankid."' where acid='".$id."' and jiid='".$userid."'";
 		$result = mysqli_query($conn,$sql);
 		if($result){
-			if($zhifu==2){
+			if($zhifu==2){//支出
+				if($old_bankid==$new_bankid && $old_bankid>0){money_int_out($old_bankid,$old_money,"1");money_int_out($old_bankid,$money,"2");}
 				if($old_bankid<>$new_bankid && $old_bankid>0){money_int_out($old_bankid,$money,"1");}
 				if($old_bankid<>$new_bankid && $new_bankid>0){money_int_out($new_bankid,$money,"2");}
-			}else{
+			}else{//收入
+				if($old_bankid==$new_bankid && $old_bankid>0){money_int_out($old_bankid,$old_money,"2");money_int_out($old_bankid,$money,"1");}
 				if($old_bankid<>$new_bankid && $old_bankid>0){money_int_out($old_bankid,$money,"2");}
 				if($old_bankid<>$new_bankid && $new_bankid>0){money_int_out($new_bankid,$money,"1");}
 			}
@@ -378,7 +381,42 @@ if($getaction=="updateuser"){
 }
 if($getaction=="export"){
 	header('Content-type:text/html;charset=utf-8');
+	$classid = get('classid','all');
+	$starttime = get('starttime');
+	$endtime = get('endtime');
+	$startmoney = get('startmoney');
+	$endmoney = get('endmoney');
+	$remark = get('remark');
+	$bankid = get('bankid');
+
 	$sql = "select a.zhifu,a.acmoney,a.actime,a.acremark,a.bankid,b.classname from ".TABLE."account as a INNER JOIN ".TABLE."account_class as b ON b.classid=a.acclassid and a.jiid='$userid'";
+	if($classid == "all"){
+		
+	}elseif($classid == "pay"){
+		$sql .= " and a.zhifu = 2 ";
+	}elseif($classid == "income"){
+		$sql .= " and a.zhifu = 1 ";
+	}else{
+		$sql .= " and a.acclassid = '".$classid."' ";
+	}
+	if(!empty($bankid)){
+		$sql .= " and bankid = '".$bankid."' ";
+	}
+	if(!empty($starttime)){
+		$sql .= " and actime >= '".strtotime($starttime." 00:00:00")."' ";
+	}
+	if(!empty($endtime)){
+		$sql .= " and actime <= '".strtotime($endtime." 23:59:59")."' ";
+	}
+	if(!empty($startmoney)){
+		$sql .= " and acmoney >= '".$startmoney."' ";
+	}
+	if(!empty($endmoney)){
+		$sql .= " and acmoney <= '".$endmoney."' ";
+	}
+	if(!empty($remark)){
+		$sql .= " and acremark like '%".$remark."%' ";
+	}
 	$result = mysqli_query($conn,$sql);
     $str = "收支,分类,账户,金额,时间,备注\n";
     $str = iconv('utf-8','gb2312',$str);

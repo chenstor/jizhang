@@ -129,7 +129,7 @@ foreach($Prolist as $row){
 		if(isMobile()){
 			echo "<li>".date("m-d",$row['actime'])."</li>";
 		}else{
-			echo "<li>".date("Y-m-d",$row['actime'])."</li>";
+			echo "<li>".date("Y-m-d H:i",$row['actime'])."</li>";
 		}
 		echo "<li>".$row['acremark']."</li>";
 		echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
@@ -146,9 +146,10 @@ $("#stat").html("今天支出<strong class='red'><?php echo state_day($today,$to
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<form id="edit-form" name="edit-form" method="post">
-		<input name="edit-id" type="hidden" id="edit-id" />
-		<input name="old-bank-id" type="hidden" id="old-bank-id" />
-		<input name="edit-zhifu" type="hidden" id="edit-zhifu" />
+			<input name="edit-id" type="hidden" id="edit-id" />
+			<input name="old-bank-id" type="hidden" id="old-bank-id" />
+			<input name="old-money" type="hidden" id="old-money" />
+			<input name="edit-zhifu" type="hidden" id="edit-zhifu" />
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

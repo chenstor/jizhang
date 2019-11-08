@@ -1,7 +1,7 @@
 <?php
 if(!defined("DB_HOST")){die('非法访问！');}
 
-$version = 'V2.2.0(19.08.02)';
+$version = 'V2.2.1(19.11.08)';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){

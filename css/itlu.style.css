@@ -41,6 +41,7 @@ td.add_th i{font-style:normal}
 .record_form .w180,.record_form .sang_Calender{width:180px;height:26px;border:1px solid #ccc;padding:0 3px}
 .addclass{margin-left:8px;color:#ccc}
 .btn_div{padding-left:42px}
+.btn_div .btn{padding:3px 28.5px !important;}
 #income_error,#pay_error{margin-left:8px;font-size:12px;}
 .center{text-align:center !important;}
 .page{width:auto;display:table;margin:0 auto}
