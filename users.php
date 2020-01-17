@@ -35,6 +35,7 @@ include_once("header.php");
 				"Multiuser"=>"多用户",
 				"Invite"=>"邀请注册",
 				"ViewAllData"=>"管理数据",
+				"WeekDayStart"=>"每周开始",
 				"DB_HOST"=>"数据库地址",
 				"DB_USER"=>"数据库用户",
 				"DB_PASS"=>"数据库密码",
@@ -59,6 +60,11 @@ include_once("header.php");
 			elseif($v=='ViewAllData'){
 			?>
 			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="ViewAllData" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="ViewAllData" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <u>(开启后管理员可查看所有记账记录)</u></p>
+			<?php 
+			}
+			elseif($v=='WeekDayStart'){
+			?>
+			<p><i><?php echo $keyinfo[$v];?>：</i><label><input name="WeekDayStart" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />周一</label><label class="ml10"><input name="WeekDayStart" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />周日</label> <u>(每周的开始，影响统计数据显示)</u></p>
 			<?php 
 			}
 			else{?>

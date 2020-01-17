@@ -32,12 +32,12 @@ include_once("header.php");
 <script language="javascript">
 	$("#stat").html("<?php echo date("Y年m月",$userinfo['regtime']);?>至今共收入<strong class='green'><?php echo state_day(date("Y-m-d",$userinfo['regtime']),$today,$userid,1);?></strong>，共支出<strong class='red'><?php echo state_day(date("Y-m-d",$userinfo['regtime']),$today,$userid,2);?></strong>");
 	$("#pay_day").text("<?php echo state_day($today,$today,$userid,2);?>");
-	$("#pay_week").text("<?php echo state_day(get_week_day(1),$today,$userid,2);?>");
+	$("#pay_week").text("<?php echo state_day($this_week_start,$today,$userid,2);?>");
 	$("#pay_month").text("<?php echo state_day($this_month_firstday,$today,$userid,2);?>");
 	$("#pay_year").text("<?php echo state_day($this_year_firstday,$today,$userid,2);?>");
 	
 	$("#income_day").text("<?php echo state_day($today,$today,$userid,1);?>");
-	$("#income_week").text("<?php echo state_day(get_week_day(1),$today,$userid,1);?>");
+	$("#income_week").text("<?php echo state_day($this_week_start,$today,$userid,1);?>");
 	$("#income_month").text("<?php echo state_day($this_month_firstday,$today,$userid,1);?>");
 	$("#income_year").text("<?php echo state_day($this_year_firstday,$today,$userid,1);?>");
 

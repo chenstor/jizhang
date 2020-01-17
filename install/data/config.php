@@ -13,6 +13,7 @@ define("SiteURL","===url===");
 define("Multiuser","0");
 define("Invite","0");
 define("ViewAllData","0");
+define("WeekDayStart","0");
 // database
 define("DB_HOST","===db_host===");
 define("DB_USER","===db_user===");

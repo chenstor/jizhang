@@ -1,7 +1,7 @@
 <?php
 if(!defined("DB_HOST")){die('非法访问！');}
 
-$version = 'V2.2.1(19.11.08)';
+$version = 'V2.2.2(2020.01.17)';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){
@@ -21,12 +21,40 @@ $yesterday = date("Y-m-d",strtotime("-1 day"));
 $this_year = date("Y");
 $this_month_firstday = date('Y-m-01', strtotime(date("Y-m-d")));
 $this_year_firstday = date("Y",time())."-01-01";
-$last_week_start = date("Y-m-d",mktime(0, 0 , 0,date("m"),date("d")-date("w")+1-7,date("Y")));
-$last_week_end = date("Y-m-d",mktime(23,59,59,date("m"),date("d")-date("w")+7-7,date("Y")));
+//$last_week_start = date("Y-m-d",mktime(0, 0, 0,date("m"),date("d")-date("w")+1-7,date("Y")));
+//$last_week_end = date("Y-m-d",mktime(23,59,59,date("m"),date("d")-date("w")+7-7,date("Y")));
 $last_month_start = date("Y-m-d",mktime(0, 0 , 0,date("m")-1,1,date("Y")));
 $last_month_end = date("Y-m-d",mktime(23,59,59,date("m") ,0,date("Y")));
 $last_year_start = date("Y-m-d", strtotime("-1 year"));
 $last_year_end = date("Y-12-31", strtotime("-1 year"));
+
+$last_week_data = getWeekMyActionAndEnd(strtotime("-7 day"),WeekDayStart);
+$last_week_start = $last_week_data["week_start"];
+$last_week_end = $last_week_data["week_end"];
+
+$this_week_data = getWeekMyActionAndEnd("",WeekDayStart);
+$this_week_start = $this_week_data["week_start"];
+$this_week_end = $this_week_data["week_end"];
+
+/*
+ * 获取某星期的开始时间和结束时间
+ * time 时间
+ * first 表示每周星期一为开始日期 0表示每周日为开始日期
+ */
+function getWeekMyActionAndEnd($time = '', $first = 1){
+  //当前日期
+  if (!$time) $time = time();
+  $sdefaultDate = date("Y-m-d", $time);
+  //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
+  //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
+  $w = date('w', strtotime($sdefaultDate));
+  //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
+  $week_start = date('Y-m-d', strtotime("$sdefaultDate -" . ($w ? $w - $first : 6) . ' days'));
+  //本周结束日期
+  $week_end = date('Y-m-d', strtotime("$week_start +6 days"));
+  return array("week_start" => $week_start, "week_end" => $week_end);
+}
+
 function get_week_day($type=1){
 	$date=new DateTime();
 	if($type==1){
