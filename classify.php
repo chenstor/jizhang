@@ -114,7 +114,7 @@ function edit(t){
 	$("#classid").val(classid);
 	$("#classtype_div").hide();
 	//$("#classtype").find("option").attr("selected",false);
-	//$("#classtype").find("option[value="+classtype+"]").attr("selected",true);
+	$("#classtype").find("option[value="+classtype+"]").attr("selected",true);
 	$('#btn_submit').attr('date-info','modify');
 }
 // 转移分类
