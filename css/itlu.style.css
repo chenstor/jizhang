@@ -49,7 +49,7 @@ td.add_th i{font-style:normal}
 
 .stat{background:#f9f9f9}
 #stat{padding:8px}
-#itlu-wrap{max-width:880px;width:auto;margin:0 auto;padding:4px;}
+#itlu-wrap{max-width:960px;width:auto;margin:0 auto;padding:4px;}
 .itlu-title{padding:8px;overflow:hidden;}
 
 .search_box{width:auto;padding:5px 10px;overflow:hidden;clear:both}
@@ -121,6 +121,7 @@ ul{margin:0;padding:0;list-style:none;}
 	
 	.table>tbody>tr>th, .table>tbody>tr>td{padding:8px 4px}
 	.table-responsive>.table-bordered{border-bottom:1px solid #ddd}
+	.nav>li>a{padding:15px 12px}
 	.page ul{margin-top:15px;margin-bottom:15px;}
 	
 	.footer{border-left:0;border-right:0;border-bottom:0}
