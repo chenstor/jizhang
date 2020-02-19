@@ -34,7 +34,7 @@ include_once("header.php");
 				"SiteURL"=>"站点网址",
 				"Multiuser"=>"多用户",
 				"Invite"=>"邀请注册",
-				"ViewAllData"=>"管理数据",
+				"ViewAllData"=>"全部记录",
 				"WeekDayStart"=>"每周开始",
 				"DB_HOST"=>"数据库地址",
 				"DB_USER"=>"数据库用户",
@@ -59,7 +59,7 @@ include_once("header.php");
 			}
 			elseif($v=='ViewAllData'){
 			?>
-			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="ViewAllData" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="ViewAllData" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <u>(开启后管理员可查看所有记账记录)</u></p>
+			<p><i><?php echo $keyinfo[$v];?>：</i><label><input name="ViewAllData" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />不开放</label><label class="ml10"><input name="ViewAllData" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />仅管理员</label><label class="ml10"><input name="ViewAllData" type="radio" value="2" <?php if($arr[2][$k]=='2'){echo "checked";}?> />所有人</label> <u>(开启后顶部增加菜单入口)</u></p>
 			<?php 
 			}
 			elseif($v=='WeekDayStart'){
@@ -143,7 +143,7 @@ include_once("header.php");
 			$btn_show ="<a class=\"btn btn-default btn-xs\" href=\"#\">禁用</a>";
 		}
 		if(ViewAllData=="1" and $userinfo['isadmin']=="1"){
-			$btn_show = $btn_show . " <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
+			//$btn_show = $btn_show . " <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
 		}
 	?>
     <tr><td align='left' bgcolor='#FFFFFF'><?php echo $myrow['username'];?></td>
@@ -235,7 +235,7 @@ function updateUserInfo(type){
 }
 function changeuser(type,uid,name){
 	if(type=="changelogin"){
-		geturl = "date.php?action=changelogin&admin=<?php echo $userinfo['userid'];?>&name="+name+"&uid="+uid+"";
+		//geturl = "date.php?action=changelogin&admin=<?php echo $userinfo['userid'];?>&name="+name+"&uid="+uid+"";
 	}else{
 		geturl = "date.php?action=changeuser&m="+type+"&uid="+uid+"";
 	}

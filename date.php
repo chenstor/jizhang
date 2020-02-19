@@ -314,7 +314,7 @@ if($getaction=="changeuser"){
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
-if($getaction=="changelogin"){
+/*if($getaction=="changelogin"){
 	$admin = get("admin");
 	$uid = get("uid");
 	$name = get("name");
@@ -331,7 +331,7 @@ if($getaction=="changelogin"){
 	}
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
-}
+}*/
 if($getaction=="updateuser"){
 	$password = post_pass("password");
 	$newpassword = post_pass("newpassword");
