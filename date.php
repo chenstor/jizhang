@@ -314,24 +314,30 @@ if($getaction=="changeuser"){
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
-/*if($getaction=="changelogin"){
-	$admin = get("admin");
+if($getaction=="changepassword"){
 	$uid = get("uid");
 	$name = get("name");
-	if(empty($admin) or empty($uid) or empty($name)){
+	if(empty($uid) or empty($name)){
 		$error_code = "参数不完整！";
-	}elseif($admin == $uid){
-		$error_code = "不能扮演自己！";
-	}else{		
-		$_SESSION['uid'] = $uid;
-		$_SESSION['new_name'] = $name;
-		$success = "1";
-		$error_code = "操作成功！";
-		$gotourl = "add.php";
+	}else{
+		$newpassword = "12345678";
+		$update_time = strtotime("now");
+		$salt = md5($name.$update_time.$newpassword);
+		$user_pass = hash_md5($newpassword,$salt);
+		$u_sql = "password='$user_pass',salt='$salt'";
+		$update_sql = "update ".TABLE."user set ".$u_sql." where uid='$uid'";
+        $update_query = mysqli_query($conn,$update_sql);
+		if($update_query){
+			$success = "1";
+			$error_code = "操作成功！密码重置为：12345678";
+			$gotourl = "users.php";
+		}else{
+			$error_code = "出错啦，写入数据库时出错！";
+		}
 	}
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
-}*/
+}
 if($getaction=="updateuser"){
 	$password = post_pass("password");
 	$newpassword = post_pass("newpassword");

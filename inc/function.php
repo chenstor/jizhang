@@ -139,6 +139,9 @@ function show_tab($type){
 	}elseif($type==5){
 		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>类别名称</li><li>收/支</li><li>操作</li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
+	}elseif($type==6){
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>记录人</li></ul></div>\n";
+		echo "<div class=\"table-row-group\">\n";
 	}	
 }
 function showlogin($tid){

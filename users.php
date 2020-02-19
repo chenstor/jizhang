@@ -142,9 +142,7 @@ include_once("header.php");
 		if($userid == $myrow['uid']){
 			$btn_show ="<a class=\"btn btn-default btn-xs\" href=\"#\">禁用</a>";
 		}
-		if(ViewAllData=="1" and $userinfo['isadmin']=="1"){
-			//$btn_show = $btn_show . " <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changelogin',$myrow[uid],'$myrow[username]');\">扮演</a>";
-		}
+		$btn_show = $btn_show . " <a class=\"btn btn-primary btn-xs\" href=\"javascript:\" onclick=\"changeuser('changepassword',$myrow[uid],'$myrow[username]');\">重置</a>";
 	?>
     <tr><td align='left' bgcolor='#FFFFFF'><?php echo $myrow['username'];?></td>
 		<td align='left' bgcolor='#FFFFFF'><?php echo $myrow['email'];?></td>
@@ -234,8 +232,8 @@ function updateUserInfo(type){
 	});
 }
 function changeuser(type,uid,name){
-	if(type=="changelogin"){
-		//geturl = "date.php?action=changelogin&admin=<?php echo $userinfo['userid'];?>&name="+name+"&uid="+uid+"";
+	if(type=="changepassword"){
+		geturl = "date.php?action=changepassword&name="+name+"&uid="+uid+"";
 	}else{
 		geturl = "date.php?action=changeuser&m="+type+"&uid="+uid+"";
 	}
