@@ -108,7 +108,9 @@ if($getaction=="addrecord"){
 				$gotourl = "add.php?action=income";
 			}else{
 				$gotourl = "add.php?action=pay";
-			}			
+			}
+			setcookie("classid_".$userid, $classid, time()+86400*3);
+			setcookie("bankid_".$userid, $bankid, time()+86400*3);
 		}else{
 			$error_code = "保存失败！";
 		}		

@@ -3,8 +3,14 @@
 //账户列表
 $banklist = db_list("bank","where userid='$userid'","order by bankid asc");
 $banklist_show = '';
+$banklist_show_edit = '';
 foreach($banklist as $myrow){
-	$banklist_show = $banklist_show."<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+	if((!empty($_COOKIE["bankid_".$userid])) && ($_COOKIE["bankid_".$userid]==$myrow["bankid"])){
+		$banklist_show = $banklist_show."<option value='$myrow[bankid]' selected>".$myrow['bankname']."</option>";
+	}else{
+		$banklist_show = $banklist_show."<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+	}
+	$banklist_show_edit = $banklist_show_edit."<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
 }
 ?>
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
@@ -29,7 +35,11 @@ foreach($banklist as $myrow){
                 <?php
 				$pay_type_list = show_type(2,$userid);
 				foreach($pay_type_list as $myrow){
-					echo "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
+					if((!empty($_COOKIE["classid_".$userid])) && ($_COOKIE["classid_".$userid]==$myrow["classid"])){
+						echo "<option value='$myrow[classid]' selected>".$myrow['classname']."</option>";
+					}else{
+						echo "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
+					}		
 				}
                 ?>
 				</select>
@@ -69,7 +79,11 @@ foreach($banklist as $myrow){
                 <?php
 				$pay_type_list = show_type(1,$userid);
 				foreach($pay_type_list as $myrow){
-					echo "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
+					if((!empty($_COOKIE["classid_".$userid])) && ($_COOKIE["classid_".$userid]==$myrow["classid"])){
+						echo "<option value='$myrow[classid]' selected>".$myrow['classname']."</option>";
+					}else{
+						echo "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
+					}
 				}
                 ?>
 				</select>
@@ -172,7 +186,7 @@ $("#stat").html("今天支出<strong class='red'><?php echo state_day($today,$to
 					<label for="edit-bankid">账户</label>
 					<select name="edit-bankid" id="edit-bankid" class="form-control">
 						<option value='0'>默认账户</option>
-						<?php echo $banklist_show;?>
+						<?php echo $banklist_show_edit;?>
 					</select>
 				</div>
 				<div class="form-group">
