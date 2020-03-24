@@ -3,8 +3,8 @@ header("Content-Type: text/html;charset=utf-8");
 if(!is_file("./install/lock") && is_file("./install/index.php")){
 	@header("location:install/index.php");
 }
-include_once("data/config.php");
-include_once("inc/function.php");
+include("data/config.php");
+include("inc/function.php");
 
 $getaction = get("action");//获取参数
 
@@ -47,7 +47,7 @@ if($getaction=="register" and Multiuser=="1"){ // 注册
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo siteName;?></title>
+<title><?php echo SiteNameTitle;?></title>
 <link rel="apple-touch-icon" sizes="180x180" href="<?php echo SiteURL;?>img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="<?php echo SiteURL;?>img/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="<?php echo SiteURL;?>img/favicon-16x16.png">
 <link rel="stylesheet" href="css/login.css" />
 </head>

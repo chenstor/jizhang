@@ -10,7 +10,7 @@ if($getaction=="getclassify"){
 	header('Content-type:text/html;charset=utf-8');
 	$classtype = get("classtype");
 	$classid = get("classid");
-	$sql = "select * from ".TABLE."account_class where ufid='$userid' and classtype='$classtype'";
+	$sql = "select * from ".TABLE."account_class where userid='$userid' and classtype='$classtype'";
     $query = mysqli_query($conn,$sql);
     while($row = mysqli_fetch_array($query)){
 		if($row["classid"] <> $classid){
@@ -20,15 +20,18 @@ if($getaction=="getclassify"){
 }
 if($getaction=="addbank"){
 	$bankname = post("bankname");
-	$bankaccount = post("bankaccount");
+	$bankaccount = post("bankaccount");//programid
 	$balancemoney = post("balancemoney","0");
-	if(empty($bankname) or empty($bankaccount)){
+	$start_time = post("addtime");
+	$end_time = post("updatetime");
+	if(empty($bankname) or empty($bankaccount) or empty($start_time)){
 		$error_code = "缺少参数！";
 	}elseif(!is_numeric($balancemoney)){
 		$error_code = "金额非法！";
 	}else{
-		$addtime = strtotime("now");
-		$sql = "insert into ".TABLE."bank (bankname, bankaccount, balancemoney, addtime, updatetime, userid) values ('$bankname', '$bankaccount', '$balancemoney', '$addtime', '$addtime', '$userid')";
+		$start_time = strtotime($start_time);
+		if(!empty($end_time)){$end_time = strtotime($end_time);}
+		$sql = "insert into ".TABLE."bank (bankname, bankaccount, balancemoney, addtime, updatetime, userid) values ('$bankname', '$bankaccount', '$balancemoney', '$start_time', '$end_time', '$userid')";
 		$query = mysqli_query($conn,$sql);
 		if($query){
 			$success = "1";
@@ -46,13 +49,12 @@ if($getaction=="modifybank"){
 	$bankaccount = post("bankaccount");
 	$bankid = post("bankid");
 	$balancemoney = post("balancemoney","0");
+	$start_time = post("addtime");
+	$end_time = post("updatetime");
 	if(empty($bankname) or empty($bankaccount)){
 		$error_code = "缺少参数！";
-	}elseif(!is_numeric($balancemoney)){
-		$error_code = "金额非法！";
 	}else{
-		$now = strtotime("now");
-		$sql = "update ".TABLE."bank set bankname='".$bankname."',bankaccount='".$bankaccount."',balancemoney='".$balancemoney."' ,updatetime='".$now."' where bankid=".$bankid;
+		$sql = "update ".TABLE."bank set bankname='".$bankname."',bankaccount='".$bankaccount."' where bankid=".$bankid;
 		$result = mysqli_query($conn,$sql);
 		if ($result) {
 			$success = "1";
@@ -71,10 +73,10 @@ if($getaction=="deletebank"){
 	if(empty($bankid) || !is_numeric($bankid)){
 		$error_code = "缺少参数或参数非法！";
 	}else{
-		$sql = "select acid from ".TABLE."account where bankid='$bankid' and jiid='$userid'";
+		$sql = "select acid from ".TABLE."account where bankid='$bankid' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		if ($row = mysqli_fetch_array($query)) {
-			$error_code = "该银行卡有关联数据，不能删除！";
+			$error_code = "该员工有关联数据，不能删除！";
 		} else {
 			$sql = "delete from ".TABLE."bank where bankid=".$bankid;
 			if (mysqli_query($conn,$sql)){
@@ -92,13 +94,14 @@ if($getaction=="addrecord"){
 	$zhifu = post("zhifu");
 	$remark = post("remark");
 	$bankid = post("bankid");
+	$proid = post("proid");
 	$addtime = strtotime(post("time"));
-	if(empty($classid) or empty($money) or empty($zhifu)){
+	if(empty($classid) or empty($money) or empty($zhifu) or empty($proid)){
 		$error_code = "缺少参数！";
 	}elseif(!is_numeric($money)){
 		$error_code = "金额非法！";
 	}else{
-		$sql = "insert into ".TABLE."account (acmoney, acclassid, actime, acremark, jiid, zhifu, bankid) values ('$money', '$classid', '$addtime', '$remark', '$userid', '$zhifu', '$bankid')";
+		$sql = "insert into ".TABLE."account (acmoney, acclassid, actime, acremark, userid, zhifu, bankid, proid) values ('$money', '$classid', '$addtime', '$remark', '$userid', '$zhifu', '$bankid', '$proid')";
 		$query = mysqli_query($conn,$sql);
 		if($query){
 			if($bankid>0){money_int_out($bankid,$money,$zhifu);}
@@ -109,8 +112,9 @@ if($getaction=="addrecord"){
 			}else{
 				$gotourl = "add.php?action=pay";
 			}
-			setcookie("classid_".$userid, $classid, time()+86400*3);
-			setcookie("bankid_".$userid, $bankid, time()+86400*3);
+			setcookie("add_itlu_classid_".$userid, $classid, time()+86400*3);
+			setcookie("add_itlu_bankid_".$userid, $bankid, time()+86400*3);
+			setcookie("add_itlu_proid_".$userid, $proid, time()+86400*3);
 		}else{
 			$error_code = "保存失败！";
 		}		
@@ -123,16 +127,17 @@ if($getaction=="saverecord"){
 	$money = post("edit-money");
 	$old_money = post("old-money");
 	$remark = post("edit-remark");
+	$proid = post("edit-proid");
 	$old_bankid = post("old-bank-id");
 	$new_bankid = post("edit-bankid");
 	$zhifu = post("edit-zhifu");
 	$addtime = strtotime(post("edit-time"));
-	if(empty($id) or empty($money)){
+	if(empty($id) or empty($money) or empty($proid) or empty($new_bankid)){
 		$error_code = "缺少参数！";
 	}elseif(!is_numeric($money)){
 		$error_code = "金额非法！";
 	}else{
-		$sql = "update ".TABLE."account set acmoney='".$money."',acremark='".$remark."',actime='".$addtime."',bankid='".$new_bankid."' where acid='".$id."' and jiid='".$userid."'";
+		$sql = "update ".TABLE."account set acmoney='".$money."',acremark='".$remark."',actime='".$addtime."',bankid='".$new_bankid."',proid='".$proid."' where acid='".$id."' and userid='".$userid."'";
 		$result = mysqli_query($conn,$sql);
 		if($result){
 			if($zhifu==2){//支出
@@ -159,7 +164,7 @@ if($getaction=="deleterecord"){
 	if(empty($get_id) || !is_numeric($get_id)){
 		$error_code = "缺少参数或参数非法！";
 	}else{
-		$sql = "select bankid,zhifu,acmoney from ".TABLE."account where acid='$get_id' and jiid='$userid'";
+		$sql = "select bankid,zhifu,acmoney from ".TABLE."account where acid='$get_id' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		if($row = mysqli_fetch_array($query)){
 			if($row["bankid"]>0){
@@ -168,7 +173,7 @@ if($getaction=="deleterecord"){
 				money_int_out($row["bankid"],$row["acmoney"],$zhifu);
 			}
 		}
-		$del_sql = "delete from ".TABLE."account where acid='$get_id' and jiid='$userid'";
+		$del_sql = "delete from ".TABLE."account where acid='$get_id' and userid='$userid'";
 		if(mysqli_query($conn,$del_sql)){
 			$error_code = "删除成功！";
 		}else{
@@ -180,7 +185,7 @@ if($getaction=="deleterecord"){
 if($getaction=="deleterecordAll"){
 	if(isset($_POST["del_id"]) && $_POST["del_id"] != ""){
 		$del_id = implode(",",$_POST['del_id']);
-		$sql = "delete from ".TABLE."account where jiid='$userid' and acid in ($del_id)";
+		$sql = "delete from ".TABLE."account where userid='$userid' and acid in ($del_id)";
 		if (mysqli_query($conn,$sql)){
 			$success = "1";
 			$error_code = "删除成功！";
@@ -199,7 +204,7 @@ if($getaction=="changeclassify"){
 	if(empty($newclassid) or $newclassid=="0" or empty($classid)){
 		$error_code = "缺少参数或者未选择目标分类！";
 	}else{
-		$sql = "update ".TABLE."account set acclassid='$newclassid' where acclassid='$classid' and jiid='$userid'";
+		$sql = "update ".TABLE."account set acclassid='$newclassid' where acclassid='$classid' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		if ($query) {
 			$success = "1";
@@ -218,7 +223,7 @@ if($getaction=="deleteclassify"){
 	if(empty($classid)){
 		$error_code = "缺少参数！";
 	}else{
-		$sql = "select acid from ".TABLE."account where acclassid='$classid' and jiid='$userid'";
+		$sql = "select acid from ".TABLE."account where acclassid='$classid' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		if ($row = mysqli_fetch_array($query)) {
 			$error_code = "在此分类下有账目，请将账目转移到其他分类";
@@ -241,14 +246,14 @@ if($getaction=="addclassify"){
 	}elseif(strlen($classname)>18){
 		$error_code = "分类名称不能大于6个字！";
 	}else{
-		$sql = "select * from ".TABLE."account_class where classname='$classname' and classtype='$classtype' and ufid='$userid'";
+		$sql = "select * from ".TABLE."account_class where classname='$classname' and classtype='$classtype' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		$attitle = is_array($row = mysqli_fetch_array($query));
 		if ($attitle) {
 			$error_code = "该名称的分类已经存在！";
 		}
 		else {
-			$sql = "insert into ".TABLE."account_class (classname, classtype, ufid) values ('$classname', '$classtype',$userid)";
+			$sql = "insert into ".TABLE."account_class (classname, classtype, userid) values ('$classname', '$classtype',$userid)";
 			$query = mysqli_query($conn,$sql);
 			if ($query) {
 				$error_code = "保存成功！";
@@ -270,13 +275,13 @@ if($getaction=="modifyclassify"){
 	}elseif(strlen($classname)>18){
 		$error_code = "分类名称不能大于6个字！";
 	}else{
-		$sql = "select * from ".TABLE."account_class where classname='$classname' and classid<>'$_POST[classid]' and ufid='$userid'";
+		$sql = "select * from ".TABLE."account_class where classname='$classname' and classid<>'$_POST[classid]' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		$attitle = is_array($row = mysqli_fetch_array($query));
 		if($attitle){
 			$error_code = "该名称的分类已经存在！";
 		}else{
-			$sql = "UPDATE ".TABLE."account_class set classname='$classname' , classtype=$_POST[classtype] where ufid='$userid' and classid=".$_POST["classid"];
+			$sql = "UPDATE ".TABLE."account_class set classname='$classname' , classtype=$_POST[classtype] where userid='$userid' and classid=".$_POST["classid"];
 			$query = mysqli_query($conn,$sql);
 			if($query){
 				$error_code = "保存成功！";
@@ -289,6 +294,90 @@ if($getaction=="modifyclassify"){
 	}
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
+}
+if($getaction=="addprogram"){
+	$classname = post("proname");
+	$orderid = post("orderid");
+	if(empty($classname)){
+		$error_code = "名称不能为空！";
+	}elseif(strlen($classname)>30){
+		$error_code = "名称不能大于10个字！";
+	}elseif(!is_numeric($orderid)){
+		$error_code = "排序ID只能输入数字！";
+	}else{
+		$sql = "select * from ".TABLE."program where proname='$classname' and userid='$userid'";
+		$query = mysqli_query($conn,$sql);
+		$attitle = is_array($row = mysqli_fetch_array($query));
+		if ($attitle) {
+			$error_code = "该名称的项目已经存在！";
+		}
+		else {
+			$sql = "insert into ".TABLE."program (proname, orderid, userid) values ('$classname', '$orderid', $userid)";
+			$query = mysqli_query($conn,$sql);
+			if ($query) {
+				$error_code = "保存成功！";
+				$success = "1";
+				$gotourl = "program.php";
+			} else {
+				$error_code = "保存失败！";
+			}
+		}	
+		
+	}
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
+    echo json_encode($data);
+}
+if($getaction=="modifyprogram"){
+	$classname = post("proname");
+	$orderid = post("orderid");
+	$proid = post("proid");
+	if(empty($classname)){
+		$error_code = "名称不能为空！";
+	}elseif(strlen($classname)>30){
+		$error_code = "名称不能大于10个字！";
+	}elseif(!is_numeric($orderid)){
+		$error_code = "排序ID只能输入数字！";
+	}else{
+		$sql = "select * from ".TABLE."program where proname='$classname' and proid<>'$proid' and userid='$userid'";
+		$query = mysqli_query($conn,$sql);
+		$attitle = is_array($row = mysqli_fetch_array($query));
+		if($attitle){
+			$error_code = "该名称的分类已经存在！";
+		}else{
+			$sql = "UPDATE ".TABLE."program set proname='$classname' , orderid='$orderid' where userid='$userid' and proid=".$proid;
+			$query = mysqli_query($conn,$sql);
+			if($query){
+				$error_code = "保存成功！";
+				$success = "1";
+				$gotourl = "program.php";
+			}else{
+				$error_code = "保存失败！";
+			}
+		}		
+	}
+	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
+    echo json_encode($data);
+}
+if($getaction=="deleteprogram"){
+	header('Content-type:text/html;charset=utf-8');
+	$classid = get("proid");
+	if(empty($classid)){
+		$error_code = "缺少参数！";
+	}else{
+		$sql = "select bankid from ".TABLE."bank where bankaccount='$classid' and userid='$userid'";
+		$query = mysqli_query($conn,$sql);
+		if ($row = mysqli_fetch_array($query)) {
+			$error_code = "在此项目下有员工，不能删除项目！";
+		} else {
+			$sql = "delete from ".TABLE."program where proid=".$classid;
+			if (mysqli_query($conn,$sql)){
+				$error_code = "删除成功！";
+			}else{
+				$error_code = "删除失败！";
+			}			
+		}
+	}
+	echo $error_code;
 }
 if($getaction=="changeuser"){
 	$type = get("m");
@@ -344,6 +433,7 @@ if($getaction=="updateuser"){
 	$password = post_pass("password");
 	$newpassword = post_pass("newpassword");
 	$email = post("email");
+	//$action = post("action");
 	if(empty($password)){
 		$error_code = "密码不能为空！";
 	}elseif(strlen($password)<6){
@@ -376,7 +466,7 @@ if($getaction=="updateuser"){
 				$userinfo = AES::encrypt($userinfo_update, $sys_key);
 				setcookie("userinfo", $userinfo, time()+86400);
 				$error_code = "信息修改成功！";
-				$gotourl = "users.php";
+				$gotourl = "system.php?action=sys";
 			}else{
 				$error_code = "出错啦，写入数据库时出错！";
 			}
@@ -396,8 +486,7 @@ if($getaction=="export"){
 	$endmoney = get('endmoney');
 	$remark = get('remark');
 	$bankid = get('bankid');
-
-	$sql = "select a.zhifu,a.acmoney,a.actime,a.acremark,a.bankid,b.classname from ".TABLE."account as a INNER JOIN ".TABLE."account_class as b ON b.classid=a.acclassid and a.jiid='$userid'";
+	$sql = "select a.zhifu,a.acmoney,a.actime,a.acremark,a.bankid,a.proid,b.classname from ".TABLE."account as a INNER JOIN ".TABLE."account_class as b ON b.classid=a.acclassid";
 	if($classid == "all"){
 		
 	}elseif($classid == "pay"){
@@ -422,11 +511,8 @@ if($getaction=="export"){
 	if(!empty($endmoney)){
 		$sql .= " and acmoney <= '".$endmoney."' ";
 	}
-	if(!empty($remark)){
-		$sql .= " and acremark like '%".$remark."%' ";
-	}
 	$result = mysqli_query($conn,$sql);
-    $str = "收支,分类,账户,金额,时间,备注\n";
+    $str = "收支,分类,项目,账户,金额,时间,备注\n";
     $str = iconv('utf-8','gb2312',$str);
     while ($row = mysqli_fetch_array($result)) {
         $classname = iconv('utf-8','gb2312',$row['classname']);
@@ -442,9 +528,11 @@ if($getaction=="export"){
 		}else{
 			$remark = "";
 		}
+		$proname = programname($row['proid'],$userid,"默认项目");
+		$proname = iconv('utf-8','gb2312',$proname);
 		$bankname = bankname($row['bankid'],$userid,"默认账户");
 		$bankname = iconv('utf-8','gb2312',$bankname);
-        $str .= $shouzhi.",".$classname.",".$bankname.",".$money.",".$time.",".$remark."\n";
+        $str .= $shouzhi.",".$classname.",".$proname.",".$bankname.",".$money.",".$time.",".$remark."\n";
     }
     $filename = date('YmdHis').'.csv';
     export_csv($filename,$str);
@@ -472,13 +560,13 @@ if($getaction=='import') {
             $shouzhi = "2";
         }
 		$classify = iconv('gb2312', 'utf-8', $result[$i][1]);
-        $sql = "select classid from ".TABLE."account_class where classname='$classify' and ufid='$userid'";
+        $sql = "select classid from ".TABLE."account_class where classname='$classify' and userid='$userid'";
         $query = mysqli_query($conn,$sql);
 		$row = mysqli_fetch_array($query);
         if ($row["classid"]){
 			$acclassid = $row["classid"];
         }else{
-            $sqladd = "insert into ".TABLE."account_class (classname, classtype, ufid) values ('$classify', '$shouzhi', '$userid')";
+            $sqladd = "insert into ".TABLE."account_class (classname, classtype, userid) values ('$classify', '$shouzhi', '$userid')";
             $queryadd = mysqli_query($conn,$sqladd);
             $acclassid = mysqli_insert_id($conn);
         }        
@@ -489,7 +577,7 @@ if($getaction=='import') {
     }
     $data_values = substr($data_values,0,-1);
     fclose($handle);
-    $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney,acclassid,actime,acremark,jiid,zhifu,bankid) values $data_values");
+    $query = mysqli_query($conn,"insert into ".TABLE."account (acmoney,acclassid,actime,acremark,userid,zhifu,bankid) values $data_values");
     if($query){
 		$word = "导入成功！导入".$insert_count."条";
 		alertgourl($word,"int_out.php");
@@ -506,7 +594,7 @@ if($getaction=='updatesystem'){
     file_put_contents($filepath,$info);
 	$success = "1";
 	$error_code = "信息修改成功！";
-	$gotourl = "users.php";
+	$gotourl = "system.php?action=sys";
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }
@@ -519,7 +607,7 @@ if($getaction=='updatesmtp'){
     file_put_contents($filepath,$info);
 	$success = "1";
 	$error_code = "信息修改成功！";
-	$gotourl = "users.php";
+	$gotourl = "system.php?action=smtp";
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
 }

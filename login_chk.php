@@ -77,7 +77,7 @@ if($getaction=="login"){
 				$query = mysqli_query($conn,$sql);
 				$row = mysqli_fetch_assoc($query);
 				$uid = $row['uid'];
-				$sql = "insert into ".TABLE."account_class (classname, classtype, ufid) values ('默认收入', '1','".$uid."'),('默认支出', '2','".$uid."')";
+				$sql = "insert into ".TABLE."account_class (classname, classtype, userid) values ('默认收入', '1','".$uid."'),('默认支出', '2','".$uid."')";
 				$query = mysqli_query($conn,$sql);
 				if($query){
 					$error_code =  $error_code."增加默认分类成功！";

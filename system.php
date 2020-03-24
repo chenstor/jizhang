@@ -1,6 +1,21 @@
 <?php
 include_once("header.php");
 ?>
+<table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
+    <tr>
+        <td bgcolor="#EBEBEB" class="add_th">
+		<div class="tab-title">
+			<a <?php echo show_sysmenu_cur('sys',get('action'));?> href="javascript:" id="sys">系统参数</a>
+			<a <?php echo show_sysmenu_cur('smtp',get('action'));?> href="javascript:" id="smtp">SMTP设置</a>
+			<a <?php echo show_sysmenu_cur('user',get('action'));?> href="javascript:" id="user">账号管理</a>
+			<a <?php echo show_sysmenu_cur('proinfo',get('action'));?> href="javascript:" id="proinfo">个人信息</a>
+			<a <?php echo show_sysmenu_cur('export',get('action'));?> href="javascript:" id="export">数据导出</a>
+		</div>
+		</td>
+    </tr>
+</table>
+
+<?php if(get('action')=='proinfo'){?>
 <table align="center" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
     <tr><td bgcolor="#EBEBEB">个人信息</td></tr>
     <tr><td bgcolor="#FFFFFF">
@@ -21,20 +36,20 @@ include_once("header.php");
         </td>
     </tr>
 </table>
+<?php }?>
 
-<?php if($userinfo['isadmin']=="1"){?>
+<?php if((get('action')=="" or get('action')=='sys') and ($userinfo['isadmin']=="1")){?>
 <table align="center" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr><td bgcolor="#EBEBEB">系统管理</td></tr>
+    <tr><td bgcolor="#EBEBEB">系统参数</td></tr>
     <tr><td bgcolor="#FFFFFF">
 		<div class="record_form" id="system">
 			<form id="system_form" name="system_form" method="post" onsubmit="return checkpost('system',this);">
 			<?php
 			$keyinfo = [
-				"siteName"=>"站点名称",
+				"SiteName"=>"站点名称",
 				"SiteURL"=>"站点网址",
 				"Multiuser"=>"多用户",
 				"Invite"=>"邀请注册",
-				"ViewAllData"=>"全部记录",
 				"WeekDayStart"=>"每周开始",
 				"DB_HOST"=>"数据库地址",
 				"DB_USER"=>"数据库用户",
@@ -57,11 +72,6 @@ include_once("header.php");
 			<p><i><?php echo $keyinfo[$v];?>：</i><label class="red"><input name="Invite" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />开启</label><label class="ml10"><input name="Invite" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />关闭</label> <u>(开启多用户，该配置才有效)</u></p>
 			<?php 
 			}
-			elseif($v=='ViewAllData'){
-			?>
-			<p><i><?php echo $keyinfo[$v];?>：</i><label><input name="ViewAllData" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />不开放</label><label class="ml10"><input name="ViewAllData" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />仅管理员</label><label class="ml10"><input name="ViewAllData" type="radio" value="2" <?php if($arr[2][$k]=='2'){echo "checked";}?> />所有人</label> <u>(开启后顶部增加菜单入口)</u></p>
-			<?php 
-			}
 			elseif($v=='WeekDayStart'){
 			?>
 			<p><i><?php echo $keyinfo[$v];?>：</i><label><input name="WeekDayStart" type="radio" value="1" <?php if($arr[2][$k]=='1'){echo "checked";}?> />周一</label><label class="ml10"><input name="WeekDayStart" type="radio" value="0" <?php if($arr[2][$k]=='0'){echo "checked";}?> />周日</label> <u>(每周的开始，影响统计数据显示)</u></p>
@@ -81,7 +91,9 @@ include_once("header.php");
         </td>
     </tr>
 </table>
+<?php }?>
 
+<?php if((get('action')=='smtp') and ($userinfo['isadmin']=="1")){?>
 <table align="center" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
     <tr><td bgcolor="#EBEBEB">SMTP设置</td></tr>
     <tr><td bgcolor="#FFFFFF">
@@ -115,12 +127,9 @@ include_once("header.php");
         </td>
     </tr>
 </table>
+<?php }?>
 
-<table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
-    <tr>
-        <td bgcolor="#EBEBEB">帐号管理</td>
-    </tr>
-</table>
+<?php if((get('action')=='user') and ($userinfo['isadmin']=="1")){?>
 <table width="100%" border="0" align="left" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
     <tr>
         <th align="left" bgcolor="#EBEBEB">帐号</th>
@@ -154,10 +163,29 @@ include_once("header.php");
 </table>
 <?php }?>
 
+<?php if((get('action')=='export') and ($userinfo['isadmin']=="1")){?>
+<table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
+    <tr><td bgcolor="#EBEBEB">数据导出</td></tr>
+    <tr><td bgcolor="#FFFFFF">
+			<div class="form-group block mt20">
+			<div class="col-sm-10">
+				<input type="button" class="btn btn-primary" id="exportCSV" value="导出全部记账CSV" onClick="window.location.href='date.php?action=export'">
+			</div>
+			</div>
+			<div class="form-group block mt20">
+			<div class="col-sm-8">
+				<span class="red">导出全部记账数据，该功能仅对管理员开放</span><br />
+			</div>
+			</div>
+        </form>
+    </td></tr>
+</table>
+<?php }?>
+
 <script language="javascript">
 function checkpost(type,form){
 	if(type=="user"){
-		if(form.password.value == ""){
+		if(isEmpty(form.password.value)){
 			alert("密码不能为空！");
 			form.password.focus();
 			return false;
@@ -168,13 +196,13 @@ function checkpost(type,form){
 			return false;
 		}		
 	}
-	if(type=="system"){
-		if(form.siteName.value == ""){
+	else if(type=="system"){
+		if(isEmpty(form.SiteName.value)){
 			alert("站点名称不能为空！");
-			form.siteName.focus();
+			form.SiteName.focus();
 			return false;
 		}
-		if(form.SiteURL.value == ""){
+		if(isEmpty(form.SiteURL.value)){
 			alert("站点网址不能为空！");
 			form.SiteURL.focus();
 			return false;
@@ -183,9 +211,9 @@ function checkpost(type,form){
 			alert("网址必须以http://或者https://开头！");
 			form.SiteURL.focus();
 			return false;
-		}
+		}		
 	}
-	if(type=="smtp"){
+	else if(type=="smtp"){
 		if(form.c_smtp.value == ""){
 			alert("SMTP地址不能为空！");
 			form.c_smtp.focus();
@@ -253,8 +281,7 @@ function changeuser(type,uid,name){
 				window.location.reload();
 			}		
 		},
-		error : function() {
-		}
+		error : function(){}
 	});
 }
 </script>

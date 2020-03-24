@@ -16,6 +16,14 @@ $(function(){
 		$(this).addClass("disabled");
 		saveEditRecord();
 	});
+	$(".tab-title a").off("click").on("click",function(){
+		var val=$(this).attr("id");
+		location.href="system.php?action="+val;
+    });
+	$("#year").change(function(){
+		var select_year = $(this).val();
+		location.href = "?year="+select_year;
+	});
 });
 
 function isNull(str){
@@ -52,6 +60,8 @@ function chushihua_bank(){
 	$("#bankname").val("");
 	$("#bankaccount").val("");
 	$("#balancemoney").val("");
+	//$("#addtime").val("");
+	//$("#updatetime").val("");
 	$('#btn_submit').attr('date-info','add');
 	$("#error_show").html("");
 }
@@ -74,6 +84,9 @@ function getUrlParam(name) {
    if (r != null)
 	   return unescape(r[2]);
    return null; //返回参数值
+}
+function isEmpty(obj){
+	return (typeof obj === 'undefined' || obj === null || obj === "");
 }
 // 添加记录
 function saverecord(type){
@@ -132,10 +145,12 @@ function deleterecordAll(form){
 // 编辑记录
 function editRecord(t,openid){
 	$("#error_show").html("");//初始化
+	//$("#bankid_3").find("option").remove();
 	var info = $(t).data('info');	
 	var money = info.money;
 	var remark = info.remark;
 	var bankid = info.bankid;
+	var proid = info.proid;
 	var zhifu = info.zhifu;
 	var classname = info.classname;
 	var addtime = info.addtime;
@@ -146,7 +161,8 @@ function editRecord(t,openid){
 	$("#old-bank-id").val(bankid);
 	$("#old-money").val(money);//修改前的金额
 	$("#edit-zhifu").val(zhifu);
-	$("#edit-bankid").find("option[value='"+bankid+"']").attr("selected",true);
+	$("#bankid_3").find("option[value='"+bankid+"']").attr("selected",true);
+	$("#edit-proid").find("option[value='"+proid+"']").attr("selected",true);
 	$("#edit-time").val(addtime);
 	$("#edit-classtype").val(classname);
 	$("#edit-id").val(id);
@@ -169,6 +185,7 @@ function saveEditRecord(){
 				window.location.reload();
 			}else{
 				$("#btn_submit").removeClass("disabled");
+				$("#btn_submit_save_edit").removeClass("disabled");
 			}		
 		},
 		error : function() {
@@ -185,6 +202,8 @@ function delRecord(type,t){
 		geturl = "date.php?action=deleteclassify&classid="+t+"";
 	}else if(type=="bank"){
 		geturl = "date.php?action=deletebank&bankid="+t+"";
+	}else if(type=="program"){
+		geturl = "date.php?action=deleteprogram&proid="+t+"";
 	}
 	Ewin.confirm({ message: "确认要删除该记录吗？" }).on(function (e) {
 		if (!e) {

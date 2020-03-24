@@ -1,12 +1,13 @@
-<?php include_once("header.php");
+<?php include("header.php");
 //============搜索参数处理================
 $s_classid = get('classid','all');
 $s_starttime = get('starttime');
 $s_endtime = get('endtime',$today);//默认今天
 $s_startmoney = get('startmoney');
 $s_endmoney = get('endmoney');
-$s_remark = get('remark');
+//$s_remark = get('remark');
 $s_bankid = get('bankid');
+$s_proid = get('proid');//项目
 $s_page = get('page','1');
 
 $pageurl = "show.php?1=1";
@@ -31,13 +32,32 @@ if($s_endmoney != ""){
 	$pageurl = $pageurl."&endmoney=".$s_endmoney;
 	$exporturl = $exporturl."&endmoney=".$s_endmoney;
 }
-if($s_remark != ""){
-	$pageurl = $pageurl."&remark=".$s_remark;
-	$exporturl = $exporturl."&remark=".$s_remark;
-}
 if($s_bankid != ""){
 	$pageurl = $pageurl."&bankid=".$s_bankid;
 	$exporturl = $exporturl."&bankid=".$s_bankid;
+}
+if($s_proid != ""){
+	$pageurl = $pageurl."&proid=".$s_proid;
+	$exporturl = $exporturl."&proid=".$s_proid;
+}
+
+//programlist
+$program_list = show_program($userid);
+$plist = "";
+foreach($program_list as $rowshow){
+	$plist .= "<option value='".$rowshow['proid']."'>".$rowshow['proname']."</option>";
+}
+
+$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+$banklist_show = '';
+$banklist_show_edit = '';
+foreach($banklist as $myrow){
+	if($myrow['bankid']==$s_bankid){
+		$banklist_show .= "<option value='$myrow[bankid]' selected>".$myrow['bankname']."</option>";
+	}else{
+		$banklist_show .= "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
+	}
+	$banklist_show_edit .= "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
 }
 ?>
 
@@ -75,20 +95,22 @@ if($s_bankid != ""){
 				<p><label for="time">时间：<input class="w100" value="<?php echo $s_starttime;?>" type="text" name="starttime" id="starttime" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'endtime\')||\'<?php echo $today;?>\'}'})" />-<input class="w100" type="text" name="endtime" value="<?php if($s_endtime==""){echo $today;}else{echo $s_endtime;}?>" id="endtime" onClick="WdatePicker({minDate:'#F{$dp.$D(\'starttime\')}',maxDate:'%y-%M-%d'})" /></label></p>
 				
 				<p><label for="money">金额：<input class="w100" value="<?php echo $s_startmoney;?>" type="number" step="0.01" name="startmoney" id="startmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />-<input class="w100" value="<?php echo $s_endmoney;?>" type="number" step="0.01" name="endmoney" id="endmoney" size="10" maxlength="8" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" /></label></p>				
-				<p><label for="remark">备注：<input class="w180" type="text" name="remark" id="remark" size="30" value="<?php echo $s_remark;?>"></label></p>
+				<p><label for="proid">项目：<select class="w180" name="proid" id="proid">
+					<option value="" <?php if($s_proid==""){echo "selected";}?>>全部项目</option>
+					<?php
+					$pay_type_list = show_program($userid);
+					foreach($pay_type_list as $rowshow){						
+						if($rowshow['proid']==$s_proid){
+							echo "<option value='".$rowshow['proid']."' selected>".$rowshow['proname']."</option>";
+						}else{
+							echo "<option value='".$rowshow['proid']."'>".$rowshow['proname']."</option>";
+						}
+					}					
+					?>					
+				</select></label></p>
 				<p><label for="bankid">账户：<select class="w180" name="bankid" id="bankid">
 					<option value="" <?php if($s_bankid==""){echo "selected";}?>>全部账户</option>
-					<option value="0" <?php if($s_bankid=="0"){echo "selected";}?>>默认账户</option>
-					<?php
-					$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
-					foreach($banklist as $myrow){
-						if($myrow['bankid']==$s_bankid){
-							echo "<option value='$myrow[bankid]' selected>".$myrow['bankname']."</option>";
-						}else{
-							echo "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
-						}						
-					}
-					?>
+					<?php echo $banklist_show;?>
 				</select></label></p>
 				<p class="btn_div"><input type="submit" name="submit" value="查询" class="btn btn-primary" /><input type="button" id="export" value="导出" class="btn btn-success ml8" onClick="window.location.href='<?php echo $exporturl;?>'" /></p>
 				</form>
@@ -101,7 +123,7 @@ if($s_bankid != ""){
 	//show_tab(1);
 	echo "<form name='del_all' id='del_all' method='post' onsubmit='return deleterecordAll(this);'>";
 	show_tab(2);
-		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
+		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_proid,$s_bankid);
 		$thiscount = 0;
 		foreach($Prolist as $row){
 			if($row['zhifu']==1){
@@ -113,6 +135,7 @@ if($s_bankid != ""){
 			}
 			echo "<ul class=\"table-row ".$fontcolor."\">";
 				echo "<li><i class='noshow'>".$word.">></i>".$row['classname']."</li>";
+				echo "<li>".programname($row["proid"],$userid)."</li>";
 				echo "<li>".bankname($row['bankid'],$userid,"默认账户")."</li>";
 				echo "<li class='t_a_r'>".$row['acmoney']."</li>";
 				if(isMobile()){
@@ -121,7 +144,7 @@ if($s_bankid != ""){
 					echo "<li>".date("Y-m-d H:i",$row['actime'])."</li>";
 				}
 				echo "<li>".$row['acremark']."</li>";
-				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
+				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"proid\":\"".$row["proid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
 				echo "<li class='noshow'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></li>";
 			echo "</ul>";
 			$thiscount ++ ;
@@ -131,7 +154,7 @@ if($s_bankid != ""){
 ?>
 	<?php 
 	//显示页码
-	$allcount = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
+	$allcount = record_num_query($userid,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_proid,$s_bankid);
 	$pages = ceil($allcount/20);	
 	if($pages > 1){?>
 	<div class="page"><?php getPageHtml($s_page,$pages,$pageurl."&",$thiscount,$allcount);?></div>
@@ -144,7 +167,7 @@ foreach($banklist as $myrow){
 	$banklist_show = $banklist_show."<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
 }
 ?>
-<?php include_once("footer.php");?>
+<?php include("footer.php");?>
 <!--// 编辑-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -168,15 +191,18 @@ foreach($banklist as $myrow){
 					<input type="text" name="edit-classtype" class="form-control" id="edit-classtype" readonly="readonly" />
 				</div>
 				<div class="form-group">
-					<label for="edit-remark">备注</label>
-					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="20" />
+					<label for="edit-proid">项目</label>
+					<select name="edit-proid" id="edit-proid" class="form-control">
+						<?php echo $plist;?>
+					</select>
 				</div>
 				<div class="form-group">
-					<label for="edit-bankid">帐户</label>
-					<select name="edit-bankid" id="edit-bankid" class="form-control">
-						<option value='0'>默认账户</option>
-						<?php echo $banklist_show;?>
-					</select>
+					<label for="edit-bankid">账户</label>
+					<select name="edit-bankid" id="bankid_3" class="form-control"><?php echo $banklist_show_edit;?></select>
+				</div>
+				<div class="form-group">
+					<label for="edit-remark">备注</label>
+					<input type="text" name="edit-remark" class="form-control" id="edit-remark" maxlength="20" />
 				</div>
 				<div class="form-group">
 					<label for="edit-time">时间</label>

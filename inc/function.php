@@ -1,7 +1,7 @@
 <?php
 if(!defined("DB_HOST")){die('非法访问！');}
 
-$version = 'V2.2.4(2020.02.27)';
+$version = 'V3.0(20200324)';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){
@@ -21,8 +21,6 @@ $yesterday = date("Y-m-d",strtotime("-1 day"));
 $this_year = date("Y");
 $this_month_firstday = date('Y-m-01', strtotime(date("Y-m-d")));
 $this_year_firstday = date("Y",time())."-01-01";
-//$last_week_start = date("Y-m-d",mktime(0, 0, 0,date("m"),date("d")-date("w")+1-7,date("Y")));
-//$last_week_end = date("Y-m-d",mktime(23,59,59,date("m"),date("d")-date("w")+7-7,date("Y")));
 $last_month_start = date("Y-m-d",mktime(0, 0 , 0,date("m")-1,1,date("Y")));
 $last_month_end = date("Y-m-d",mktime(23,59,59,date("m") ,0,date("Y")));
 $last_year_start = date("Y-m-d", strtotime("-1 year"));
@@ -36,25 +34,25 @@ $this_week_data = getWeekMyActionAndEnd("",WeekDayStart);
 $this_week_start = $this_week_data["week_start"];
 $this_week_end = $this_week_data["week_end"];
 
-/*
- * 获取某星期的开始时间和结束时间
- * time 时间
- * first 表示每周星期一为开始日期 0表示每周日为开始日期
- */
 function getWeekMyActionAndEnd($time = '', $first = 1){
-  //当前日期
   if (!$time) $time = time();
   $sdefaultDate = date("Y-m-d", $time);
-  //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
-  //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
   $w = date('w', strtotime($sdefaultDate));
-  //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
   $week_start = date('Y-m-d', strtotime("$sdefaultDate -" . ($w ? $w - $first : 6) . ' days'));
-  //本周结束日期
   $week_end = date('Y-m-d', strtotime("$week_start +6 days"));
   return array("week_start" => $week_start, "week_end" => $week_end);
 }
-
+function get_month_days($days){
+	$days = date('t', strtotime($days));
+	return $days;
+}
+function getMonthNum( $date1, $date2){
+	$date1_stamp=strtotime($date1);
+    $date2_stamp=strtotime($date2);
+    list($date_1['y'],$date_1['m'])=explode("-",date('Y-m',$date1_stamp));
+    list($date_2['y'],$date_2['m'])=explode("-",date('Y-m',$date2_stamp));
+    return abs($date_1['y']-$date_2['y'])*12 +$date_2['m']-$date_1['m'];
+}
 function get_week_day($type=1){
 	$date=new DateTime();
 	if($type==1){
@@ -66,6 +64,24 @@ function get_week_day($type=1){
 	}
 	return $get_week_day;	
 }
+
+function toDate($str, $flag = false, $default = 1){
+	if(empty($str) or is_null($str) or $str==""){
+		if($default==1){
+			$date_str = date("Y-m-d");
+		}else{
+			$date_str = "";
+		}		
+	}else{
+		if($flag){
+		  $date_str = date('Y', $str).'-'.date('m', $str).'-'.date('d', $str).' '.date('H', $str).':'.date('i', $str);
+		} else {
+		  $date_str = date('Y', $str).'-'.date('m', $str).'-'.date('d', $str);
+		}
+	}
+    return $date_str;
+}
+
 function get($kw,$default=""){
 	if(isset($_GET[$kw])){
 		$get =  fliter_script(stripslashes(trim($_GET[$kw])));
@@ -114,33 +130,26 @@ function loginchk($uid){
 		msgbox("您无权限访问该页,正在跳转登入页面...","","login.php");
 	}
 }
-function user_mktime($onlinetime) {
-    $new_time = mktime();
-    if (($new_time - $onlinetime) > '900') {
-        session_destroy();
-        echo "登陆超时";
-        exit ();
-    } else {
-        $_SESSION['times'] = mktime();
-    }
-}
 function show_tab($type){
 	if($type==1){
-		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li></ul></div>\n";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>项目</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==2){
-		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li><li class=\"noshow\"><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></li></ul></div>\n";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>项目</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li><li class=\"noshow\"><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==3){
 		echo "</div></div>\n";
 	}elseif($type==4){
-		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>名称</li><li>账户/卡号</li><li>余额</li><li>操作</li></ul></div>\n";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>账户名称</li><li>账号/卡号</li><li>账户余额</li><li>操作</li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==5){
 		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>类别名称</li><li>收/支</li><li>操作</li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==6){
 		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>记录人</li></ul></div>\n";
+		echo "<div class=\"table-row-group\">\n";
+	}elseif($type==7){
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>项目名称</li><li>项目收入</li><li>项目支出</li><li>排序</li><li>操作</li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
 	}	
 }
@@ -195,7 +204,16 @@ function show_menu_cur($file){
 	}
 	echo $show;
 }
-
+function show_sysmenu_cur($act,$get_act=""){
+	if($act == $get_act){
+		$show = "class='red on'";
+	}elseif($act=='sys' and $get_act===""){
+		$show = "class='red on'";
+	}else{
+		$show = "";
+	}
+	echo $show;
+}
 function clearsession($uid){
 	session_unset($uid);
 	session_destroy();
@@ -284,7 +302,7 @@ function export_csv($filename,$data) {
 }
 function vita_get_url_content($url){
 	if(function_exists('file_get_contents')) {
-		$file_contents = file_get_contents($url);
+		$file_contents = @file_get_contents($url);
 	}else{
 		$ch = curl_init();
 		$timeout = 5;
@@ -350,15 +368,15 @@ function isMobile(){
     return false;
 }
 
-include_once("content.php");
-include_once("safe.php");
+include("content.php");
+include("safe.php");
 if(PHP7){
-	include_once("aes7.php");
+	include("aes7.php");
 }else{
-	include_once("aes5.php");
+	include("aes5.php");
 }
-require_once("Smtp.class.php");
-require_once("smtp_config.php");
+include("Smtp.class.php");
+include("smtp_config.php");
 if(!empty($_COOKIE["userinfo"])){
 	$userinfo = AES::decrypt($_COOKIE["userinfo"], $sys_key);
 }

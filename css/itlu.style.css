@@ -32,8 +32,11 @@ a.cur{color:#f00!important;font-weight:bold}
 
 td.add_th{height:36px!important;}
 td.add_th i{font-style:normal}
-.tab-title{margin:-8px;overflow:hidden;width:170px;}
+.tab-title{margin:-8px;overflow:hidden;}
 .tab-title span{padding:9.5px 25px;cursor:pointer;display:inline-block}
+.tab-title a{padding:9.5px 25px;cursor:pointer;display:inline-block;color:#666}
+.tab-title a:hover{color:#f00;text-decoration:none;}
+.tab-title a.on{color:#f00}
 .tab-title .on{position:relative;}
 .tab-title .on:after{display:block;content:'';border-width:5px 5px 5px 5px;border-style:solid;border-color:transparent transparent #ff4d4d transparent;position:absolute;left:43%;top:29px;}
 .record_form{width:auto;padding:5px 10px;}
@@ -90,6 +93,7 @@ td.add_th i{font-style:normal}
 
 .footer-tips{height:34px;line-height:34px;text-align:left;width:180px;float:left;font-size:14px!important;}
 .footer{background:#f9f9f9;height:36px;line-height:36px;width:100%;border:1px solid #ddd;text-align:center;overflow:hidden}
+.footer i{font-style:normal}
 .form-group select{[;height:28px;line-height:28px;]}
 
 

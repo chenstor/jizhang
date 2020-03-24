@@ -43,7 +43,6 @@ show_tab(3);
 					<label for="classname">分类名称</label>
 					<input type="text" name="classname" class="form-control" id="classname" placeholder="分类名称" required="请输入分类名称">
 					<input name="classid" id="classid" type="hidden" value="" />
-					<div id="error_show" style="color:#f00"></div>
 				</div>
 				<div class="form-group" id="classtype_div">
 					<label for="classtype">所属类型</label>
@@ -60,6 +59,7 @@ show_tab(3);
 				</div>
 			</div>
 			<div class="modal-footer">
+				<div id="error_show" class="footer-tips"></div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				<button type="button" id="btn_submit" date-info="add" class="btn btn-primary">保存</button>
 			</div>
