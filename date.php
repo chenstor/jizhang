@@ -20,26 +20,29 @@ if($getaction=="getclassify"){
 }
 if($getaction=="addbank"){
 	$bankname = post("bankname");
-	$bankaccount = post("bankaccount");//programid
+	$bankaccount = post("bankaccount");
 	$balancemoney = post("balancemoney","0");
-	$start_time = post("addtime");
-	$end_time = post("updatetime");
-	if(empty($bankname) or empty($bankaccount) or empty($start_time)){
+	if(empty($bankname) or empty($bankaccount)){
 		$error_code = "缺少参数！";
 	}elseif(!is_numeric($balancemoney)){
 		$error_code = "金额非法！";
 	}else{
-		$start_time = strtotime($start_time);
-		if(!empty($end_time)){$end_time = strtotime($end_time);}
-		$sql = "insert into ".TABLE."bank (bankname, bankaccount, balancemoney, addtime, updatetime, userid) values ('$bankname', '$bankaccount', '$balancemoney', '$start_time', '$end_time', '$userid')";
+		$sql = "select * from ".TABLE."bank where bankname='$bankname' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
-		if($query){
-			$success = "1";
-			$error_code = "保存成功！";
-			$gotourl = "bank.php";						
-		}else{
-			$error_code = "保存失败！";
-		}		
+		$attitle = is_array($row = mysqli_fetch_array($query));
+		if($attitle){
+			$error_code = "该账户名称已存在！";
+		}else{			
+			$sql = "insert into ".TABLE."bank (bankname, bankaccount, balancemoney, userid) values ('$bankname', '$bankaccount', '$balancemoney', '$userid')";
+			$query = mysqli_query($conn,$sql);
+			if($query){
+				$success = "1";
+				$error_code = "保存成功！";
+				$gotourl = "bank.php";						
+			}else{
+				$error_code = "保存失败！";
+			}
+		}
 	}
 	$data = '{"code":"' .$success. '","error_msg":"' .$error_code.'","url":"' .$gotourl.'"}';
     echo json_encode($data);
@@ -49,9 +52,7 @@ if($getaction=="modifybank"){
 	$bankaccount = post("bankaccount");
 	$bankid = post("bankid");
 	$balancemoney = post("balancemoney","0");
-	$start_time = post("addtime");
-	$end_time = post("updatetime");
-	if(empty($bankname) or empty($bankaccount)){
+	if(empty($bankname) or empty($bankaccount) or empty($bankid)){
 		$error_code = "缺少参数！";
 	}else{
 		$sql = "update ".TABLE."bank set bankname='".$bankname."',bankaccount='".$bankaccount."' where bankid=".$bankid;
@@ -76,7 +77,7 @@ if($getaction=="deletebank"){
 		$sql = "select acid from ".TABLE."account where bankid='$bankid' and userid='$userid'";
 		$query = mysqli_query($conn,$sql);
 		if ($row = mysqli_fetch_array($query)) {
-			$error_code = "该员工有关联数据，不能删除！";
+			$error_code = "有关联数据，不能删除！";
 		} else {
 			$sql = "delete from ".TABLE."bank where bankid=".$bankid;
 			if (mysqli_query($conn,$sql)){
