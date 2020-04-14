@@ -1,6 +1,6 @@
 <?php include("header.php");?>
 <?php
-$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+$banklist = db_list("bank","","order by bankid desc");
 $banklist_show = '';
 $banklist_show_edit = '';
 foreach($banklist as $myrow){
@@ -12,7 +12,7 @@ foreach($banklist as $myrow){
 	$banklist_show_edit .= "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
 }
 //programlist
-$program_list = show_program($userid);
+$program_list = show_program($userid,$userinfo['pro_id'],$userinfo['isadmin']);
 $plist = "";
 foreach($program_list as $rowshow){
 	if((!empty($_COOKIE["add_itlu_proid_".$userid])) && ($_COOKIE["add_itlu_proid_".$userid]==$rowshow["proid"])){
@@ -22,7 +22,7 @@ foreach($program_list as $rowshow){
 	}
 }
 
-$pay_type_list = show_type(2,$userid);
+$pay_type_list = show_type(2);
 $type_list_pay_show = '';
 foreach($pay_type_list as $myrow){
 	if((!empty($_COOKIE["add_itlu_classid_".$userid])) && ($_COOKIE["add_itlu_classid_".$userid]==$myrow["classid"])){
@@ -31,7 +31,7 @@ foreach($pay_type_list as $myrow){
 		$type_list_pay_show .= "<option value='$myrow[classid]'>".$myrow['classname']."</option>";
 	}		
 }
-$pay_type_list = show_type(1,$userid);
+$pay_type_list = show_type(1);
 $type_list_income_show = '';
 foreach($pay_type_list as $myrow){
 	if((!empty($_COOKIE["add_itlu_classid_".$userid])) && ($_COOKIE["add_itlu_classid_".$userid]==$myrow["classid"])){
@@ -138,14 +138,14 @@ foreach($pay_type_list as $myrow){
 $s_classid = 'all';
 $s_starttime = $today;
 $s_endtime = $today;
-$s_startmoney = '';
-$s_endmoney = '';
-$s_remark = '';
-$s_bankid = '';
+$startmoney = '';
+$endmoney = '';
+$proid = $userinfo['pro_id'];
+$bankid = '';
 $s_page = '1';
 
 show_tab(1);
-$Prolist = itlu_page_search($userid,50,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_remark,$s_bankid);
+$Prolist = itlu_page_search($userid,80,$s_page,$s_classid,$s_starttime,$s_endtime,$startmoney,$endmoney,$proid,$bankid,$userinfo['isadmin']);
 $thiscount = 0;
 foreach($Prolist as $row){
 	if($row['zhifu']==1){
@@ -173,7 +173,7 @@ foreach($Prolist as $row){
 show_tab(3);
 ?>
 <script>
-$("#stat").html("今天支出<strong class='red'><?php echo state_day($today,$today,$userid,2);?></strong>，收入<strong class='green'><?php echo state_day($today,$today,$userid,1);?></strong>");
+$("#stat").html("今天支出<strong class='red'><?php echo state_day($today,$today,$userinfo['pro_id'],$userinfo['isadmin'],2);?></strong>，收入<strong class='green'><?php echo state_day($today,$today,$userinfo['pro_id'],$userinfo['isadmin'],1);?></strong>");
 </script>
 <?php include("footer.php");?>
 <!--// 编辑-->

@@ -1,5 +1,5 @@
 <?php include("header.php");
-$first_year = user_first_year($userid);
+$first_year = user_first_year();
 $get_year = get("year",$this_year);
 ?>
 <script type="text/javascript" src="js/echarts.min.js"></script>
@@ -19,11 +19,15 @@ $get_year = get("year",$this_year);
 			<tr><td style="background:#fff"><div id="itlu_main_show" style="width:100%;height:400px"></div></td></tr>
 		</table>
 		<table width="100%" border="0" cellpadding="5" cellspacing="1" class='table table-striped table-bordered'>
-			<tr><td style="background:#fff"><div id="itlu_type_show" style="width:100%;height:400px"></div></td></tr>
+			<tr><td style="background:#fff"><div id="itlu_type_pay" style="width:100%;height:400px"></div></td></tr>
+		</table>
+		<table width="100%" border="0" cellpadding="5" cellspacing="1" class='table table-striped table-bordered'>
+			<tr><td style="background:#fff"><div id="itlu_type_income" style="width:100%;height:400px"></div></td></tr>
 		</table>
 <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('itlu_main_show')); 
-		var myChart_2 = echarts.init(document.getElementById('itlu_type_show')); 
+		var myChart_2 = echarts.init(document.getElementById('itlu_type_pay')); 
+		var myChart_1 = echarts.init(document.getElementById('itlu_type_income')); 
 		option = {
 			title: {text: '年度统计'},
 			tooltip: {trigger: 'axis'},
@@ -53,7 +57,7 @@ $get_year = get("year",$this_year);
 					},
 					<?php
 					$pay_count_data = "";
-					$pay_count_list = total_count(0,$get_year,$userid,2);
+					$pay_count_list = total_count(0,$get_year,$userinfo['pro_id'],$userinfo['isadmin'],2);
 					for($b=1;$b<=12;$b++){
 						$month_pay_num = "0";
 						foreach($pay_count_list as $countrow){
@@ -79,7 +83,7 @@ $get_year = get("year",$this_year);
 					},
 					<?php
 					$income_count_data = "";
-					$income_count_list = total_count(0,$get_year,$userid,1);
+					$income_count_list = total_count(0,$get_year,$userinfo['pro_id'],$userinfo['isadmin'],1);
 					for($b=1;$b<=12;$b++){
 						$month_income_num = "0";
 						foreach($income_count_list as $countrow){
@@ -122,16 +126,55 @@ $get_year = get("year",$this_year);
 		<?php
 		$typelist_show = '';
 		$itlu_div = '';
-		$type_d = show_type("",$userid);
+		$type_d = show_type(2);
 		foreach($type_d as $myrow){
 			$typelist_show .= "'".$myrow['classname']."',";
-			$itlu_div .= "{name:'".$myrow['classname']."', type: 'bar', stack: '总量', data:[".month_type_count($myrow['classid'],$get_year,$userid)."]},\n";
+			$itlu_div .= "{name:'".$myrow['classname']."', type: 'bar', stack: '总量', data:[".month_type_count($myrow['classid'],$get_year,$userinfo['pro_id'],$userinfo['isadmin'])."]},\n";
 		}
 		$typelist_show = substr($typelist_show,0,-1);
 		$itlu_div = substr($itlu_div,0,-2);
 		?>
 		option_2 = {
-			title: {text: '分类统计'},
+			title: {text: '支出分类统计'},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow'
+				}
+			},
+			legend: {
+				data: [<?php echo $typelist_show;?>]
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: [
+				{
+					type: 'category',
+					data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+				}
+			],
+			yAxis: [{type: 'value'}],
+			series: [
+				<?php echo $itlu_div;?>
+			]
+		};
+		<?php
+		$typelist_show = '';
+		$itlu_div = '';
+		$type_d = show_type(1);
+		foreach($type_d as $myrow){
+			$typelist_show .= "'".$myrow['classname']."',";
+			$itlu_div .= "{name:'".$myrow['classname']."', type: 'bar', stack: '总量', data:[".month_type_count($myrow['classid'],$get_year,$userinfo['pro_id'],$userinfo['isadmin'])."]},\n";
+		}
+		$typelist_show = substr($typelist_show,0,-1);
+		$itlu_div = substr($itlu_div,0,-2);
+		?>
+		option_1 = {
+			title: {text: '收入分类统计'},
 			tooltip: {
 				trigger: 'axis',
 				axisPointer: {
@@ -160,5 +203,6 @@ $get_year = get("year",$this_year);
 		};
         myChart.setOption(option);
 		myChart_2.setOption(option_2);
+		myChart_1.setOption(option_1);
     </script>
 <?php include("footer.php");?>

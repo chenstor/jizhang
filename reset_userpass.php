@@ -1,6 +1,6 @@
 <?php
-include_once("data/config.php");
-include_once("inc/function.php");
+include("data/config.php");
+include("inc/function.php");
 
 $get_token = get("token");//获取参数
 
@@ -26,6 +26,6 @@ if($_array['1'] === $checkCode){
 	}
 	
 }else{
-	msgbox("参数非法，可能被篡改！","","login.php");
+	msgbox("参数非法！","","login.php");
 }
 ?>

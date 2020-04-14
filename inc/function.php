@@ -1,7 +1,7 @@
 <?php
 if(!defined("DB_HOST")){die('非法访问！');}
 
-$version = 'V3.0(20200324)';
+$version = 'V3.1(20200414)';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT); 
 if(!$conn){
@@ -9,11 +9,29 @@ if(!$conn){
 }else{
 	mysqli_query($conn,'SET NAMES utf8');
 }
-
-if(substr(PHP_VERSION,0,1)>='7'){
-	define('PHP7', true);
+//使用系统统一的$userid
+if(isset($_SESSION['uid'])){
+	$userid = $_SESSION['uid'];
 }else{
-	define('PHP7', false);
+	$userid = "";
+}
+
+include("content.php");
+include("safe.php");
+if(substr(PHP_VERSION,0,1)>='7'){
+	include("aes7.php");
+}else{
+	include("aes5.php");
+}
+include("Smtp.class.php");
+include("smtp_config.php");
+if(!empty($_COOKIE["userinfo"])){
+	$userinfo = AES::decrypt($_COOKIE["userinfo"], $sys_key);
+	$sys_role_menu = db_one_key("sys_role","where role_id=$userinfo[role_id]","role_menu_id");
+}
+if(empty($_COOKIE["userinfo"]) && $userid>0){
+	$_SESSION['uid'] = "";
+	gotourl(SiteURL."login.php");
 }
 
 $today = date("Y-m-d");
@@ -119,24 +137,22 @@ function add_zero($tid){
 	$tid = str_pad($tid,2,"0",STR_PAD_LEFT);
 	return $tid;
 }
-//使用系统统一的$userid
-if(isset($_SESSION['uid'])){
-	$userid = $_SESSION['uid'];
-}else{
-	$userid = "";
-}
 function loginchk($uid){
 	if($uid=="" || empty($uid) || $uid==null){
 		msgbox("您无权限访问该页,正在跳转登入页面...","","login.php");
 	}
 }
 function show_tab($type){
+	global $userinfo;
 	if($type==1){
 		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>项目</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li></ul></div>\n";
 		echo "<div class=\"table-row-group\">\n";
 	}elseif($type==2){
-		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>项目</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li><li class=\"noshow\"><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /> <input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></li></ul></div>\n";
-		echo "<div class=\"table-row-group\">\n";
+		echo "<div class=\"table\"><div class=\"table-header-group\"><ul class=\"table-row\"><li>分类</li><li>项目</li><li>账户</li><li>金额</li><li>时间</li><li>备注</li><li>操作</li>";
+		if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"11")){
+			echo "<li class=\"noshow\"><input type=\"checkbox\" name=\"check_all\" id=\"check_all\" /><input type='submit' id='del_submit' name='del_submit' value='删除' class='btn btn-danger btn-xs' /></li>\n";
+		}
+		echo "</ul></div><div class=\"table-row-group\">\n";
 	}elseif($type==3){
 		echo "</div></div>\n";
 	}elseif($type==4){
@@ -153,8 +169,24 @@ function show_tab($type){
 		echo "<div class=\"table-row-group\">\n";
 	}	
 }
+
+function admin_type($type){
+	switch($type){
+		case 0:
+			$admin_type = "普通用户";
+			break;
+		case 1:
+			$admin_type = "系统管理员";
+			break;
+		case 2:
+			$admin_type = "项目管理员";
+			break;
+	}
+	return $admin_type;
+}
+
 function showlogin($tid){
-	switch ($tid) {		
+	switch($tid){		
 		case "invite":
 			$showlogin = "<label for=\"invite\">邀请码<br><input type=\"text\" name=\"invite\" id=\"invite\" class=\"input\" value='' size=\"20\"></label>";
 			break;
@@ -204,10 +236,15 @@ function show_menu_cur($file){
 	}
 	echo $show;
 }
+function get_now_filename(){
+	$url = $_SERVER['PHP_SELF']; 
+	$filename = substr($url, strrpos($url , '/')+1);
+	return $filename;
+}
 function show_sysmenu_cur($act,$get_act=""){
 	if($act == $get_act){
 		$show = "class='red on'";
-	}elseif($act=='sys' and $get_act===""){
+	}elseif($act=='proinfo' and $get_act===""){
 		$show = "class='red on'";
 	}else{
 		$show = "";
@@ -239,47 +276,12 @@ function checkemail($email){
 	}	
 	return $result;
 }
-function showmonth($month){
-	switch ($month) {
-		case 1:
-			$showmonth = "一";
-			break;
-		case 2:
-			$showmonth = "二";
-			break;
-		case 3:
-			$showmonth = "三";
-			break;
-		case 4:
-			$showmonth = "四";
-			break;
-		case 5:
-			$showmonth = "五";
-			break;
-		case 6:
-			$showmonth = "六";
-			break;
-		case 7:
-			$showmonth = "七";
-			break;
-		case 8:
-			$showmonth = "八";
-			break;
-		case 9:
-			$showmonth = "九";
-			break;
-		case 10:
-			$showmonth = "十";
-			break;
-		case 11:
-			$showmonth = "十一";
-			break;
-		case 12:
-			$showmonth = "十二";
-			break;
-	}
-	return $showmonth;
+
+function get_password($length = 8){
+	$str = substr(md5(time()), 0, $length);
+	return $str;
 }
+
 function input_csv($handle) {
     $out = array ();
     $n = 0;
@@ -366,22 +368,5 @@ function isMobile(){
         } 
     } 
     return false;
-}
-
-include("content.php");
-include("safe.php");
-if(PHP7){
-	include("aes7.php");
-}else{
-	include("aes5.php");
-}
-include("Smtp.class.php");
-include("smtp_config.php");
-if(!empty($_COOKIE["userinfo"])){
-	$userinfo = AES::decrypt($_COOKIE["userinfo"], $sys_key);
-}
-if(empty($_COOKIE["userinfo"]) && $userid>0){
-	$_SESSION['uid'] = "";
-	gotourl(SiteURL."login.php");
 }
 ?>

@@ -29,12 +29,13 @@ a.cur{color:#f00!important;font-weight:bold}
 .input-group .btn{width:100%}
 .input-group-label{height:36px;padding:0 1em;background:#eee;border:1px solid #ccc;line-height:34px;display:table-cell;width:1%;white-space:nowrap;vertical-align:middle}
 .form-field{display:block;width:100%;border:1px solid #ccc;line-height:1.2;padding:.5em;height:36px;border-left:0}
+.fwn{font-weight:normal}
 
 td.add_th{height:36px!important;}
 td.add_th i{font-style:normal}
 .tab-title{margin:-8px;overflow:hidden;}
-.tab-title span{padding:9.5px 25px;cursor:pointer;display:inline-block}
-.tab-title a{padding:9.5px 25px;cursor:pointer;display:inline-block;color:#666}
+.tab-title span{padding:9.5px 20px;cursor:pointer;display:inline-block}
+.tab-title a{padding:9.5px 20px;cursor:pointer;display:inline-block;color:#666}
 .tab-title a:hover{color:#f00;text-decoration:none;}
 .tab-title a.on{color:#f00}
 .tab-title .on{position:relative;}
@@ -91,7 +92,7 @@ td.add_th i{font-style:normal}
 #smtp_form i{font-style:normal;width:75px;text-align:right;display:inline-block}
 #smtp_form .btn_div{padding-left:75px;}
 
-.footer-tips{height:34px;line-height:34px;text-align:left;width:180px;float:left;font-size:14px!important;}
+.footer-tips{height:34px;line-height:34px;text-align:left;width:180px;float:left;font-size:14px!important;color:#f00}
 .footer{background:#f9f9f9;height:36px;line-height:36px;width:100%;border:1px solid #ddd;text-align:center;overflow:hidden}
 .footer i{font-style:normal}
 .form-group select{[;height:28px;line-height:28px;]}
@@ -107,6 +108,8 @@ ul{margin:0;padding:0;list-style:none;}
 .table-row li{display:table-cell;padding:6px;border:1px solid #ddd;}  
 .table-header-group{display:table-header-group;background:#f9f9f9;font-weight:bold;}  
 .table-footer-group{display:table-footer-group;}
+.role_menu{clear:both;overflow:hidden}
+.role_menu_list{width:25%;float:left;padding:3px 0;}
 
 /*  width < 821  */
 @media only screen and (max-width:820px){

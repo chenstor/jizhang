@@ -153,7 +153,6 @@ function step3(&$install_error,&$install_recover){
      * 产生随机的md5_key，来替换系统默认的md5_key值
      */
     $md5_key = md5(random(4).substr(md5($_SERVER['SERVER_ADDR'].$_SERVER['HTTP_USER_AGENT'].$db_host.$db_user.$db_pwd.$db_name.substr(time(), 0, 6)), 8, 6).random(10));
-    //$mysqli->query("UPDATE {$db_prefix}setting SET value='".$sitename."' WHERE name='site_name'");
 	function hash_md5($password,$salt){
 		$password=md5($password).$salt;
 		$password=md5($password);
@@ -164,10 +163,13 @@ function step3(&$install_error,&$install_recover){
 	$user_pass = hash_md5($password,$salt);
 	
     //管理员账号密码
-    $mysqli->query("INSERT INTO {$db_prefix}user (`uid`,`username`,`password`,`email`,`Isadmin`,`addtime`,`utime`,`salt`) VALUES ('1','$username','$user_pass','$email','1','$addtime','$addtime','$salt');");
+    $mysqli->query("INSERT INTO `{$db_prefix}user` (`uid`,`username`,`password`,`email`,`Isadmin`,`addtime`,`utime`,`salt`) VALUES ('1','$username','$user_pass','$email','1','$addtime','$addtime','$salt');");
 	
 	//创建默认分类
-	$mysqli->query("INSERT INTO {$db_prefix}account_class (`classid`, `classname`, `classtype`, `userid`) VALUES (1, '默认收入', 1, 1),(2, '默认支出', 2, 1);");
+	$mysqli->query("INSERT INTO `{$db_prefix}account_class` (`classid`, `classname`, `classtype`, `userid`) VALUES (1, '默认收入', 1, 1),(2, '默认支出', 2, 1);");
+	
+	//创建菜单
+	$mysqli->query("INSERT INTO `{$db_prefix}sys_menu` (`m_id`, `m_f_id`, `m_name`, `m_type`, `m_url`, `islock`, `isshow`, `orderid`, `addtime`, `updatetime`) VALUES (1,0,'记账明细',1,'show.php',1,1,9999,1559007236,0),(2,0,'近期统计',1,'stat.php',1,1,9999,1559007236,0),(3,0,'全年统计',1,'annual_stat.php',1,1,9999,1559007236,0),(4,0,'分类管理',1,'classify.php',1,1,9999,1559007236,0),(5,0,'项目管理',1,'program.php',1,1,9999,1559007236,0),(6,0,'账户管理',1,'bank.php',1,1,9999,1559007236,0),(7,0,'系统管理',1,'system.php',1,1,9999,1559007236,0),(8,1,'导出',3,'export',1,1,9999,1586265735,0),(9,1,'编辑',3,'edit',1,1,9999,1586266121,0),(10,1,'删除',3,'delete',1,1,9999,1586266357,0),(11,1,'批量删除',3,'del_submit',1,1,9999,1586266395,0),(12,4,'添加分类',3,'btn_classify_add',1,1,9999,1586266551,0),(13,4,'修改',3,'btn_classify_edit',1,1,9999,1586266785,0),(14,4,'转移',3,'btn_classify_change',1,1,9999,1586266822,0),(15,4,'删除',3,'btn_classify_delete',1,1,9999,1586266846,0),(16,5,'添加项目',3,'btn_program_add',1,1,9999,1586267038,0),(17,5,'查看明细',3,'btn_program_view',1,1,9999,1586267065,0),(18,5,'修改',3,'btn_program_edit',1,1,9999,1586267092,0),(19,5,'删除',3,'btn_program_delete',1,1,9999,1586267118,0),(20,6,'添加账户',3,'btn_bank_add',1,1,9999,1586267226,0),(21,6,'查看明细',3,'btn_bank_view',1,1,9999,1586267251,0),(22,6,'修改',3,'btn_bank_edit',1,1,9999,1586267277,0),(23,6,'删除',3,'btn_bank_delete',1,1,9999,1586267295,0),(24,7,'系统参数',2,'sys',1,0,9999,1586267735,0),(25,7,'用户管理',2,'user',1,0,9999,1586267906,0),(26,7,'个人信息',2,'proinfo',1,0,9999,1586269429,0),(27,7,'SMTP设置',2,'smtp',1,0,9998,1586269451,0),(28,7,'系统菜单',2,'menu',1,0,9998,1586269595,0),(29,7,'数据导出',2,'export',1,0,9998,1586269650,0),(30,7,'角色管理',2,'role',1,0,9999,1586270645,0);");
 
     //测试数据
     /*if ($_POST['demo_data'] == '1'){
@@ -181,7 +183,6 @@ function step3(&$install_error,&$install_recover){
 }
 //execute sql
 function runquery($sql, $db_prefix, $mysqli) {
-//  global $lang, $tablepre, $db;
     if(!isset($sql) || empty($sql)) return;
     $sql = str_replace("\r", "\n", str_replace('#__', $db_prefix, $sql));
     $ret = array();
@@ -224,7 +225,6 @@ function write_config($url) {
     $configfile = @file_get_contents($config);
     $configfile = trim($configfile);
     $configfile = substr($configfile, -2) == '?>' ? substr($configfile, 0, -2) : $configfile;
-    //$charset = 'UTF-8';
     $db_host = $_POST['db_host'];
     $db_port = $_POST['db_port'];
     $db_user = $_POST['db_user'];
@@ -239,7 +239,6 @@ function write_config($url) {
     $configfile = str_replace("===url===",          $url, $configfile);
 	$configfile = str_replace("===sitename===",     $sitename, $configfile);
     $configfile = str_replace("===db_prefix===",    $db_prefix, $configfile);
-    //$configfile = str_replace("===db_charset===", $charset, $configfile);
     $configfile = str_replace("===db_host===",      $db_host, $configfile);
     $configfile = str_replace("===db_user===",      $db_user, $configfile);
     $configfile = str_replace("===db_pwd===",       $db_pwd, $configfile);

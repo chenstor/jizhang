@@ -24,7 +24,7 @@ if($getaction=="login"){
 					$_SESSION['uid'] = $row['uid'];
 					$_SESSION['error_times'] = 0;
 					setcookie("userinfo", "", time()-86400);
-					$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]","isadmin"=>"$row[Isadmin]");
+					$userinfo = array("userid"=>"$row[uid]","username"=>"$row[username]","useremail"=>"$row[email]","regtime"=>"$row[addtime]","updatetime"=>"$row[utime]","isadmin"=>"$row[Isadmin]","pro_id"=>"$row[pro_id]","role_id"=>"$row[role_id]");
 					$userinfo = AES::encrypt($userinfo, $sys_key);					
 					setcookie("userinfo", $userinfo, time()+86400*3);
 					$success = "1";
@@ -58,7 +58,7 @@ if($getaction=="login"){
 			$query = mysqli_query($conn,$sql);
 			$attitle = is_array($row = mysqli_fetch_array($query));
 			if ($attitle) {
-				$error_code = "用户或邮箱已存在！换一个吧！";
+				$error_code = "账号或邮箱已存在！";
 			} 
 			else {
 				$addtime = strtotime("now");

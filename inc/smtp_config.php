@@ -2,7 +2,7 @@
 // 邮箱配置
 define("c_protocol","1");//1为使用ssl
 define("c_smtp","");
-define("c_serverport","994");
+define("c_serverport","");
 define("c_email","");
 define("c_emailpass","");
 

@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: text/html;charset=utf-8");
-include_once("data/config.php");
-include_once("inc/function.php");
+include("data/config.php");
+include("inc/function.php");
 // 登录状态判断
 loginchk($userid);
 ?>
@@ -34,13 +34,7 @@ loginchk($userid);
                     </div>
                     <div class="collapse navbar-collapse" id="example-navbar-collapse">
                         <ul class="nav navbar-nav">
-							<li><a href="show.php" <?php show_menu_cur("show.php");?>>记账明细</a></li>
-                            <li><a href="stat.php" <?php show_menu_cur("stat.php");?>>近期统计</a></li>
-                            <li><a href="annual_stat.php" <?php show_menu_cur("annual_stat.php");?>>全年统计</a></li>
-                            <li><a href="classify.php" <?php show_menu_cur("classify.php");?>>分类管理</a></li>
-                            <li><a href="program.php" <?php show_menu_cur("program.php");?>>项目管理</a></li>
-							<li><a href="bank.php" <?php show_menu_cur("bank.php");?>>账户管理</a></li>
-                            <li><a href="system.php" <?php show_menu_cur("system.php");?>>系统管理</a></li>							
+							<?php echo sys_menu($userinfo['isadmin'],$userinfo['role_id'],$userid,get_now_filename());?>						
                             <li><a href="login.php?action=loginout"><?php echo $userinfo['username'];?>|退出</a></li>
                         </ul>
                     </div>

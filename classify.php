@@ -1,7 +1,7 @@
 <?php
-include_once("header.php");
+include("header.php");
 ?>
-<div class="table stat"><div class="itlu-title"><span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn_add">添加分类</button></span>分类管理</div></div>
+<div class="table stat"><div class="itlu-title"><?php if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"12")){?><span class="pull-right"><button type="button" class="btn btn-primary btn-xs" id="btn_add">添加分类</button></span><?php }?>分类管理</div></div>
 
 <?php
 show_tab(5);
@@ -13,26 +13,30 @@ for($i=2;$i>=1;$i--){
 		$fontcolor = "green";
 		$word = "收入";
 	}
-	//show_tab(5);
-	$pay_type_list = show_type($i,$userid);
+	$pay_type_list = show_type($i);
 	foreach($pay_type_list as $row){
 		echo "<ul class=\"table-row\">";
 		echo "<li class='".$fontcolor."'>".$row["classname"]."</li>";
-		echo "<li class='".$fontcolor."'>".$word."</li>";
-		echo "<li><a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a> <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a> <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"classify\",".$row["classid"].")'>删除</a></li>";
-		echo "</ul>";
+		echo "<li class='".$fontcolor."'>".$word."</li><li>";
+		if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"13")){
+			echo "<a class='btn btn-primary btn-xs' href='javascript:' onclick='edit(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>修改</a>";
+		}
+		if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"14")){
+			echo " <a class='btn btn-success btn-xs' href='javascript:' onclick='change(this)' data-info='{\"classid\":\"".$row["classid"]."\",\"classtype\":\"".$i."\",\"classname\":".json_encode($row["classname"])."}'>转移</a>";
+		}
+		if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"15")){
+			echo " <a class='btn btn-danger btn-xs' href='javascript:' onclick='delRecord(\"classify\",".$row["classid"].")'>删除</a>";
+		}
+		echo "</li></ul>";
     }
-	//show_tab(3);
 }
 show_tab(3);
 ?>
-
-
-<?php include_once("footer.php");?>
+<?php include("footer.php");?>
 <!--// 添加编辑分类-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModal_classify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
-		<form id="addform" name="addform" method="post">
+		<form id="add_form_classify" name="add_form_classify" method="post">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -59,69 +63,47 @@ show_tab(3);
 				</div>
 			</div>
 			<div class="modal-footer">
-				<div id="error_show" class="footer-tips"></div>
+				<div id="error_show_classify" class="footer-tips"></div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				<button type="button" id="btn_submit" date-info="add" class="btn btn-primary">保存</button>
+				<button type="button" id="btn_submit_classify" date-info="add" class="btn btn-primary">保存</button>
 			</div>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript">
-chushihua();
+chushihua_classify();
 $("#btn_add").click(function(){
-	chushihua();
+	chushihua_classify();
 	$("#myModalLabel").text("添加分类");
-	$('#myModal').modal({backdrop:'static', keyboard:false});
+	$('#myModal_classify').modal({backdrop:'static', keyboard:false});
 });
-$("#btn_submit").click(function(){
+$("#btn_submit_classify").click(function(){
+	$("#error_show_classify").html("提交中...");
+	$(this).addClass("disabled");
 	var action = $(this).attr("date-info");
-	saveclassify(action);
+	send_post_form(action,"classify");
 });
-
-function saveclassify(action){
-	posturl = "date.php?action="+action+"classify";
-	$.ajax({
-		type: "POST",
-		dataType: "json",
-		url: posturl,
-		data: $('#addform').serialize(),
-		success: function (result) {
-			$("#error_show").show();
-			var data = '';
-			if(result != ''){
-				data = eval("("+result+")");
-			}
-			$('#error_show').html(data.error_msg);
-			if(data.url != ""){location.href=data.url;}				
-		},
-		error : function() {
-			$("#error_show").hide();
-			console.log(result);
-		}
-	});
-}
 // 编辑分类
 function edit(t){
-	chushihua();
+	chushihua_classify();
 	var info = $(t).data('info');
 	var classname = info.classname;
 	var classid = info.classid;
 	var classtype = info.classtype;
 	$("#myModalLabel").text("编辑分类");
-	$("#myModal").modal({backdrop:'static', keyboard:true});
+	$("#myModal_classify").modal({backdrop:'static', keyboard:true});
 	$("#classname").val(classname);
 	$("#classid").val(classid);
 	$("#classtype_div").hide();
 	//$("#classtype").find("option").attr("selected",false);
 	$("#classtype").find("option[value="+classtype+"]").attr("selected",true);
-	$('#btn_submit').attr('date-info','modify');
+	$('#btn_submit_classify').attr('date-info','modify');
 }
 // 转移分类
 function change(t){
-	//初始化
-	chushihua();
-	$("#newclassid").find("option").not(":first").remove();//清除所有选项
+	chushihua_classify();
+	$("#newclassid").find("option").not(":first").remove();
 	//$("#newclassid").find("option").remove();//清除所有选项
 	var info = $(t).data('info');
 	var classname = info.classname;
@@ -129,7 +111,7 @@ function change(t){
 	var classtype = info.classtype;	
 	$.ajax({
 		type:"get",
-		url:"date.php?action=getclassify&classtype="+classtype+"&classid="+classid+"", //需要获取的页面内容
+		url:"date.php?action=getclassify&classtype="+classtype+"&classid="+classid+"",
 		async:true,
 		success:function(data){
 			console.log(data)
@@ -137,12 +119,12 @@ function change(t){
 		}
 	});
 	$("#myModalLabel").text("转移分类");
-	$("#myModal").modal({backdrop:'static', keyboard:true});
+	$("#myModal_classify").modal({backdrop:'static', keyboard:true});
 	$("#classname").val(classname);
-	$("#classname").attr('readonly','true');//屏蔽编辑
+	$("#classname").attr('readonly','true');
 	$("#classid").val(classid);
 	$("#classtype_div").hide();
 	$("#newclassname_div").show();
-	$('#btn_submit').attr('date-info','change');
+	$('#btn_submit_classify').attr('date-info','change');
 }
 </script>

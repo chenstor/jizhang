@@ -5,9 +5,12 @@ $s_starttime = get('starttime');
 $s_endtime = get('endtime',$today);//默认今天
 $s_startmoney = get('startmoney');
 $s_endmoney = get('endmoney');
-//$s_remark = get('remark');
 $s_bankid = get('bankid');
-$s_proid = get('proid');//项目
+if($userinfo['pro_id']>0){
+	$s_proid = $userinfo['pro_id'];
+}else{
+	$s_proid = get('proid');
+}
 $s_page = get('page','1');
 
 $pageurl = "show.php?1=1";
@@ -40,15 +43,13 @@ if($s_proid != ""){
 	$pageurl = $pageurl."&proid=".$s_proid;
 	$exporturl = $exporturl."&proid=".$s_proid;
 }
-
 //programlist
-$program_list = show_program($userid);
+$program_list = show_program($userid,$userinfo['pro_id'],$userinfo['isadmin']);
 $plist = "";
 foreach($program_list as $rowshow){
 	$plist .= "<option value='".$rowshow['proid']."'>".$rowshow['proname']."</option>";
 }
-
-$banklist = db_list("bank","where userid='$userid'","order by bankid asc");
+$banklist = db_list("bank","","order by bankid asc");
 $banklist_show = '';
 $banklist_show_edit = '';
 foreach($banklist as $myrow){
@@ -60,7 +61,6 @@ foreach($banklist as $myrow){
 	$banklist_show_edit .= "<option value='$myrow[bankid]'>".$myrow['bankname']."</option>";
 }
 ?>
-
 <table align="left" width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor='#B3B3B3' class='table table-striped table-bordered'>
     <tr><td bgcolor="#EBEBEB">查询修改</td></tr>
     <tr><td bgcolor="#FFFFFF">
@@ -70,7 +70,7 @@ foreach($banklist as $myrow){
 					<option value="all" <?php if($s_classid=="all"){echo "selected";}?>>全部分类</option>
 					<option value="pay" <?php if($s_classid=="pay"){echo "selected";}?>>====支出====</option>
 					<?php
-					$pay_type_list = show_type(2,$userid);
+					$pay_type_list = show_type(2);
 					foreach($pay_type_list as $myrow){
 						if($myrow['classid']==$s_classid){
 							echo "<option value='$myrow[classid]' selected>支出>>".$myrow['classname']."</option>";
@@ -81,7 +81,7 @@ foreach($banklist as $myrow){
 					?>
 					<option value="income" <?php if($s_classid=="income"){echo "selected";}?>>====收入====</option>
 					<?php
-					$pay_type_list = show_type(1,$userid);
+					$pay_type_list = show_type(1);
 					foreach($pay_type_list as $myrow){
 						if($myrow['classid']==$s_classid){
 							echo "<option value='$myrow[classid]' selected>收入 -- ".$myrow['classname']."</option>";
@@ -98,7 +98,7 @@ foreach($banklist as $myrow){
 				<p><label for="proid">项目：<select class="w180" name="proid" id="proid">
 					<option value="" <?php if($s_proid==""){echo "selected";}?>>全部项目</option>
 					<?php
-					$pay_type_list = show_program($userid);
+					$pay_type_list = show_program($userid,$userinfo['pro_id'],$userinfo['isadmin']);
 					foreach($pay_type_list as $rowshow){						
 						if($rowshow['proid']==$s_proid){
 							echo "<option value='".$rowshow['proid']."' selected>".$rowshow['proname']."</option>";
@@ -112,7 +112,7 @@ foreach($banklist as $myrow){
 					<option value="" <?php if($s_bankid==""){echo "selected";}?>>全部账户</option>
 					<?php echo $banklist_show;?>
 				</select></label></p>
-				<p class="btn_div"><input type="submit" name="submit" value="查询" class="btn btn-primary" /><input type="button" id="export" value="导出" class="btn btn-success ml8" onClick="window.location.href='<?php echo $exporturl;?>'" /></p>
+				<p class="btn_div"><input type="submit" name="submit" value="查询" class="btn btn-primary" /><?php if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"8")){?><input type="button" id="export" value="导出" class="btn btn-success ml8" onClick="window.location.href='<?php echo $exporturl;?>'" /><?php }?></p>
 				</form>
 			</div>
         </td>
@@ -123,7 +123,7 @@ foreach($banklist as $myrow){
 	//show_tab(1);
 	echo "<form name='del_all' id='del_all' method='post' onsubmit='return deleterecordAll(this);'>";
 	show_tab(2);
-		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_proid,$s_bankid);
+		$Prolist = itlu_page_search($userid,20,$s_page,$s_classid,$s_starttime,$s_endtime,$s_startmoney,$s_endmoney,$s_proid,$s_bankid,$userinfo['isadmin']);
 		$thiscount = 0;
 		foreach($Prolist as $row){
 			if($row['zhifu']==1){
@@ -143,9 +143,17 @@ foreach($banklist as $myrow){
 				}else{
 					echo "<li>".date("Y-m-d H:i",$row['actime'])."</li>";
 				}
-				echo "<li>".$row['acremark']."</li>";
-				echo "<li><a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"proid\":\"".$row["proid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a><a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a></li>";
-				echo "<li class='noshow'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></li>";
+				echo "<li>".$row['acremark']."</li><li>";
+				if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"9")){
+					echo "<a href='javascript:' onclick='editRecord(this,\"myModal\")' data-info='{\"id\":\"".$row["acid"]."\",\"money\":\"".$row["acmoney"]."\",\"zhifu\":\"".$row["zhifu"]."\",\"bankid\":\"".$row["bankid"]."\",\"proid\":\"".$row["proid"]."\",\"addtime\":\"".date("Y-m-d H:i",$row['actime'])."\",\"remark\":".json_encode($row["acremark"]).",\"classname\":".json_encode($word." -- ".$row["classname"])."}'><img src='img/edit.png' /></a>";
+				}
+				if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"10")){
+					echo "<a class='ml8' href='javascript:' onclick='delRecord(\"record\",".$row['acid'].");'><img src='img/del.png' /></a>";
+				}
+				echo "</li>";
+				if(sys_role_check($userinfo['isadmin'],$userinfo['role_id'],"11")){
+					echo "<li class='noshow'><input name='del_id[]' type='checkbox' id='del_id[]' value=".$row['acid']." /></li>";
+				}
 			echo "</ul>";
 			$thiscount ++ ;
 		}	
