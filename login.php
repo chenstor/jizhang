@@ -55,8 +55,7 @@ if($getaction=="register" and Multiuser=="1"){ // 注册
 <body>
 <div class='login login-itlu-ui'>
 	<div id="login">
-		<h1><a href="https://itlu.org/articles/2550.html" title="基于PHP多用户记账系统" tabindex="-1">基于PHP多用户记账系统</a></h1>
-		<p class="message" style="display:none;">请输入您的用户名或电子邮箱地址。您会收到一封包含创建新密码链接的电子邮件。</p>
+		<h1><a href="//itlu.org/jizhang/" title="基于PHP多用户记账系统" tabindex="-1">基于PHP多用户记账系统</a></h1>
 		<div id="login_error" style="display:none;"></div>		
 		<form method="post" name="<?php echo $form_name;?>" id="<?php echo $form_name;?>">
 			<?php echo $showlogin_form;?>
