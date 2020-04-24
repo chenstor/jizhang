@@ -139,7 +139,7 @@ include_once("header.php");
 		<th align="left" bgcolor="#EBEBEB">类型</th>
         <th align="left" bgcolor="#EBEBEB">邮箱</th>
 		<th align="left" bgcolor="#EBEBEB">角色</th>
-		<th align="left" bgcolor="#EBEBEB">项目</th>
+		<th align="left" bgcolor="#EBEBEB">关联项目</th>
         <th align="left" bgcolor="#EBEBEB">注册时间</th>
 		<th align="left" bgcolor="#EBEBEB">状态</th>
 		<th align="left" bgcolor="#EBEBEB">操作</th>
@@ -154,7 +154,7 @@ include_once("header.php");
 			$res = "<span class='red'>禁用</span>";
 			$btn_show ="<a class=\"btn btn-success btn-xs\" href=\"javascript:\" onclick=\"changeuser('allow',$myrow[uid],'0');\">启用</a>";
 		}
-		if($userid == $myrow['uid']){
+		if($userid == $myrow['uid'] or $myrow["uid"]==1){
 			$btn_show ="";			
 		}else{
 			$btn_show .= " <a class=\"btn btn-warning btn-xs\" href=\"javascript:\" onclick=\"changeuser('changepassword',$myrow[uid],'$myrow[username]');\">重置</a> ";
@@ -165,7 +165,7 @@ include_once("header.php");
 		<td align='left' bgcolor='#FFFFFF'><?php echo admin_type($myrow['Isadmin']);?></td>
 		<td align='left' bgcolor='#FFFFFF'><?php echo $myrow['email'];?></td>
 		<td align='left' bgcolor='#FFFFFF'><?php echo rolename($myrow['role_id'],"系统内置");?></td>
-		<td align='left' bgcolor='#FFFFFF'><?php echo programname($myrow['pro_id'],$userid,"所有项目");?></td>
+		<td align='left' bgcolor='#FFFFFF'><?php echo programname($myrow['pro_id'],$userid,"不限制");?></td>
 		<td align='left' bgcolor='#FFFFFF'><?php echo date("Y-m-d",$myrow['addtime']);?></td>
 		<td align='left' bgcolor='#FFFFFF'><?php echo $res;?></td>
 		<td align='left' bgcolor='#FFFFFF'><?php echo $btn_show;?></td>
@@ -191,14 +191,14 @@ include_once("header.php");
 					<label for="isadmin">账户类型</label>
 					<select name="isadmin" id="isadmin" class="form-control">
 						<?php for($i=0;$i<2;$i++){?>
-                        <option value="<?php echo $i;?>"><?php echo admin_type($i);?></option>
+                        <option value="<?php echo $i;?>"><?php echo admin_type($i);if($i==0){echo "(需关联项目)";}?></option>
 						<?php }?>						
                     </select>
 				</div>
 				<div class="form-group">
 					<label for="pro_id">关联项目</label>
 					<select name="pro_id" id="pro_id" class="form-control">
-						<option value="0">==所有项目==</option>
+						<option value="0">==不关联项目==</option>
 						<?php 
 						$pay_type_list = show_program($userid,0,1);						
 						foreach($pay_type_list as $row){

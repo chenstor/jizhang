@@ -370,8 +370,10 @@ if($getaction=="adduser"){
 	$role_id = post("role_id");
 	$email = post("email");
 	$password = post("password");
-	if(empty($username) or empty($pro_id) or empty($role_id) or empty($email) or empty($password)){
+	if(empty($username) or empty($role_id) or empty($email) or empty($password)){
 		$error_code = "参数不完整！";
+	}elseif(empty($isadmin) and empty($pro_id)){
+		$error_code = "普通用户必须关联项目！";
 	}elseif(strlen($password)<6){
 		$error_code = "密码不能小于6个字符！";
 	}elseif((!empty($email)) && (checkemail($email) == false)){
@@ -410,8 +412,10 @@ if($getaction=="modifyuser"){
 	$role_id = post("role_id");
 	$email = post("email");
 	$updatetime = strtotime("now");
-	if(empty($uid) or empty($username) or empty($pro_id) or empty($role_id) or empty($email)){
+	if(empty($uid) or empty($username) or empty($role_id) or empty($email)){
 		$error_code = "参数不完整！";
+	}elseif(empty($isadmin) and empty($pro_id)){
+		$error_code = "普通用户必须关联项目！";
 	}elseif((!empty($email)) && (checkemail($email) == false)){
 		$error_code = "邮箱格式错误！";
 	}elseif(strlen($username) > 15){
