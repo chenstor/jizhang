@@ -6,7 +6,7 @@ a{color:#0073aa;transition-property:border,background,color;transition-duration:
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;color:#444;background:#f1f1f1;font-size:13px;}
 .login h1{text-align:center}
 .login h1 a{background-image:url(../img/login.png?ver=20131202);background-image:none,url(../img/login.svg?ver=20131107);background-size:84px;background-position:center top;background-repeat:no-repeat;color:#444;height:84px;font-size:20px;font-weight:400;line-height:1.3em;margin:0 auto 25px;padding:0;text-decoration:none;width:84px;text-indent:-9999px;outline:0;overflow:hidden;display:block}
-.login #sysname{font-size:12px;color:#ddd;font-weight:normal}
+.login #sysname{font-size:12px;color:#E8E8E8;font-weight:normal;text-align:center;padding-top:15px}
 #login{width:320px;padding:6% 0 0;margin:0 auto;}
 .login *{margin:0;padding:0}
 .login form{background:#fff;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.13);padding:26px 24px 46px;font-weight:400;overflow:hidden}
