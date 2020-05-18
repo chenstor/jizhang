@@ -82,7 +82,7 @@ document.onkeydown = function(e){
 		return false;
 	}
 }
-
+$("#login h1").append("<div id=\"sys"+"name\">&#35760;&#36134;&#31995;&#32479;&#20813;&#36153;&#29256; <?php echo $version;?></div>");
 $("#itlu-submit").click(function(){
 	login_check('#<?php echo $form_name;?>','<?php echo $getaction;?>');
 });
